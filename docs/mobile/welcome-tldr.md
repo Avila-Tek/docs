@@ -1,14 +1,14 @@
 ---
 title: Bienvenida al equipo (versión corta)
-slug: /welcome-tldr
+slug: /mobile/welcome-tldr
 keywords: [onboarding, welcome]
-sidebar_class: "hidden"
+sidebar_class: 'hidden'
 ---
 
 # Bienvenida al equipo (versión corta)
 
 :::info ¿Buscas la versión completa?
-Esta es la versión corta de la guía de bienvenida al equipo. Para la versión completa, lee la guía [aquí](/welcome).
+Esta es la versión corta de la guía de bienvenida al equipo. Para la versión completa, lee la guía [aquí](/docs/mobile).
 :::
 
 Acá dejaré todos los links a las herramientas que mencionamos en la guía completa. Te recomiendo que lea
@@ -31,20 +31,20 @@ Lee la documentación aquí: [https://bloclibrary.dev/#/](https://bloclibrary.de
 
 ### Convenciones
 
-En Bloc seguimos convenciones de nombrado de las clases de Eventos y Estados del Bloc/Cubit. Te aconsejo que la leas aquí: 
+En Bloc seguimos convenciones de nombrado de las clases de Eventos y Estados del Bloc/Cubit. Te aconsejo que la leas aquí:
 
 [BLoC: Convenciones](https://www.notion.so/BLoC-Convenciones-8d92cf330dce4a61a5230e1abe3b6aee?pvs=21)
 
 ## Mason
 
-Es el CLI de generación de bloques de código. Necesario para crear los features con la estructura que seguimos en nuestros proyectos con el *brick* `feature_brick`.
+Es el CLI de generación de bloques de código. Necesario para crear los features con la estructura que seguimos en nuestros proyectos con el _brick_ `feature_brick`.
 
 - Link de mason_cli: [https://pub.dev/packages/mason_cli](https://pub.dev/packages/mason_cli)
 - Link del feature_brick: [https://brickhub.dev/bricks/feature_brick/0.6.1](https://brickhub.dev/bricks/feature_brick/0.6.1)
 
 ## Redacción de los commits
 
-Se redactan siguiendo la convención *Conventional Commits 1.0.0.* 
+Se redactan siguiendo la convención _Conventional Commits 1.0.0._
 
 **Es obligatorio que lo sigan.**
 
@@ -66,4 +66,3 @@ Un CLI para crear apps y paquetes de Dart y Flutter que se encarga de configurar
 Lo importante que debes saber es que si vas a crear un nuevo proyecto o un paquete, lo hagas con este CLI.
 
 - Librería: [https://pub.dev/packages/very_good_cli](https://pub.dev/packages/very_good_cli)
-

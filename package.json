@@ -1,5 +1,5 @@
 {
-  "name": "avilatek-mobile-docs",
+  "name": "engineering-docs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -11,20 +11,23 @@
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids"
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "3.4.0",
-    "@docusaurus/preset-classic": "3.4.0",
+    "@docusaurus/core": "3.7.0",
+    "@docusaurus/preset-classic": "3.7.0",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "prism-react-renderer": "^2.3.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.4.0",
-    "@docusaurus/types": "3.4.0"
+    "@docusaurus/module-type-aliases": "3.7.0",
+    "@docusaurus/tsconfig": "3.7.0",
+    "@docusaurus/types": "3.7.0",
+    "typescript": "~5.6.2"
   },
   "browserslist": {
     "production": [
@@ -40,12 +43,5 @@
   },
   "engines": {
     "node": ">=18.0"
-  },
-  "description": "This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.",
-  "main": "babel.config.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "author": "",
-  "license": "ISC"
+  }
 }
