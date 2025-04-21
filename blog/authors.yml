@@ -1,0 +1,9 @@
+zoomelectrico:
+  name: José Roberto Quevedo Gabizon
+  title: Chief Technology Officer
+  url: https://github.com/zoomelectrico
+  image_url: https://github.com/zoomelectrico.png
+  page: true
+  socials:
+    # x: yangshunz
+    github: zoomelectrico
