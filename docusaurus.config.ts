@@ -28,7 +28,7 @@ const config: Config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'es',
-    locales: ['es', 'en'],
+    locales: ['es'],
   },
 
   presets: [
@@ -42,6 +42,12 @@ const config: Config = {
         theme: {
           customCss: './src/css/custom.css',
         },
+        blog: {
+          blogTitle: 'Tek news',
+          blogDescription: '...',
+          postsPerPage: 20,
+          showReadingTime: true,
+        },
       } satisfies Preset.Options,
     ],
   ],
@@ -52,15 +58,20 @@ const config: Config = {
     navbar: {
       title: 'Engineering Docs - Avila Tek',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Avila Tek',
         src: 'img/logo.svg',
       },
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Bienvenido(a)',
+        },
+        {
+          to: 'blog',
+          label: 'Blog',
+          position: 'left',
         },
       ],
     },
@@ -71,12 +82,24 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Reglamento de Estilo de Código',
-              to: '/code-rules',
+              label: 'Introducción',
+              to: '/docs/welcome',
             },
             {
-              label: 'Guía de contribución al Reglamento',
-              to: '/code-rules/contribute',
+              label: 'Frontend',
+              to: '/docs/front-end',
+            },
+            {
+              label: 'Backend',
+              to: '/docs/back-end',
+            },
+            {
+              label: 'Mobile',
+              to: '/docs/mobile',
+            },
+            {
+              label: 'DevOps',
+              to: '/docs/dev-ops',
             },
           ],
         },

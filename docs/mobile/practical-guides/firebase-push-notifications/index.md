@@ -26,7 +26,7 @@ dependencies:
 La integración entre ambos paquetes consiste en recibir el mensaje desde el servidor con el uso de `firebase_messaging`, y al recibirlo si es necesario personalizarlo, añadir acciones específicas o simplemente mostrarlo, se usa `flutter_local_notifications`.
 
 :::note
-Para el funcionamiento de la dependencia de firebase messaging es necesario que previamente se haya [**configurado Firebase**](/docs/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
+Para el funcionamiento de la dependencia de firebase messaging es necesario que previamente se haya [**configurado Firebase**](/docs/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
 :::
 
 Previo a seguir con esta guía, es importante que sigas una serie de pasos para [configurar la plataforma de iOS](https://firebase.google.com/docs/cloud-messaging/flutter/client#ios)
@@ -34,6 +34,7 @@ Previo a seguir con esta guía, es importante que sigas una serie de pasos para 
 ## Implementación
 
 ### Capa de datos - Repositorio
+
 Empieza creando una clase llamada `PushNotificationRepository` donde se realizará la implementación de Firebase Messaging con Flutter Local Notifications para gestionar las notificaciones push en la aplicación.
 
 Este clase contendrá lo siguiente:
@@ -62,10 +63,10 @@ Llamar este método en el constructor es importante ya que permite inicializar i
 Los atributos a definir serán los siguientes:
 
 - **errorRadarApi**: Interfaz para reportar errores.
-- **_messagingInstance**: Instancia de FirebaseMessaging para interactuar con FCM.
+- **\_messagingInstance**: Instancia de FirebaseMessaging para interactuar con FCM.
 - **token**: Token FCM para identificar el dispositivo en el servidor.
 - **flutterLocalNotificationsPlugin**: Instancia para mostrar notificaciones locales.
-- **_messageStream**: StreamController para manejar notificaciones recibidas.
+- **\_messageStream**: StreamController para manejar notificaciones recibidas.
 
 ```dart
 PushNotificationsRepository({
@@ -115,14 +116,14 @@ Future<String?> getToken() async {
 
 #### Método de inicialización
 
-1.	Solicita permisos para recibir notificaciones (requestPermission).
-2.	Configura notificaciones en primer plano para Android/iOS.
-3.	Obtiene el token del dispositivo y lo suscribe al tema all.
-4.	Configura los ajustes de inicialización para flutterLocalNotificationsPlugin.
-5.	Registra manejadores para diferentes eventos de Firebase Messaging:	onMessage (notificaciones en primer plano), onBackgroundMessage (notificaciones en segundo plano), onMessageOpenedApp (Al abrir la app desde una notificación).
+1. Solicita permisos para recibir notificaciones (requestPermission).
+2. Configura notificaciones en primer plano para Android/iOS.
+3. Obtiene el token del dispositivo y lo suscribe al tema all.
+4. Configura los ajustes de inicialización para flutterLocalNotificationsPlugin.
+5. Registra manejadores para diferentes eventos de Firebase Messaging: onMessage (notificaciones en primer plano), onBackgroundMessage (notificaciones en segundo plano), onMessageOpenedApp (Al abrir la app desde una notificación).
 
 ```dart
-Future<void> _initialize() async { 
+Future<void> _initialize() async {
   try {
     final response = await requestPermission();
 
@@ -214,7 +215,7 @@ Procesa notificaciones cuando la app está en segundo plano o cerrada. Al recibi
 
 ```dart
 @pragma('vm:entry-point')
-static Future<void> _backgroundHandler(RemoteMessage message) async { 
+static Future<void> _backgroundHandler(RemoteMessage message) async {
   final notification = message.notification;
 
   log('_backgroundHandler ${message.notification!.title} ${message.data}');
@@ -223,7 +224,7 @@ static Future<void> _backgroundHandler(RemoteMessage message) async {
     _messageStream.add(
       FirebaseNotificationModel.fromRemoteMessage(message),
     );
-  } 
+  }
 }
 ```
 
@@ -277,7 +278,7 @@ Future<FirebaseNotification?> getInitialMessage() async {
 
 Cierra el stream para liberar recursos cuando ya no se necesite.
 
-``` dart
+```dart
 static void closeStreams() {
   _messageStream.close();
 }
@@ -376,7 +377,7 @@ class FirebaseNotification extends Equatable {
 
 ### Capa de dominio - Caso de uso
 
-`PushNotificationsUseCase` es un caso de uso que encapsula la lógica para interactuar con el repositorio de notificaciones push. 
+`PushNotificationsUseCase` es un caso de uso que encapsula la lógica para interactuar con el repositorio de notificaciones push.
 
 Consta de un stream `pushNotificationsStream` que va a permitir escuchar notificaciones en la capa de presentación y el método `getInitialNotification` el cual permitirá obtener una notificación inicial (por ejemplo, cuando la aplicación es abierta mediante una notificación).
 
@@ -410,7 +411,7 @@ class PushNotificationsUseCase {
 
 #### PushNotificationsBloc
 
-Procede a crear un Bloc llamado `PushNotificationsBloc` en la carpeta core del proyecto, ya que este será un Bloc global. Este Bloc debe ser instanciado 
+Procede a crear un Bloc llamado `PushNotificationsBloc` en la carpeta core del proyecto, ya que este será un Bloc global. Este Bloc debe ser instanciado
 como `BlocProvider` en el nivel más alto posible de la aplicación (por lo general, en el archivo `app.dart`).
 
 Comienza definiendo el estado del `PushNotificationsBloc`, el cual va a guardar la última notificación recibida
@@ -474,6 +475,7 @@ class PushNotificationOpened extends PushNotificationsEvent {
 ```
 
 En este archivo podemos ver cuatro eventos clave:
+
 1. `PushNotificationStarted`: se encarga de obtener la notificación inicial (aquella que abrió la aplicación). De existir, emite el evento `PushNotificationReceived`. Por último, se subscribe al stream de notificaciones.
 2. `PushNotificationReceived`: guarda la notificación recibida en el estado del bloc.
 3. `PushNotificationOpened`: restaura el estado del Bloc para recibir la próxima notificación.

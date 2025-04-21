@@ -3,6 +3,7 @@ sidebar_position: 2
 ---
 
 # Firebase Remote Config
+
 :::warning
 Esta guía fue redactada usando la versión 3.24.0 de `flutter`
 :::
@@ -19,7 +20,7 @@ dependencies:
 ```
 
 :::note
-Para el funcionamiento de la dependencia de firebase remote config es necesario que previamente se haya [**configurado Firebase**](/docs/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
+Para el funcionamiento de la dependencia de firebase remote config es necesario que previamente se haya [**configurado Firebase**](/docs/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
 :::
 
 ## Implementación
@@ -50,7 +51,7 @@ class RemoteConfigApi {
 
       return RemoteConfigValuesModel.fromFirebaseValues(_remoteConfig);
     } catch (e) {
-      throw Exception( 
+      throw Exception(
         message: 'Error fetching remote config values $e',
       );
     }
@@ -64,13 +65,13 @@ Esta función regresa un modelo `RemoteConfigValuesModel` donde se mapearán las
 
 :::danger
 El valor de `minimumFetchInterval` no debe ser demasiado pequeño en producción, ya que podría agotar la cuota disponible.
-::: 
+:::
 
 - La función `fetchAndActivate` realiza la obtención de los valores de remote config.
 
-Luego tendremos el modelo `RemoteConfigValuesModel`, donde vamos a definir todas las variables que obtendremos de Firebase Remote Config y el cual debería tener la siguiente estructura: 
+Luego tendremos el modelo `RemoteConfigValuesModel`, donde vamos a definir todas las variables que obtendremos de Firebase Remote Config y el cual debería tener la siguiente estructura:
 
-```dart 
+```dart
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class RemoteConfigValuesModel {
@@ -100,7 +101,7 @@ class RemoteConfigValuesModel {
 }
 ```
 
-- El factory `fromFirebaseValues` recibe como parámetro `FirebaseRemoteConfig`. Esto es para usar las funciones de la dependencia que nos permiten obtener los valores: `getAll`, `getBool`, `getDouble`, `getInt`, `getString` y `getValue`. 
+- El factory `fromFirebaseValues` recibe como parámetro `FirebaseRemoteConfig`. Esto es para usar las funciones de la dependencia que nos permiten obtener los valores: `getAll`, `getBool`, `getDouble`, `getInt`, `getString` y `getValue`.
 
 - La función `toEntity()` transforma el modelo en entidad, para ser usado en la capa de dominio.
 
@@ -198,7 +199,7 @@ class RemoteConfigValues extends Equatable {
     required this.remoteConfigVar2;
   });
 
-  
+
   final bool remoteConfigVar1;
   final String remoteConfigVar2;
 

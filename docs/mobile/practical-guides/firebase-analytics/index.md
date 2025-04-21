@@ -20,10 +20,10 @@ dependencies:
 ```
 
 :::note
-Para el funcionamiento de la dependencia de firebase remote config es necesario que previamente se haya [**configurado Firebase**](/docs/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
+Para el funcionamiento de la dependencia de firebase remote config es necesario que previamente se haya [**configurado Firebase**](/docs/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
 :::
 
-*A partir de la versión de iOS 14+, es necesario solicitar los permisos de **Transparencia de Seguimiento de Aplicaciones (App Tracking Transparency)** a los usuarios. En caso de no ser aceptados, no se podrá registrar los eventos para ese usuario.*
+_A partir de la versión de iOS 14+, es necesario solicitar los permisos de **Transparencia de Seguimiento de Aplicaciones (App Tracking Transparency)** a los usuarios. En caso de no ser aceptados, no se podrá registrar los eventos para ese usuario._
 
 ## Implementación
 
@@ -132,13 +132,13 @@ class FirebaseAnalyticsApi extends IAnalyticsApi {
 }
 ```
 
-1. ***initialize***: configura Firebase Analytics según el estado de permiso de rastreo del usuario. Primero, verifica el estado de autorización de rastreo mediante appTrackingTransparencyWrapper y, si el estado no está determinado, solicita permiso al usuario. Si el usuario autoriza el rastreo o si la función no es compatible con el dispositivo, habilita la recopilación automática de datos en Firebase. En caso de error durante la inicialización, se registra el error en la consola y se vuelve a lanzar la excepción.
+1. **_initialize_**: configura Firebase Analytics según el estado de permiso de rastreo del usuario. Primero, verifica el estado de autorización de rastreo mediante appTrackingTransparencyWrapper y, si el estado no está determinado, solicita permiso al usuario. Si el usuario autoriza el rastreo o si la función no es compatible con el dispositivo, habilita la recopilación automática de datos en Firebase. En caso de error durante la inicialización, se registra el error en la consola y se vuelve a lanzar la excepción.
 
-2. ***logEvent***: registra un evento en Firebase Analytics. Toma el nombre del evento y un conjunto opcional de parámetros, los cuales describe la información relacionada con el evento.
+2. **_logEvent_**: registra un evento en Firebase Analytics. Toma el nombre del evento y un conjunto opcional de parámetros, los cuales describe la información relacionada con el evento.
 
-3. ***setUserInstance***: establece un identificador único para el usuario en Firebase Analytics. Esta función es útil para asociar eventos y propiedades con un usuario específico.
+3. **_setUserInstance_**: establece un identificador único para el usuario en Firebase Analytics. Esta función es útil para asociar eventos y propiedades con un usuario específico.
 
-4. ***setUserProperty***: establece propiedades personalizadas para el usuario.
+4. **_setUserProperty_**: establece propiedades personalizadas para el usuario.
 
 #### AppTrackingTransparencyWrapper
 
@@ -159,9 +159,10 @@ class AppTrackingTransparencyWrapper {
   }
 }
 ```
-1. ***trackingAuthorizationStatus***: retorna el estado actual de los permisos de rastreo.
 
-2. ***requestTrackingAuthorization***: muestra el dialogo nativo de iOS para solicitar los permisos.
+1. **_trackingAuthorizationStatus_**: retorna el estado actual de los permisos de rastreo.
+
+2. **_requestTrackingAuthorization_**: muestra el dialogo nativo de iOS para solicitar los permisos.
 
 ### Capa de dominio
 
@@ -212,7 +213,7 @@ class AnalyticsRepository extends IAnalyticsRepository {
       await errorRadarApi.captureException(e, str);
     }
   }
-  
+
   @override
   Future<void> setUserProperty(String name, String value) async {
     try {
@@ -263,8 +264,9 @@ Define una instancia de `AnalyticsRepository` y declaralo como un `RepositoryPro
 #### ¿Cómo registrar eventos?
 
 Existen dos maneras de registrar eventos de analíticas con esta implementación:
-1) En los use cases, pasandole por parametro el `AnalyticsRepository`
-2) En cualquier Stateless/Stateful widget a través del contexto de la app
+
+1. En los use cases, pasandole por parametro el `AnalyticsRepository`
+2. En cualquier Stateless/Stateful widget a través del contexto de la app
 
 Para el punto 2, crea una extensión sobre `BuildContext` para acceder fácilmente al repositorio de analíticas.
 

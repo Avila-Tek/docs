@@ -21,18 +21,18 @@ dependencies:
 ```
 
 :::note
-Para el funcionamiento de la dependencia de firebase in app messaging es necesario que previamente se haya [**configurado Firebase**](/docs/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
+Para el funcionamiento de la dependencia de firebase in app messaging es necesario que previamente se haya [**configurado Firebase**](/docs/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
 :::
 
 **Firebase In-App Messaging** recupera mensajes del servidor únicamente una vez al día, lo que puede complicar el proceso de pruebas. Para facilitarlo, la consola de Firebase permite designar un dispositivo de prueba que puede mostrar los mensajes de manera inmediata bajo demanda.
 
 Para configurar esto, sigue los pasos de esta guía proporcionada por [**Firebase Docs**](https://firebase.google.com/docs/in-app-messaging/get-started?platform=flutter#send_a_test_message).
 
-Por último, ingresa a [Google Cloud Console](https://console.cloud.google.com/) para habilitar el API de Firebase In-App Messaging. Para esto, ingresa a la sección de **APIs & Services > API Library** y escribe en el buscador *"firebase in app messaging"*.
+Por último, ingresa a [Google Cloud Console](https://console.cloud.google.com/) para habilitar el API de Firebase In-App Messaging. Para esto, ingresa a la sección de **APIs & Services > API Library** y escribe en el buscador _"firebase in app messaging"_.
 
 ![APIs & Services > API Library](/img/in-app-messaging-api.png)
 
-Seleccionas el servicio y presionas ***Habilitar**.
+Seleccionas el servicio y presionas **\*Habilitar**.
 
 ![Enable Firebase In-App Messaging](/img/enable-in-app-messaging.png)
 
