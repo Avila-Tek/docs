@@ -175,7 +175,7 @@ Para generar un link de distribución de la app para que los usuarios puedan des
 
 Para poder publicar en App Store y TestFlight, es necesario tener una cuenta de Apple Developer integrada en Codemagic. Si la aplicación será publicada en la cuenta de Avila Tek, la integración ya está configurada. En el caso de publicar en una cuenta diferente dirigete a la sección de [Integración de cuenta de Apple Developer en Codemagic](#integración-de-cuenta-de-apple-developer-en-codemagic-opcional) para más información.
 
-### Integración de cuenta de Apple Developer en Codemagic (opcional)
+### Integración de cuenta de Apple Developer en Codemagic (sólo para otras cuentas de Google Play)
 
 En caso de que la app deba subirse en una cuenta distinta a la de Avila Tek, es necesario integrar la cuenta de Apple Developer del cliente en Codemagic. Para ello, necesitas hacer dos cosas:
 
@@ -230,7 +230,7 @@ Puedes configurar cosas como que la app sea enviada automáticamente a revisión
 
 Para integrar Google Play en Codemagic, el proceso es similar al de Firebase App Distribution. Primero necesitamos una cuenta de servicio de Google Cloud Platform asociada a la cuenta de la organización de Google Play. 
 
-Si la app será publicada en la cuenta de Avila Tek, ya existe una cuenta de servicio y solo requieres la llave de la cuenta de servicio. Debes solicitarle al Gerente o el Coordinador del departamento que configuren la variable de ambiente con la llave de la cuenta de servicio del equipo. 
+Si la app será publicada en la cuenta de Avila Tek, ya existe una cuenta de servicio y solo requieres la llave de la cuenta de servicio. Debes solicitarle al Gerente o al Coordinador del departamento que configure la variable de ambiente `GCLOUD_SERVICE_ACCOUNT_CREDENTIALS` con la llave de la cuenta de servicio del equipo en el proyecto de Codemagic.
 
 Si la app será publicada en una cuenta diferente, debes primero crear una cuenta de servicio en la consola de Google Cloud Platform (GCP) a nivel de la organización.
 
@@ -247,4 +247,29 @@ Para crear la cuenta de servicio y agregarlo a Google Play, puedes seguir los pa
 
 Una vez hayas seguido los pasos indicados en la documentación, debes copiar el contenido de la llave de la cuenta de servicio generada y pegarlo en la variable de entorno `GCLOUD_SERVICE_ACCOUNT_CREDENTIALS` que creaste anteriormente. Asegúrate de marcar la casilla **Secure** para ocultar el valor de la variable. Recomiendo adicionalmente que guardes la llave de la cuenta de servicio en el vault de secretos del departamento para evitar que se pierda.
 
+
 > Nota: En caso de perder la llave, puedes generar una nueva para la misma cuenta de servicio. ¡Asegurate de actualizar la variable de ambiente de Codemagic en caso necesario!
+
+### Generación de keystore (sólo para otras cuentas de Google Play)
+
+En caso de que la app deba subirse en una cuenta distinta a la de Avila Tek, es necesario generar una keystore para firmar la app. Para ello, puedes seguir los pasos indicados [aquí](https://docs.codemagic.io/flutter-code-signing/android-code-signing/). **Asegurate de guardar la keystore en el vault del departamento para evitar que se pierda**. Perder esta keystore puede hacer que pierdas la posibilidad de actualizar la app en Google Play, por lo que es importante que la guardes de forma segura.
+
+> Nota: Este paso debería realizarlo el gerente o coordinar del departamento.
+
+Una vez creada la keystore, debes subirla a Codemagic en la sección **Teams** > Selecciona el equipo > **Code signing identities** > **Android keystores**. Aquí debes subir el archivo keystore y llenar los campos requeridos. El identificador de la llave debe ser un nombre único para identificar la keystore y poder referenciarlo en el archivo `codemagic.yaml`. Por ejemplo, puedes usar el nombre del cliente o el nombre del proyecto. Recomendamos seguir la misma convención de nombrado que usamos para el resto de llaves: `{proyecto}_{tipo}_ks` (ejemplo: `avilatek_upload_ks`).
+
+Por último, actualiza el archivo `codemagic.yaml` para incluir la keystore en el bloque de `environment.android_signing`. Por ejemplo:
+
+```yaml
+    environment:
+      android_signing:
+        - avilatek_upload_ks
+```
+
+Con esto, Codemagic podrá compilar y con la firma correcta el APK o AAB de la app para poder publicarlo en Google Play.
+
+## Ultimos pasos
+
+Una vez realizada todas las integraciones anteriores, ya podrás realizar el primer deploy de la app.
+
+¡Felicidades! Has completado la configuración de Codemagic para tu proyecto Flutter. Ahora puedes comenzar a compilar y desplegar tu aplicación de manera continua. Recuerda que esta guía es solo un punto de partida y puedes personalizar la configuración según las necesidades de tu proyecto.
