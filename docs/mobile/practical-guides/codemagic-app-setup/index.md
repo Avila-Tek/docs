@@ -37,7 +37,7 @@ Antes de comenzar, asegúrate de tener lo siguiente:
 
 En este punto habrás creado un nuevo proyecto en Codemagic en modo Workflow Editor (editor del flujo de trabajo por web). Sin embargo, nosotros utilizaremos la configuración con YAML. Pulsa la opción **Switch to YAML** bajo la barra de opciones en el detalle de la aplicación creada, elige la opción "codemagic.yaml" y guarda los cambios.
 
-<img src="./switch-to-yaml.png" width="512em">
+<img src="./switch-to-yaml.png" width="512em"></img>
 
 Una vez que hayas cambiado a la configuración YAML, verás el archivo de configuración `codemagic.yaml` de tu proyecto si ya existe. Si no existe, debes crear uno en la raiz de tu proyecto. 
 
@@ -151,7 +151,7 @@ Una vez configurada la variable de ambiente con la cuenta de servicio de Firebas
 
 Selecciona la aplicación que deseas configurar (en este caso la de Android) y dale al botón **Comenzar** (Get started). 
 
-<img src="./init-firebase-app-dist.png" width="512em">
+<img src="./init-firebase-app-dist.png" width="512em"></img>
 
 Finalmente, solo queda agregar el grupo de testing para facilitar la distribución a través de un link. Ve a la pestaña **Verificadores y grupos** y haz clic en agregar un grupo de testers. Coloca un nombre para el grupo y guarda los cambios. Copia el identificador del grupo y actualiza tu archivo codemagic.yaml en el bloque de `publishing` de la siguiente manera:
 
@@ -163,13 +163,13 @@ publishing:
         - beta-testers # <- Identificador del grupo de testers creado en la consola de Firebase
 ```
 
-<img src="./firebase-app-dist-group-id.png" width="512em">
+<img src="./firebase-app-dist-group-id.png" width="512em"></img>
 
 #### Crear un vínculo de distribución
 
 Para generar un link de distribución de la app para que los usuarios puedan descargarla, ve a la pestaña **Vínculos de invitación** y haz clic en **Crear un vínculo de invitación**. Selecciona el grupo de testers que creaste anteriormente y haz clic en **Crear vínculo**. Copia el link y distribuyelo a los testers. Este link les permitirá descargar la app directamente desde Firebase App Distribution.
 
-<img src="./firebase-app-dist-test-link.png" width="512em">
+<img src="./firebase-app-dist-test-link.png" width="512em"></img>
 
 ## Integración con App Store y TestFlight
 
@@ -188,7 +188,7 @@ El primer paso debe realizarse iniciando sesión en App Store Connect desde la c
 Una vez tengas la llave API, en Codemagic ve a la sección de **Teams**, selecciona el equipo y abre la opción **Integrations**. En la opción **Developer Portal** dale a **Manage keys** > **Add another key** y llena los campos con la información generada en el paso previo. El primer campo, **App Store Connect API key name**, es un identificador que usaras luego en el archivo codemagic.yaml para indicar cual llave usar en el proceso de despliegue, así que asegúrate de que sea único y fácil de recordar. Por ejemplo, puedes usar el nombre del cliente o el nombre del proyecto.
 
 
-<img src="./add-apple-developer-integration.png" width="512em">
+<img src="./add-apple-developer-integration.png" width="512em"></img>
 
 #### 3. Actualiza la configuración de codemagic.yaml.
 
@@ -234,7 +234,7 @@ Si la app será publicada en la cuenta de Avila Tek, ya existe una cuenta de ser
 
 Si la app será publicada en una cuenta diferente, debes primero crear una cuenta de servicio en la consola de Google Cloud Platform (GCP) a nivel de la organización.
 
-<img src="./gcp-org-level-example.png" width="512em">
+<img src="./gcp-org-level-example.png" width="512em"></img>
 
 Si no tienes acceso a la cuenta de GCP de la organización, debes pedirle al cliente que te invite, preferiblemente con permisos de administración, o que realice el siguiente paso por ti.
 
