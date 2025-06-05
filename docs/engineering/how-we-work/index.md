@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 title: 💼 Como trabajamos
 keywords: [work, avila way, agile, scrum]
 ---

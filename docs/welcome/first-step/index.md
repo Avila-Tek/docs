@@ -18,7 +18,9 @@ Realizaremos una introducción formal con tu nuevo equipo de trabajo. Este momen
 
 La formación continua es un pilar fundamental en Avila Tek. Hemos diseñado una ruta de aprendizaje estructurada que te permitirá desarrollar competencias técnicas sólidas y alinearte con nuestra metodología de trabajo.
 
-### Formación Técnica
+<!-- TODO: Move this from here -->
+
+<!-- ### Formación Técnica
 
 #### Conocimientos Generales
 
@@ -120,7 +122,7 @@ Esta ruta de aprendizaje tiene como propósito:
 
 :::info
 Recuerda: En Avila Tek, cada día es una oportunidad para aprender, innovar y crear el futuro.
-:::
+::: -->
 
 ### Definición de Objetivos Personales
 
