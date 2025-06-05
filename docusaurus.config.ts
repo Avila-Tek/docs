@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Engineering docs - Avila Tek',
-  tagline: 'This is the official documentation for Engineering of Avila Tek',
+  title: 'Docs - Avila Tek',
+  tagline: 'This is the official documentation of Avila Tek',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -56,7 +56,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Engineering Docs - Avila Tek',
+      title: 'Docs - Avila Tek',
       logo: {
         alt: 'Avila Tek',
         src: 'img/logo.svg',
@@ -86,20 +86,16 @@ const config: Config = {
               to: '/docs/welcome',
             },
             {
-              label: 'Frontend',
-              to: '/docs/front-end',
+              label: 'Ingeniería',
+              to: '/docs/engineering',
             },
             {
-              label: 'Backend',
-              to: '/docs/back-end',
+              label: 'Producto',
+              to: '/docs/product',
             },
             {
               label: 'Mobile',
-              to: '/docs/mobile',
-            },
-            {
-              label: 'DevOps',
-              to: '/docs/dev-ops',
+              to: '/docs/hr',
             },
           ],
         },
