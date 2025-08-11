@@ -26,7 +26,7 @@ dependencies:
 La integración entre ambos paquetes consiste en recibir el mensaje desde el servidor con el uso de `firebase_messaging`, y al recibirlo si es necesario personalizarlo, añadir acciones específicas o simplemente mostrarlo, se usa `flutter_local_notifications`.
 
 :::note
-Para el funcionamiento de la dependencia de firebase messaging es necesario que previamente se haya [**configurado Firebase**](/docs/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
+Para el funcionamiento de la dependencia de firebase messaging es necesario que previamente se haya [**configurado Firebase**](/docs/engineering/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
 :::
 
 Previo a seguir con esta guía, es importante que sigas una serie de pasos para [configurar la plataforma de iOS](https://firebase.google.com/docs/cloud-messaging/flutter/client#ios)

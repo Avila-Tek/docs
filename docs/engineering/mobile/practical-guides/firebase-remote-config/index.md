@@ -20,7 +20,7 @@ dependencies:
 ```
 
 :::note
-Para el funcionamiento de la dependencia de firebase remote config es necesario que previamente se haya [**configurado Firebase**](/docs/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
+Para el funcionamiento de la dependencia de firebase remote config es necesario que previamente se haya [**configurado Firebase**](/docs/engineering/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
 :::
 
 ## Implementación

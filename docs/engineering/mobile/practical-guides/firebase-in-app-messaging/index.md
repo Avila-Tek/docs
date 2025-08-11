@@ -21,7 +21,7 @@ dependencies:
 ```
 
 :::note
-Para el funcionamiento de la dependencia de firebase in app messaging es necesario que previamente se haya [**configurado Firebase**](/docs/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
+Para el funcionamiento de la dependencia de firebase in app messaging es necesario que previamente se haya [**configurado Firebase**](/docs/engineering/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
 :::
 
 **Firebase In-App Messaging** recupera mensajes del servidor únicamente una vez al día, lo que puede complicar el proceso de pruebas. Para facilitarlo, la consola de Firebase permite designar un dispositivo de prueba que puede mostrar los mensajes de manera inmediata bajo demanda.

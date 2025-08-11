@@ -20,7 +20,7 @@ dependencies:
 ```
 
 :::note
-Para el funcionamiento de la dependencia de firebase remote config es necesario que previamente se haya [**configurado Firebase**](/docs/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
+Para el funcionamiento de la dependencia de firebase remote config es necesario que previamente se haya [**configurado Firebase**](/docs/engineering/mobile/practical-guides/firebase-config/index.md) para cada ambiente de la aplicación.
 :::
 
 _A partir de la versión de iOS 14+, es necesario solicitar los permisos de **Transparencia de Seguimiento de Aplicaciones (App Tracking Transparency)** a los usuarios. En caso de no ser aceptados, no se podrá registrar los eventos para ese usuario._
