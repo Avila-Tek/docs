@@ -1,7 +1,7 @@
 ---
 title: Centralización de errores
 sidebar_position: 4
-slug: /back-end/errors/centralization
+slug: /backend/errors/centralization
 keywords: [quality, errors, centralization]
 ---
 

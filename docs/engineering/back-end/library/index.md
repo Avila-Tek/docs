@@ -1,7 +1,7 @@
 ---
 title: 📚 Biblioteca Informativa
 sidebar_position: 4
-slug: /back-end/library
+slug: /backend/library
 keywords: [library]
 ---
 

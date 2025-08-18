@@ -1,7 +1,7 @@
 ---
 title: Cómo empezar un proyecto
 sidebar_position: 1
-slug: /front-end/onboarding/starting-a-project
+slug: /frontend/onboarding/starting-a-project
 ---
 
 # Cómo empezar un proyecto

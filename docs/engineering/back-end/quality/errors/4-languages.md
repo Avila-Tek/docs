@@ -1,7 +1,7 @@
 ---
 title: Manejo de idiomas
 sidebar_position: 4
-slug: /back-end/errors/languages
+slug: /backend/errors/languages
 keywords: [quality, errors, languages]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 🥳 Onboarding
 sidebar_position: 4
-slug: /back-end/onboarding
+slug: /backend/onboarding
 keywords: [onboarding]
 ---
 

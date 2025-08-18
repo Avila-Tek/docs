@@ -1,7 +1,7 @@
 ---
 title: Errores
 sidebar_position: 4
-slug: /back-end/errors
+slug: /backend/errors
 keywords: [quality, errors]
 ---
 

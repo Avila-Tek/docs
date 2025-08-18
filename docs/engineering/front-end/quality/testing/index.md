@@ -1,7 +1,7 @@
 ---
 title: Pruebas
 sidebar_position: 3
-slug: /front-end/quality/testing
+slug: /frontend/quality/testing
 ---
 
 Tenemos tres formas de hacer testing blablabla

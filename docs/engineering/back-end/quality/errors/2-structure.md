@@ -1,7 +1,7 @@
 ---
 title: Estructura
 sidebar_position: 4
-slug: /back-end/errors/structure
+slug: /backend/errors/structure
 keywords: [quality, errors, structure]
 ---
 
