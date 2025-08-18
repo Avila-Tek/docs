@@ -2,7 +2,7 @@
 title: Prometheus
 sidebar_position: 4
 slug: /backend/telemetry/prometheus
-keywords: [quality, telemetry, 'prometheus', 'infrastructure']
+keywords: [quality, telemetry, prometheus, infrastructure]
 ---
 
 ## Introducción
