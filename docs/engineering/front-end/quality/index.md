@@ -1,6 +1,6 @@
 ---
 title: Estándares de calidad
-slug: /front-end/quality
+slug: /frontend/quality
 ---
 
 # Estándares de calidad | Frontend

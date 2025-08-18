@@ -1,7 +1,7 @@
 ---
 title: Frontend
 sidebar_position: 4
-slug: /front-end
+slug: /frontend
 ---
 
 # Bienvenido(a) al equipo

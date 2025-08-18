@@ -1,7 +1,7 @@
 ---
 title: Categorías de errores
 sidebar_position: 4
-slug: /back-end/errors/categories
+slug: /backend/errors/categories
 keywords: [quality, errors, categories]
 ---
 

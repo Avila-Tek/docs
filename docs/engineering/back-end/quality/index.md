@@ -1,7 +1,7 @@
 ---
 title: ✅ Estándares de calidad
 sidebar_position: 4
-slug: /back-end/quality
+slug: /backend/quality
 keywords: [quality]
 ---
 
