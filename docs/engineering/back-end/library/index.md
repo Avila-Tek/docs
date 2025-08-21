@@ -5,6 +5,6 @@ slug: /backend/library
 keywords: [library]
 ---
 
-## Biblioteca
+Bienvenido a la biblioteca informativa de backend, acá podrás conseguir información sobre la arquitectura de nuestros proyectos, buenas prácticas, entre otros.
 
-Artículo en construcción
+
