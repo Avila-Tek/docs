@@ -15,3 +15,9 @@ Cada arquitectura tiene su propio set de documentos que podrán conseguir en los
 - [Controlador/Servicio](/docs/backend/architectures/controller-service)
 - [Onion](/docs/backend/architectures/onion)
 - [Serverless](/docs/backend/architectures/serverless)
+
+:::warning
+
+Esta documentación se encuentra bajo construcción, así que pueden existir archivos vacíos o inexistentes todavía.
+
+:::
