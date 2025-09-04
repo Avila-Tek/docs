@@ -6,7 +6,7 @@ slug: /frontend/quality/testing/e2e-testing
 
 # Pruebas E2E
 
-## Overview
+## 🔎 Overview
 
 Las pruebas E2E verifican el flujo completo de una aplicación de principio a fin, simulando escenarios de usuario reales. Aseguran que todos los componentes del sistema (frontend, backend, base de datos, etc.) funcionen correctamente juntos.
 
@@ -20,7 +20,7 @@ Para realizar estas pruebas, uno de los frameworks más famosos es **Cypress**. 
 - **Debugging sencillo**: Permite depurar las pruebas directamente en el navegador, lo que facilita la identificación y solución de problemas.
 - **Comunidad activa**: Cuenta con una gran comunidad y documentación en línea, lo que facilita la búsqueda de ayuda y recursos.
 
-## Implementación
+## 🛠️ Implementación
 
 Para implementar pruebas E2E utilizando Cypress, podemos referirnos a la [documentación de Nextjs](https://nextjs.org/docs/pages/building-your-application/testing/cypress).
 
@@ -287,7 +287,145 @@ before(function() {
 :::tip S10 de curso E2E: Flujo de testing E2E en ecommerce
 :::
 
-## Recursos
+### Centralización de selectores
+Cuando un proyecto crece, tener `data-cy="input-firstName"` esparcido como "cadenas mágicas" por todo el código se vuelve insostenible. Por esto, buscamos centralizar y localizar estos selectores para que actúen como un "contrato" entre nuestra aplicación y las pruebas. Esto nos da una única fuente de verdad (Single Source of Truth) y facilita el refactorizado.
+
+La implementación se haría de la siguiente forma:
+
+#### Paso 1: Crear el archivo central de selectores
+
+
+Crearemos un archivo en `apps/admin/cypress/constants/selectors.ts`, por ejemplo. Este archivo exportará un objeto que agrupa los selectores por componente o página, haciéndolo organizado y fácil de navegar. Así se vería el archivo:
+
+```typescript
+
+// cypress/constants/selectors.ts
+
+export const selectors = {
+  // Selectores para el formulario de Instructor
+  instructorForm: {
+    dniInput: 'input-dni',
+    firstNameInput: 'input-firstName',
+    lastNameInput: 'input-lastName',
+    emailInput: 'input-email',
+    phoneInput: '.iti__tel-input', // También manejamos selectores no-cy aquí (caso third-party libraries)
+    submitButton: 'section-footer-confirmation-button',
+  },
+
+  // Selectores para el modal de confirmación
+  confirmationModal: {
+    continueButton: 'confirmation-modal-continue-button',
+  },
+  
+  // Selectores para la barra de navegación, etc.
+  navBar: {
+    dashboardLink: 'navbar-dashboard-link',
+    profileDropdown: 'navbar-profile-dropdown',
+  },
+};
+
+```
+
+
+#### Paso 2: Usar los selectores en los componentes
+En lugar de escribir el nombre del selector directamente en el código, importamos el objeto de selectores. Esto se aplicaría a todos nuestros componentes en apps/admin/src/.
+
+```typescript
+import React from 'react';
+import { selectors } from '../../../cypress/constants/selectors'; 
+
+function InstructorForm() {
+  return (
+    <form>
+      <input
+        type="text"
+        placeholder="First Name"
+        data-cy={selectors.instructorForm.firstNameInput} // <-- Uso centralizado
+      />
+      <input
+        type="text"
+        placeholder="Last Name"
+        data-cy={selectors.instructorForm.lastNameInput} // <-- Uso centralizado
+      />
+      {/* ... más inputs */}
+    </form>
+  );
+}
+```
+
+#### Paso 3: Usar los selectores en las pruebas
+Los Component Objects/Page Objects importarán el mismo archivo. Para hacer las pruebas aún más limpias, crearemos un comando personalizado (cy.getByCy()).
+
+```typescript
+// cypress/support/commands.ts
+Cypress.Commands.add('getByCy', (selector, ...args) => {
+  return cy.get(`[data-cy=${selector}]`, ...args);
+});
+```
+
+
+Y para habilitar el autocompletado y la seguridad de tipos, añadimos su definición en cypress/support/index.d.ts:
+
+```typescript
+// cypress/support/index.d.ts
+declare namespace Cypress {
+  interface Chainable {
+    /**
+     * Custom command to select DOM element by data-cy attribute.
+     * @example cy.getByCy('submit')
+     */
+    getByCy(value: string): Chainable<JQuery<HTMLElement>>;
+  }
+}
+
+```
+
+Ahora, con el archivo de selectores y el comando personalizado, nuestro Component Object se vuelve mucho más limpio, robusto y fácil de mantener. Esta sería la versión refactorizada de la prueba:
+
+```typescript
+import { selectors } from '../../constants/selectors';
+// ...otras importaciones
+
+export class InstructorFormComponentObject {
+  // ... (método loginAndNavigateToCreateInstructor)
+
+  fillInstructorFormBasicInformation(
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string
+  ) {
+    // ...
+    cy.getByCy(selectors.instructorForm.dniInput).type(randomNumber.toString());
+    cy.getByCy(selectors.instructorForm.firstNameInput).type(firstName);
+    cy.getByCy(selectors.instructorForm.lastNameInput).type(lastName);
+    cy.getByCy(selectors.instructorForm.emailInput).type(newEmail);
+    cy.get(selectors.instructorForm.phoneInput).each(($el) => {
+      cy.wrap($el).type(phone, { force: true });
+    });
+  }
+
+  submitForm() {
+    cy.getByCy(selectors.instructorForm.submitButton).click();
+    cy.getByCy(selectors.confirmationModal.continueButton).click();
+  }
+}
+```
+
+#### Ventajas
+- Fuente Única de Verdad (DRY): No repetimos cadenas. Si un selector cambia, se actualiza en un solo lugar.
+- Mantenibilidad: Las pruebas y los componentes se mantienen sincronizados. Refactorizar es seguro y rápido.
+- Autocompletado y Seguridad de Tipos: El editor nos ayuda a encontrar selectores y evitar errores de tipeo.
+- Descubrimiento: Cualquier desarrollador puede consultar selectors.ts para ver todos los "puntos de anclaje" disponibles para las pruebas.
+- Claridad: Las pruebas se centran en el comportamiento, no en los detalles de implementación del selector.
+
+
+
+
+
+
+
+## 📚 Recursos
 - [Cypress Documentation](https://docs.cypress.io/app/get-started/why-cypress)
 - [Testing: Cypress | Next.js](https://nextjs.org/docs/pages/guides/testing/cypress)
 - [Cypress Documentation | Writing your first end to end test](https://docs.cypress.io/app/end-to-end-testing/writing-your-first-end-to-end-test)
