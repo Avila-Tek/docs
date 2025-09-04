@@ -420,11 +420,6 @@ export class InstructorFormComponentObject {
 - Claridad: Las pruebas se centran en el comportamiento, no en los detalles de implementación del selector.
 
 
-
-
-
-
-
 ## 📚 Recursos
 - [Cypress Documentation](https://docs.cypress.io/app/get-started/why-cypress)
 - [Testing: Cypress | Next.js](https://nextjs.org/docs/pages/guides/testing/cypress)
