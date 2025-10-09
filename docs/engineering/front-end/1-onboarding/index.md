@@ -1,5 +1,5 @@
 ---
 slug: /frontend/onboarding
-title: Onboarding
+title: 🥳 Onboarding
 sidebar_position: 1
 ---

@@ -1,5 +1,5 @@
 ---
-title: Estándares de calidad
+title: ✅ Estándares de calidad
 slug: /frontend/quality
 ---
 
