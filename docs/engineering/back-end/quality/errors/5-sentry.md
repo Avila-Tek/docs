@@ -49,7 +49,7 @@ import { FastifyInstance } from 'fastify';
 import { nodeProfilingIntegration } from '@sentry/profiling-node';
 
 function sentryPlugin(fastify: FastifyInstance) {
-  if (process.env.NODE_END !== 'production') return;
+  if (process.env.NODE_ENV !== 'production') return;
 
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
@@ -118,7 +118,7 @@ export function handleError(
   const date = new Date();
   const stack = generateCleanStackTrace(error);
 
-  sendExceptionToSentry(error, stack);
+  sendExceptionToSentry(request, error, stack);
 
   // More code...
 }
