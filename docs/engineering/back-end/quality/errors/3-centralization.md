@@ -301,12 +301,6 @@ import { Exception } from './exception';
 import { errorRegistry } from './dictionaries';
 import { logError } from './logs';
 
-function injectParams(detail: string, params: Record<string, any>) {
-  return Object.entries(params).reduce((acc, [key, value]) => {
-    return acc.replace(`<${key}>`, value);
-  }, detail);
-}
-
 const productionEnv = process.env.APP_ENV === 'production';
 
 export function handleError(
@@ -326,9 +320,9 @@ export function handleError(
   if (error instanceof Exception) {
     silent = error.silent && productionEnv;
     const data = error.data;
-    title = error.data.title;
-    status = error.data.status;
-    type = error.data.type;
+    title = data.title;
+    status = data.status;
+    type = data.type;
     message = injectParams(data.message, error.params);
   }
 
@@ -343,6 +337,12 @@ export function handleError(
   // Send error response
   reply.status(status).send(response);
   return reply;
+}
+
+function injectParams(detail: string, params: Record<string, any>) {
+  return Object.entries(params).reduce((acc, [key, value]) => {
+    return acc.replace(`<${key}>`, value);
+  }, detail);
 }
 ```
 
