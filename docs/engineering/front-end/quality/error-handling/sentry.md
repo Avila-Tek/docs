@@ -1,7 +1,7 @@
 ---
-title: Manejo de errores
+title: Sentry
 sidebar_position: 1
-slug: /frontend/quality/error-handling/
+slug: /frontend/quality/error-handling/sentry
 ---
 
 [Video de como instalar Sentry en un proyecto](https://avilatek.sg.larksuite.com/minutes/obsgr8u5d42kaix3rw5p2471?from=from_copylink)
