@@ -124,19 +124,24 @@ Crear estructura:
 ```
 lib/
   sentry/
-    attrsHelpers.ts
-    SentryScope.tsx
+    SentryWrapper.tsx
 ```
 
 ## Atributos
 
 ### tags
 
+Son pares clave–valor planos que Sentry usa para facetas y filtros rápidos.
+Aparecen en la barra lateral de un issue y puedes agrupar/filtrar por ellos fácilmente.
+
 ```json
 { "service": "web", "route": "/checkout" }
 ```
 
 ### context
+
+Son bloques de información estructurada (JSON) que se adjuntan al evento.
+No sirven tanto para filtrar, pero sí para ver un snapshot de estado al momento del error.
 
 ```json
 {
@@ -145,21 +150,45 @@ lib/
 }
 ```
 
+- Características:
+  - Puedes anidar objetos.
+  - Se muestran en el panel de “Contexts” dentro de un issue en Sentry.
+  - Útiles para estado de la UI, datos del request, configuración.
+
 ### extras
+
+Son pares clave–valor adicionales, similares a context, pero no agrupados en bloques.
+Piensa en ellos como un “dump” de variables útiles para depuración.
 
 ```json
 { "cartSize": 4, "debugFlag": true }
 ```
 
+- Características:
+  - Se listan en la pestaña “Additional Data” en Sentry.
+  - Suelen usarse para variables temporales o de debugging que no encajan en tags ni context.
+
 ### fingerprint
+
+Es una forma de personalizar cómo Sentry agrupa errores.Normalmente Sentry agrupa por stack trace y mensaje. Con fingerprint puedes forzar un patrón de agrupación.
 
 ```ts
 fingerprint: ['type:ValidationError', 'route:/checkout'];
 ```
 
+- Esto hace que todos los ValidationError en /checkout se agrupen en el mismo issue, aunque el mensaje cambie.
+- Características:
+  - Acepta una lista de strings.
+  - Muy útil cuando los errores se fragmentan en múltiples issues por detalles irrelevantes (como IDs dinámicos).
+  - Debe usarse con cuidado, porque puedes sobre-agrupar y perder granularidad.
+
 ---
 
 # Wrapper global
+
+Sentry funciona como un contexto es decir el mantiene en su estado interno la información que se le coloque en el mismo. Por lo tanto puedes hacer uso de un wrapper para que los eventos que se registren dentro un arbol de componentes compartan un contexto determinado o para un contexto global de la aplicación
+
+- Global: Esto significa que los atributos que fijes (userId, tags, context, extras) permanecen activos en todos los eventos que se capturen después de llamarlo, hasta que tú los cambies o los limpies manualmente
 
 ```tsx
 'use client';
@@ -234,7 +263,7 @@ export default function SentryWrapper({
 
 ---
 
-# Uso en layout
+# 🤯 Como usarlo?
 
 ```tsx
 'use client';
@@ -255,7 +284,9 @@ export default function DashboardLayout({ children }) {
 
 ---
 
-# Helpers sin React
+# Setear atributos en un scope especifico
+
+De requerirse enriquecer eventos desde componentes del servidor o acciones del servidor tenemos que usar funciones sin hooks de React
 
 ```ts
 'use server';
@@ -285,5 +316,5 @@ export async function payOrder(orderId: string) {
 
 # Recursos
 
-- Integrating Sentry with React
-- Using Sentry in React.js and Next.js Projects
+- [Integrating Sentry with React](https://medium.com/@ignatovich.dm/integrating-sentry-with-react-advanced-error-tracking-and-handling-0f88c2d322c0)
+- [Using Sentry in React.js and Next.js Projects](https://saynaesmailzadeh.medium.com/%EF%B8%8F-a-complete-guide-to-using-sentry-in-react-js-and-next-js-projects-0316fad41447)
