@@ -64,6 +64,105 @@ async function processPayment(data) {
 }
 ```
 
+## Ejemplo de wrapper
+
+```ts
+import * as Sentry from '@sentry/nextjs';
+export class SentryFrontendError extends Error {
+  /**
+   * Initializes a custom error object for Sentry reporting.
+   * @param name The desired name for the Sentry event group (default: 'SentryFrontendError').
+   * @param message A descriptive message for the error.
+   */
+  constructor(name?: string, message?: string | undefined) {
+    super(message);
+    this.name = name || 'SentryFrontendError';
+  }
+}
+/**
+ * Captures an error, wraps it in a SentryFrontendError, and sends it to Sentry.
+ * This function also creates a dedicated Sentry span for the error handling process.
+ * * @param error The original error object caught in the catch block (type: unknown).
+ * @param errorName The specific name to assign to the Sentry event (e.g., 'ErrorDeletingHostBillingAddress'). This determines Sentry grouping.
+ * @param op The operation name for the Sentry span (e.g., 'api.mutation.delete'). Used for performance tracing.
+ * @param context A descriptive string for the operation (e.g., 'Host Billing Address Deletion'). Used in the error message and tags.
+ * @param extraTags An optional object of additional tags (key-value pairs) to add context to the Sentry event.
+ */
+export async function captureSentryError(
+  error: unknown,
+  errorName: string,
+  op: string,
+  context: string,
+  extraTags?: Record<string, any>
+): Promise<void> {
+  const originalErrorMessage =
+    error instanceof Error ? error.message : String(error);
+  const sentryError = new SentryFrontendError(
+    errorName,
+    `[${context}] Error: ${originalErrorMessage}`
+  );
+  await Sentry.startSpan(
+    {
+      name: `Error Handling: ${errorName}`,
+      op: op,
+    },
+    async () => {
+      Sentry.captureException(sentryError, {
+        tags: {
+          ...extraTags,
+          operation_context: context,
+        },
+      });
+    }
+  );
+}
+```
+
+## Caso de uso
+
+```ts
+// apps/client/hooks/api/billing-address/traveler/useDeleteBillingAddress.ts
+import { captureSentryError } from '../../../../utils';
+import { DELETE_TRAVELER_BILLING_ADDRESS } from '../../../../graphql/mutation';
+import api from '../../../../lib/api';
+export function useDeleTravelerBillingAddress() {
+  const [deleteTravelerBillingAddress, { data, loading, error }] =
+    api.useMutation(DELETE_TRAVELER_BILLING_ADDRESS);
+  const deleteTravelerBillingAddressHandler = async (
+    billingAddressId: string
+  ) => {
+    try {
+      const result = await deleteTravelerBillingAddress({
+        variables: {
+          record: {
+            _id: billingAddressId,
+          },
+        },
+      });
+      return result.data;
+    } catch (error) {
+      await captureSentryError(
+        error,
+        'Error on useDeleteTravelerBillingAddress',
+        'delete.traveler.billingAddress',
+        'Traveler Billing Address Deletion',
+        {
+          billingAddressId: billingAddressId,
+        }
+      );
+      console.error('Error deleting traveler billing address:', error);
+      throw error;
+    }
+  };
+  return {
+    deleteTravelerBillingAddress: deleteTravelerBillingAddressHandler,
+    data,
+    loading,
+    error,
+  };
+}
+```
+
 ---
 
 # 3. Filtrado de eventos
