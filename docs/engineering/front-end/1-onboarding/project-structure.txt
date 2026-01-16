@@ -4,7 +4,7 @@ sidebar_position: 2
 slug: /frontend/onboarding/project-structure
 ---
 
-# Estructura del proyecto
+# Estructura del proyecto general
 
 **Nuetros proyectos emplean [Turborepo](https://turborepo.com/)**
 

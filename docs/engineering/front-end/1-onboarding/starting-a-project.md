@@ -39,7 +39,7 @@ Las variables de entorno se ubicarán en los siguientes directorios:
 
 En el siguiente documento se encuentra documentado a detalle cómo configurar e implementar Tailwind CSS: Tailwind
 
-#### Next Auth
+#### Next Auth - (Ahora llamado Better Auth)
 
 En el siguiente documento se encuentra documentado a detalle cómo configurar e implementar Next Auth: Next Auth
 
