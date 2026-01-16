@@ -24,12 +24,13 @@ Ahora bien, nuestra arquitectura se organiza en **cuatro capas**, ordenadas de a
 
 ![clean-architecture](/img/frontend/architecture/clean-architecture-frontend.png)
 
-(Sí, se volteo la piramide, es que siento que la capa mas superfical que es la UI es la ve el usuario jeje)
+<!-- (Sí, se volteo la piramide, es que siento que la capa mas superfical que es la UI es la ve el usuario jeje)
 
 Piensa en esto como un **flujo de dependencia**:
 
 - Las capas de abajo **pueden usar** las de arriba
 - Las capas de arriba **no saben que existen** las de abajo
+- Excepto el Domain que es la Base dd -->
 
 ## Feature Driven
 
