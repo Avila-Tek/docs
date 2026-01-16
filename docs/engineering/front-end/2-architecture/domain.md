@@ -4,19 +4,44 @@ title: Domain layer
 sidebar_position: 4
 ---
 
-## 📄 Domain Layer — `domain.md`
-
-````md
 # Domain Layer (Entities & Domain Logic)
 
-La capa Domain define los modelos y objetos de cada feature y las funciones que los modifican, puede incluir clave que operan sobre los objetos **las reglas del negocio**.
+La capa **Domain** define el **lenguaje del negocio dentro del frontend**.
 
----
+Aquí viven los **modelos** y las **reglas** que representan cómo el producto entiende sus datos, **independientemente** de:
+
+- cómo el backend los expone
+- cómo la UI los muestra
+- cómo se obtienen (REST, GraphQL, mock, etc.)
+
+👉 El Domain es el punto de estabilidad de la arquitectura.
+
+**El Domain desacopla las interfaces**
+
+El Domain actúa como un contrato interno estable entre capas:
+
+```text
+Infrastructure (API / DTOs)
+          ↓
+        Domain   ← punto estable
+          ↑
+Application / UI
+```
+
+Si cambia el backend → se ajustan transforms
+
+Si cambia la UI → el Domain no cambia
+
+Si cambian las reglas → cambias el Domain, no la UI ni la API
+
+👉 El resto del sistema no conoce DTOs, solo conoce Domain models.
+
+**Estructura de un domain**
 
 ```text
 domain/
 ├── model/
-└──logic/
+└── logic/
 ```
 
 ## Tipos de archivos en Domain
@@ -24,7 +49,7 @@ domain/
 ### 1. model.ts (Entities)
 
 **Qué es**  
-Definición de las entidades del dominio.
+Definición de las entidades del negocio tal como el frontend las entiende y utiliza.
 
 **Responsabilidad**
 
@@ -63,4 +88,3 @@ export function canUserSubmit(user: User) {
   return user.status === 'ACTIVE';
 }
 ```
-````

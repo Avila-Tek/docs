@@ -10,34 +10,30 @@ En esta sección explicamos **el modelo mental único** que usamos para estructu
 
 El objetivo no es memorizar carpetas, sino **entender responsabilidades**.
 
----
+## Capas
 
-## 1.1 Capas
+Nuestra arquitectura se basa en el paradigma de Clean Architecture, sin emabrgo como React fue conceptualizado para la programación funcional y de otra manera de abstraen ciertos conceptos.
 
-Nuestra arquitectura se organiza en **cuatro capas**, ordenadas de afuera hacia adentro:
+![clean-architecture](/img/frontend/architecture/clean-architecture.jpeg)
 
-# **HACER IMAGEN**
+Para entender un poco de Clean Architecture se suguieren las siguientes fuentes:
 
-UI (components / pages)
+Tambien es necesario reforzar conceptos de los principios S.O.L.I.D.
 
-↓
+Ahora bien, nuestra arquitectura se organiza en **cuatro capas**, ordenadas de afuera hacia adentro:
 
-Application (use-cases, queries, mutations)
+![clean-architecture](/img/frontend/architecture/clean-architecture-frontend.png)
 
-↓
-
-Domain (entities + domain logic)
-
-↓
-
-Infrastructure (API, DTOs, transforms, services)
+(Sí, se volteo la piramide, es que siento que la capa mas superfical que es la UI es la ve el usuario jeje)
 
 Piensa en esto como un **flujo de dependencia**:
 
 - Las capas de abajo **pueden usar** las de arriba
 - Las capas de arriba **no saben que existen** las de abajo
 
-**Se propone una arquitectura feature-driven organiza el código alrededor de funcionalidades del producto, no alrededor de tipos técnicos globales.**
+## Feature Driven
+
+Se propone una arquitectura feature-driven organiza el código alrededor de funcionalidades del producto, no alrededor de tipos técnicos globales.
 
 En lugar de tener carpetas globales como:
 
@@ -48,27 +44,65 @@ hooks/
 api/
 ```
 
-se agrupa todo lo necesario para una funcionalidad concreta dentro de una misma carpeta:
+se agrupa todo lo necesario para una funcionalidad concreta dentro de una misma carpeta.
+
+En nuestro contexto, un **feature** no es una entidad del dominio (User, Product, Order).
+
+Un **feature** es una **funcionalidad completa** que el usuario entiende, por ejemplo:
+
+- **Auth**: login / logout
+- **Onboarding**: completar perfil
+- **Feed**: ver el timeline
+- **Create Post**: crear una publicación
+- **Post Details**: ver una publicación + comentarios
+- **Search**: buscar
+- **Settings**: editar preferencias
+- **Users Management**: listar usuarios + editar rol
 
 ```tsx
 features/
-    feed/
-    user/
-    shout/
-    media/
+    auth/
+    onboarding/
+    createPost/
+    postDetails/
 ```
 
-Cada feature es una unidad vertical completa, que puede contener:
+:::info
+Si borras features/create-post, el resto de la app sigue compilando.
+Lo único que cambia es que ya no existe ese flujo/ruta.
+:::
 
-- UI
-
-- lógica de aplicación (use-cases, hooks)
-
-- lógica de dominio
-
-- acceso a datos / infraestructura
+Cada feature es una unidad vertical completa, con cada una de las capas si así lo requiere.
 
 Esto permite entender, modificar y escalar una funcionalidad sin tener que navegar todo el proyecto.
+
+## How to read this documentation
+
+Aunque casi ninguna documentación lo dice explícitamente, hay **dos formas comunes** de construir frontend:
+
+1. **De UI → Data**  
+   Empiezas por pantallas/componentes y vas bajando: UI → Application → Domain → Infrastructure.
+
+2. **De Data → UI**  
+   Empiezas por el acceso a datos y contratos y vas subiendo: Infrastructure → Domain → Application → UI.
+
+En esta guía, la documentación está organizada principalmente **de Data → UI** (de abajo hacia arriba), porque:
+
+- primero definimos contratos y límites (infra/schemas)
+- luego cómo se modela y valida (domain)
+- después cómo se orquesta (application)
+- y finalmente cómo se presenta (ui)
+
+:::note Importante
+Esto **no significa** que tú debas programar siempre en ese orden.
+
+Puedes leer (y construir) las capas en el orden que tenga más sentido para tu tarea:
+
+- Si estás trabajando desde un diseño o una pantalla, probablemente empieces en **UI**.
+- Si estás integrando un endpoint o cambiaron contratos, probablemente empieces en **Infrastructure**.
+  :::
+
+La regla que no cambia es que, sin importar el orden en que empieces a construir, **se deben respetar las reglas de dependencias/imports entre capas**.
 
 ### Ejemplo de folder stucture
 
@@ -88,24 +122,26 @@ src/
     layout.tsx
     globals.css
     error.tsx
-    ...
     not-found.tsx
     (routes)/
       feed/
-        page.tsx                  # solo route entry
+        page.tsx                    # → delega a features/view-feed
       users/
-          page.tsx
-      shouts/
-        [shoutId]/
+        [handle]/
+          page.tsx                  # → delega a features/view-user-profile
+      posts/
+        create/
+          page.tsx                  # → delega a features/create-post
+        [postId]/
           reply/
-            page.tsx
+            page.tsx                # → delega a features/reply-to-post
   features/
-    feed/
+    view-feed/                        # FEATURE: Ver feed de publicaciones
       ui/
         pages/
-          FeedPage.tsx            # composición de UI para /feed (page-level)
+          FeedPage.tsx
         widgets/
-          FeedWidget.tsx          # bloque grande reutilizable (ej: feed completo)
+          FeedWidget.tsx
         components/
           FeedHeader.tsx
           FeedFilters.tsx
@@ -118,13 +154,11 @@ src/
       infrastructure/
         feed.dto.ts
         feed.transform.ts
-        feed.api.ts
-        feed.repository.ts
-
-    user/
+        feed.service.ts
+    view-user-profile/                # FEATURE: Ver perfil de usuario
       ui/
         pages/
-          UserProfilePage.tsx     # composición de UI para /users/[handle]
+          UserProfilePage.tsx
         widgets/
           UserProfileWidget.tsx
         components/
@@ -132,51 +166,69 @@ src/
           UserStats.tsx
       application/
         queries/
-          useUser.query.ts
-          useMe.query.ts
+          useUserProfile.query.ts
+          useCurrentUser.query.ts
       domain/
-        user.model.ts
-        user.logic.ts
-        user.logic.test.ts
+        userProfile.model.ts
+        userProfile.logic.ts
       infrastructure/
         user.dto.ts
         user.transform.ts
-        user.api.ts
-        user.repository.ts
-
-    shout/
+        user.service.ts
+    create-post/                      # FEATURE: Crear publicación
       ui/
         pages/
-          ReplyPage.tsx           # composición de UI para /shouts/[id]/reply
+          CreatePostPage.tsx
         widgets/
-          ShoutThreadWidget.tsx
+          CreatePostFormWidget.tsx
+          UploadPreviewWidget.tsx
+        components/
+          PostEditor.tsx
+          SubmitPostButton.tsx
+      application/
+        mutations/
+          useCreatePost.mutation.ts
+        hooks/
+          useCreatePostForm.ts
+      domain/
+        postCreation.model.ts
+        postCreation.logic.ts
+      infrastructure/
+        post.dto.ts
+        post.transform.ts
+        post.service.ts
+    reply-to-post/                 # FEATURE: Responder a una publicación
+      ui/
+        pages/
+          ReplyToPostPage.tsx
+        widgets/
+          PostThreadWidget.tsx
           ReplyComposerWidget.tsx
         components/
-          ShoutCard.tsx
-          ShoutList.tsx
+          PostCard.tsx
           ReplyDialog.tsx
       application/
         use-cases/
-          replyToShout.usecase.ts
-          replyToShout.errors.ts
+          replyToPost.usecase.ts
+          replyToPost.errors.ts
         hooks/
-          useReplyToShout.ts      # compone queries+mutations (React Query)
+          useReplyToPost.ts
         mutations/
-          useCreateShout.mutation.ts
           useCreateReply.mutation.ts
       domain/
-        shout.model.ts
-        shout.logic.ts
+        reply.model.ts
+        reply.logic.ts
       infrastructure/
-        shout.dto.ts
-        shout.transform.ts
-        shout.api.ts
-        shout.repository.ts
-
-    media/
+        reply.dto.ts
+        reply.transform.ts
+        reply.api.ts
+  shared/
+    features/
+      upload-media/
+          # FEATURE: Subida de imágenes (se utiliza en varios lugares)
       application/
         mutations/
-          useSaveImage.mutation.ts
+          useUploadImage.mutation.ts
       domain/
         media.model.ts
         media.logic.ts
@@ -185,195 +237,18 @@ src/
         media.transform.ts
         media.api.ts
         media.repository.ts
- shared/
+    domain/ # DOMAMAIN GENERAL - Las tablas de la base de datos plain
+      user.ts
+      post.ts
+      media.ts
+      pagination.ts
     ui/
-      primitives/                 # componentes base cross-feature (Button, Dialog, etc.)
-        Button.tsx
-        Dialog.tsx
-        Input.tsx
-      feedback/
-        LoadingSpinner.tsx
-        EmptyState.tsx
+      # UI reutilizable
     infra/
       http/
-        apiClient.ts              # wrapper fetch/axios (baseUrl, auth, errors)
+        apiClient.ts
         http.errors.ts
     lib/
       format.ts
       assert.ts
-    test/
-      factories/
-        createMockFile.ts
 ```
-
-## Application — Use-cases, Queries & Mutations
-
-### Responsabilidad
-
-La capa de Application es el cerebro operativo del frontend.
-
-Aquí vive el código que:
-
-- orquesta flujos
-
-- decide qué hacer y en qué orden
-
-- maneja reglas de negocio de alto nivel
-
-- conecta UI con Domain e Infrastructure
-
-### Qué vive aquí
-
-- Use-cases (acciones del sistema: “crear”, “actualizar”, “enviar”)
-
-- React Query hooks (useQuery, useMutation)
-
-- Manejo de errores de negocio (no técnicos)
-
-**_Ejemplo: Use-case_**
-
-```tsx
-// application/use-cases/updateUserEmail.ts
-export async function updateUserEmail(input: {
-  userId: string;
-  email: string;
-}) {
-  const normalizedEmail = input.email.trim().toLowerCase();
-
-  if (!normalizedEmail.includes('@')) {
-    return { ok: false as const, reason: 'INVALID_EMAIL' as const };
-  }
-
-  await userRepository.updateEmail({
-    userId: input.userId,
-    email: normalizedEmail,
-  });
-
-  return { ok: true as const };
-}
-```
-
-📌 Claves:
-
-- No hay JSX
-
-- No hay estado visual
-
-- El resultado es explícito (ok / error)
-
-## Domain — Entities & Domain Logic
-
-### Responsabilidad
-
-El Domain representa las reglas del negocio, independientes de:
-
-React
-
-Next.js
-
-APIs
-
-librerías externas
-
-Aquí se define qué es válido y qué no en el sistema.
-
-- Qué vive aquí
-
-- Entidades del dominio (User, Order, Request, etc.)
-
-- Funciones puras que operan sobre esas entidades
-
-- Reglas e invariantes del negocio
-
-Ejemplo;
-
-```tsx
-// domain/user/user.ts
-export type User = {
-  id: string;
-  status: 'ACTIVE' | 'BLOCKED';
-  dailyRequests: number;
-};
-
-export function isBlocked(user: User) {
-  return user.status === 'BLOCKED';
-}
-
-export function hasExceededDailyLimit(user: User) {
-  return user.dailyRequests >= 100;
-}
-```
-
-📌 Características del Domain:
-
-- Funciones puras
-
-- Sin efectos secundarios
-
-- Fácil de testear sin mocks
-
-## Infrastructure — API, DTOs, Transforms & Services
-
-### Responsabilidad
-
-Infrastructure es la única capa que habla con el mundo externo.
-
-Se encarga de:
-
-consumir APIs
-
-definir DTOs (Data Transfer Objects)
-
-transformar datos del backend al dominio
-
-ocultar detalles técnicos al resto del sistema
-
-Qué vive aquí
-
-- api.ts → requests puros de terceros que no esten en package services
-
-- dto.ts → contratos del backend
-
-- transform.ts → mapping DTO → Domain
-
-- services o repositories si aplica
-
-Ejemplo
-
-```tsx
-// infrastructure/user/dto.ts
-export type UserDto = {
-  id: string;
-  status: 'active' | 'blocked';
-  daily_requests: number;
-};
-
-// infrastructure/user/transform.ts
-import type { UserDto } from './dto';
-import type { User } from '@/domain/user/user';
-
-export function userFromDto(dto: UserDto): User {
-  return {
-    id: dto.id,
-    status: dto.status === 'active' ? 'ACTIVE' : 'BLOCKED',
-    dailyRequests: dto.daily_requests,
-  };
-}
-
-// infrastructure/user/index.ts
-import { fetchUser } from './api';
-import { userFromDto } from './transform';
-
-export async function getUser(userId: string) {
-  const dto = await fetchUser(userId);
-  return userFromDto(dto);
-}
-```
-
-📌 Resultado:
-
-- La UI nunca ve daily_requests
-
-- El dominio nunca ve active / blocked
-
-- Los cambios del backend quedan aislados aquí

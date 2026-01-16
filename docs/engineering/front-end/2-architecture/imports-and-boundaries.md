@@ -1,7 +1,7 @@
 ---
-slug: /frontend/standards/imports-and-boundaries
-title: Imports y boundaries
-sidebar_position: 1
+slug: /frontend/architecture/shared
+title: "Shared: Imports y boundaries"
+sidebar_position: 6
 ---
 
 ## Use Absolute Paths (obligatorio)
@@ -31,26 +31,167 @@ import { Button } from '../../../shared/ui/button';
 
 **Regla**
 
-- ✅ Helpers y lógica que solo usa un componente/slice, viven dentro del slice.
+- ✅ Trata de mantener todo cerca donde se usa dentro del feature correspondiente
+
 - ❌ No mover a shared/ “por si acaso”.
 
-Guía práctica
+## Shared Domain
 
-Si solo se usa en un lugar → queda local (mismo slice/segment).
+**Regla clave sobre shared/domain**
 
-Si se usa en 2 lugares, pero mismos dominios → evaluar subir al mismo slice (lib/model).
+Qué va en shared/domain
 
-Si se usa en múltiples dominios (sin negocio) → shared/lib.
-
-**Ejemplo**
+Solo objetos base del dominio, tal como existen en la base de datos
+Ejemplo:
 
 ```ts
-// ✅ bien: helper cerca del uso
-// src/features/cart/add-to-cart/model/formatQuantity.ts
-export function formatQuantity(qty: number) {
-  return Math.max(1, Math.floor(qty));
+// shared/domain/post.ts
+export type Post = {
+  id: string;
+  authorId: string;
+  content: string;
+  createdAt: string;
+};
+```
+
+Estos objetos:
+
+❌ no tienen lógica
+
+❌ no tienen reglas
+
+❌ no dependen de ningún feature
+
+Son el lenguaje común del sistema.
+
+Manipulación del dominio → siempre en el feature
+❌ Incorrecto (shared demasiado específico)
+
+```ts
+// shared/domain/post.logic.ts ❌
+export function canReplyToPost(user: User, post: Post) {
+  ...
 }
 ```
+
+Esto depende del feature reply-to-post.
+
+✅ Correcto (lógica en el feature)
+
+```ts
+// features/reply-to-post/domain/reply.logic.ts
+export function canReplyToPost(user: User, post: Post) {
+  return user.id !== post.authorId;
+}
+```
+
+Aquí:
+
+User y Post vienen de shared/domain
+
+la regla vive en el feature
+
+el feature sigue siendo independiente y borrable
+
+Regla mental final (para que no haya spaghetti)
+
+Shared define “qué es algo”.
+El feature define “qué se puede hacer con eso”.
+
+Si algo en shared:
+
+empieza a tener reglas
+
+cambia por un solo feature
+
+“sabe” de flujos o pantallas
+
+👉 está en el lugar equivocado y debe moverse al feature.
+
+## Que pasa cuando un feature es muy general y se usa en varios features o flujos
+
+El ejemplo mas claro es uploadImage que es un flujo completo pero que puede ser usado distitno dentro de cada feature
+
+**Opción 1 (recomendada)**
+convertirlo en un shared capability (shared/application + shared/infrastructure)
+
+Si subir imágenes es una capacidad transversal (no una pantalla), trátalo como “infra + lógica reusable”, no como feature UI.
+
+Estructura sugerida:
+
+```text
+shared/
+  application/
+    mutations/
+      uploadImage.mutation.ts
+  infrastructure/
+    media/
+      media.api.ts
+      media.service.ts   (solo si hay lógica)
+      media.transform.ts (si aplica)
+```
+
+Uso desde features:
+
+features/create-post usa uploadImage.mutation.ts
+
+features/reply-to-post usa uploadImage.mutation.ts
+
+✅ Ventaja: reutilizas sin acoplar features
+✅ Encaja con tu regla de capas (UI → Application → Infrastructure)
+
+**Opción 2**
+
+Mantenerlo como shared UI primitive + feature adapters
+
+Si lo compartido es principalmente UI (un uploader), separa:
+
+un componente genérico en shared (no sabe de posts/replies)
+
+y un “adaptador” en cada feature (decide dónde guardar, qué validar, etc.)
+
+Ejemplo estructura:
+
+```text
+shared/ui/
+  media/
+  ImageUploader.tsx # genérico
+
+features/
+  create-post/
+    ui/
+      components/
+        PostImageUploader.tsx # adapta a create-post
+
+features/
+  reply-to-post/
+    ui/
+      components/
+        ReplyImageUploader.tsx # adapta a reply-to-post
+```
+
+✅ Shared = “motor genérico”
+✅ Feature = “adaptación al flujo”
+
+**Opción 3**
+
+cuando es MUY grande → modules/ o capabilities/
+
+Si “media” ya es un bloque grande (upload, crop, preview, limits, retries, provider fallback), puedes darle una carpeta propia que no es un feature de producto, sino una capability.
+
+```text
+capabilities/
+  media/
+  ui/
+  application/
+  domain/
+  infrastructure/
+```
+
+Luego los features consumen capabilities/media/\*.
+
+✅ Útil cuando crece mucho
+❗ Ojo: sigue aplicando “no importar entre features”; capabilities es otra categoría
 
 ## Manage Dependencies Between Modules (avoid spaghetti)
 

@@ -1,45 +1,61 @@
 ---
 slug: /frontend/architecture/infrastructure
 title: Infrastructure layer
-sidebar_position: 5
+sidebar_position: 2
 ---
 
 ## Infrastructure — Services, API Clients & Dependency Injection
 
-Esta capa se introduce para **aislar el UI del acceso a datos** y mejorar la **testabilidad** del código que vive alrededor del acceso a APIs. :contentReference[oaicite:2]{index=2}
+Esta capa se introduce para **aislar el UI del acceso a datos** y mejorar la **testabilidad** del código que vive alrededor del acceso a APIs.
+
+Es el punto de entrada/salida de los datos de la aplicación
+
+```text
+UI
+ ↓
+Application   ← aquí
+ ↓
+Infrastructure
+ ↓
+Packages (services + schemas)
+```
 
 ## Estructura sugerida
 
 ```text
-/infrastructure/
-    api.ts
-    dto.ts
-    transform.ts
-    interfaces.ts
-    service.ts
-    index.ts
+/AnyFeature
+  ...
+  /infrastructure/
+      api.ts
+      dto.ts
+      transform.ts
+      interfaces.ts
+      service.ts
+      index.ts
 ```
 
 ### 1. api requests y dtos
 
-API client + DTOs se encuentran en Packages compartidos
+API client + DTOs se encuentran en Packages compartidos, para ello leer:
 
-En nuestro caso:
+# INCLUIR DOC DE COMO HACER FETCH
 
-La lógica de conexión a APIs
+Por lo tanto:
 
-El manejo de headers / auth
+- La lógica de conexión a APIs
 
-El parsing y validación con schemas
+- El manejo de headers / auth
 
-Los tipos de entrada/salida (DTOs)
+- El parsing y validación con schemas
 
-👉 ya viven en los packages, no en la app frontend.
+- Los tipos de entrada/salida (DTOs)
 
-**_Ejemplo_**
+👉 Ya viven en los packages, no en la app frontend.
+
+**Un resumen muy corto de ejemplo**
 
 ```tsx
-// @repo/services/UserService
+// @repo/packages/services/UserService
 export class UserService {
 async create(input: TCreateUserInput): Promise<Safe<TUser>> {
 ...
@@ -49,12 +65,12 @@ return parseResponse;
 }
 ```
 
-- Los “DTOs” vienen directamente de schemas compartidos:
+- Los “DTOs” son los contratos vienen directamente de schemas compartidos:
 
 - Haciendo referencia a las inputs y outputs de cada endpoint que tiene interacción
 
 ```tsx
-// @repo/schemas
+// @repo//packages/schemas
 export type TCreateUserInput = z.infer<typeof createUserInput>;
 export type TUser = z.infer<typeof userSchema>;
 ```
@@ -63,7 +79,7 @@ export type TUser = z.infer<typeof userSchema>;
 
 ### 2. transform.ts
 
-Funciones puras para convertir:
+Bien ya tenemos datos, pues ejecutamos el endpoint ahora bien no queremos acoplar el front al back por lo que aqui se realizan los transform necesarios de los DTOs a los Domains correspondientes
 
 DTO → Domain model (y si aplica) Domain → DTO para payloads
 
@@ -82,11 +98,19 @@ export function dtoToUser(dto: UserDto): User {
 
 ### 3. interface.ts
 
-Interfaces TypeScript que describen el contrato que un Service espera.
+Las **interfaces** definen el **contrato que un Service espera**, no cómo se implementa.
 
-Normalmente coincide con lo que expone api.ts o el package.
+- No contienen lógica.
+
+- No hacen fetch.
+
+- No transforman datos.
+
+👉 Solo dicen: _“esto es lo que necesito para funcionar”_.
 
 **Por qué existe**
+
+Con interface.ts, el service no depende de una implementación, sino de un contrato.
 
 Habilita Dependency Injection:
 
@@ -105,14 +129,56 @@ export interface UserApi {
 
 ### 4. service.ts
 
-- Encapsula lógica “alrededor” del acceso a datos:
-  - construcción de payload (ej `FormData`)
-  - Usa a transforms DTO → Domain
-  - compatibilidad entre versiones (feature flags / API versions)
-  - composición de múltiples llamadas
-- Es buen candidato a unit tests. :contentReference[oaicite:5]{index=5}
+El **service** es el lugar donde vive la **lógica alrededor del acceso a datos**.
 
-```tsx
+No es UI.  
+No es un endpoint.  
+No es dominio puro.
+
+Es el punto intermedio donde **se toman decisiones técnicas** antes o después de hablar con una API.
+
+**_ ¿Qué problema resuelve `service.ts`?_**
+
+Sin un service, esta lógica suele terminar en:
+
+- hooks de React Query
+- componentes
+- handlers de UI
+
+Eso provoca:
+
+- código difícil de leer
+- lógica duplicada
+- tests complicados
+- acoplamiento entre UI y datos
+
+El `service` existe para **sacar esa lógica del UI** y ponerla en un lugar estable y testeable.
+
+**Qué tipo de lógica vive en un service**
+
+Un service **no hace el fetch directamente** (eso ya lo hacen los packages o `api.ts`).  
+Un service **orquesta** lo que pasa alrededor del fetch.
+
+**Ejemplos típicos:**
+
+- Construcción de payloads  
+  (ej: `FormData`, normalización de inputs)
+
+- Transformación de datos  
+  DTO → Domain (usando `transform.ts`)
+
+- Compatibilidad y decisiones técnicas
+
+  - versiones de API
+  - feature flags
+  - fallback de endpoints
+
+- Composición de múltiples llamadas  
+  (ej: crear post → subir imagen → asociar imagen)
+
+**Ejemplo**
+
+```ts
 import type { UserApi } from './interfaces';
 import { dtoToUser } from './transform';
 
@@ -126,11 +192,37 @@ export class UserService {
 }
 ```
 
+**Qué está pasando aquí**
+
+- El service recibe una API por constructor (no la importa directamente)
+
+- Llama al método necesario (fetchUser)
+
+- Convierte el DTO a un Domain model
+
+- Devuelve un objeto que el resto del sistema puede usar sin conocer el backend
+
+**Por qué el service NO importa api.ts directamente**
+
+Porque el service no debe conocer implementaciones, solo contratos.
+
+```ts
+constructor(private api: UserApi) {}
+```
+
+Esto permite:
+
+- cambiar la API sin tocar el service
+
+- inyectar mocks en tests
+
+- aislar la lógica del acceso a datos
+
 ### 5. index.ts
 
 **Singleton via barrel**
 
-- Como el service es una clase, el post sugiere crear **una instancia** en `index.ts` y exportarla para el resto de la app. :contentReference[oaicite:7]{index=7}
+- Como el service es una clase, el se sugiere crear **una instancia** en `index.ts` y exportarla para el resto de la app.
 
 ```tsx
 import * as userApi from './api';
@@ -150,22 +242,32 @@ export default userService;
 
 En nuestra arquitectura, NO siempre se crea un service en la capa de infrastructure.
 
-Regla simple
+**Regla simple**
 
 👉 Si no hay lógica, no hay service.
 
 ¿Qué significa “no hay lógica”?
 
-Un service NO es necesario cuando el código:
+**Un service NO es necesario cuando el código:**
 
-Solo llama a una API
+- Solo llama a una API
 
-Solo valida success / error
+- Solo valida success / error
 
-Solo retorna la data
+- Solo retorna la data
 
-No decide nada
+- No decide nada
 
-No transforma nada
+- No transforma nada
 
-No coordina múltiples llamadas
+- No coordina múltiples llamadas
+
+### En resumen
+
+```text
+interface.ts   → define el contrato
+transform.ts   → adapta datos (DTO → Domain)
+service.ts     → orquesta todo lo anterior
+```
+
+# REDIRECT A COMO TEXTEAR ESTA CAPA!!!
