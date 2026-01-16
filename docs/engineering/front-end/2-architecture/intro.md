@@ -1,153 +1,255 @@
 ---
 slug: /frontend/architecture/intro
-title: Feature Sliced
+title: Clean Architecture
 sidebar_position: 1
 ---
 
-# Arquitectura por Capas
+# 1. Architecture
 
-## Feature Sliced architecture
+En esta sección explicamos **el modelo mental único** que usamos para estructurar todo el frontend.
 
-Esta documentación describe la estructura de carpetas y los principios de organización del proyecto,
-basada en capas de responsabilidad, slices funcionales y segmentos internos.
-Puede consultar la documentación oficial de [FSD](https://feature-sliced.github.io/documentation/docs/get-started/overview).
+El objetivo no es memorizar carpetas, sino **entender responsabilidades**.
 
-![feature sliced](/img/frontend/architecture/feature-sliced.png)
+## Capas
 
-### De acuerdo a la documentación oficial:
+Nuestra arquitectura se basa en el paradigma de Clean Architecture, sin emabrgo como React fue conceptualizado para la programación funcional y de otra manera de abstraen ciertos conceptos.
 
-Pictured above: three pillars, labeled left to right as "Layers", "Slices", and "Segments" respectively.
+![clean-architecture](/img/frontend/architecture/clean-architecture.jpeg)
 
-The "Layers" pillar contains seven divisions arranged top to bottom and labeled "app", "processes", "pages", "widgets", "features", "entities", and "shared". The "processes" division is crossed out. The "entities" division is connected to the second pillar "Slices" in a way that conveys that the second pillar is the content of "entities".
+Para entender un poco de Clean Architecture se suguieren las siguientes fuentes:
 
-The "Slices" pillar contains three divisions arranged top to bottom and labeled "user", "post", and "comment". The "post" division is connected to the third pillar "Segments" in the same way such that it's the content of "post".
+Tambien es necesario reforzar conceptos de los principios S.O.L.I.D.
 
-The "Segments" pillar contains three divisions, arranged top to bottom and labeled "ui", "model", and "api".
+Ahora bien, nuestra arquitectura se organiza en **cuatro capas**, ordenadas de afuera hacia adentro:
+
+![clean-architecture](/img/frontend/architecture/clean-architecture-frontend.png)
+
+<!-- (Sí, se volteo la piramide, es que siento que la capa mas superfical que es la UI es la ve el usuario jeje)
+
+Piensa en esto como un **flujo de dependencia**:
+
+- Las capas de abajo **pueden usar** las de arriba
+- Las capas de arriba **no saben que existen** las de abajo
+- Excepto el Domain que es la Base dd -->
+
+## Feature Driven
+
+Se propone una arquitectura feature-driven organiza el código alrededor de funcionalidades del producto, no alrededor de tipos técnicos globales.
+
+En lugar de tener carpetas globales como:
+
+```tsx
+components/
+services/
+hooks/
+api/
+```
+
+se agrupa todo lo necesario para una funcionalidad concreta dentro de una misma carpeta.
+
+En nuestro contexto, un **feature** no es una entidad del dominio (User, Product, Order).
+
+Un **feature** es una **funcionalidad completa** que el usuario entiende, por ejemplo:
+
+- **Auth**: login / logout
+- **Onboarding**: completar perfil
+- **Feed**: ver el timeline
+- **Create Post**: crear una publicación
+- **Post Details**: ver una publicación + comentarios
+- **Search**: buscar
+- **Settings**: editar preferencias
+- **Users Management**: listar usuarios + editar rol
+
+```tsx
+features/
+    auth/
+    onboarding/
+    createPost/
+    postDetails/
+```
 
 :::info
-La capa Processes esta deprecada
+Si borras features/create-post, el resto de la app sigue compilando.
+Lo único que cambia es que ya no existe ese flujo/ruta.
 :::
 
----
+Cada feature es una unidad vertical completa, con cada una de las capas si así lo requiere.
 
-## Layers (Capas)
+Esto permite entender, modificar y escalar una funcionalidad sin tener que navegar todo el proyecto.
 
-Las capas representan niveles de abstracción y responsabilidad dentro del sistema.
-Cada capa tiene un propósito claro y reglas implícitas de dependencia.
+## How to read this documentation
 
-En este proyecto utilizamos las siguientes capas:
+Aunque casi ninguna documentación lo dice explícitamente, hay **dos formas comunes** de construir frontend:
 
-### app
+1. **De UI → Data**  
+   Empiezas por pantallas/componentes y vas bajando: UI → Application → Domain → Infrastructure.
 
-- Composición por rutas (Next.js)
-- Wiring general de la aplicación
-- Providers globales
-- Glue code (integración entre capas)
+2. **De Data → UI**  
+   Empiezas por el acceso a datos y contratos y vas subiendo: Infrastructure → Domain → Application → UI.
 
-Nota: esta capa no contiene lógica de negocio.
+En esta guía, la documentación está organizada principalmente **de Data → UI** (de abajo hacia arriba), porque:
 
-### widgets
+- primero definimos contratos y límites (infra/schemas)
+- luego cómo se modela y valida (domain)
+- después cómo se orquesta (application)
+- y finalmente cómo se presenta (ui)
 
-- Bloques de UI grandes y reutilizables
-- Ensamblan múltiples features y/o entities
-- Representan secciones completas de la interfaz
+:::note Importante
+Esto **no significa** que tú debas programar siempre en ese orden.
 
+Puedes leer (y construir) las capas en el orden que tenga más sentido para tu tarea:
 
-### features
+- Si estás trabajando desde un diseño o una pantalla, probablemente empieces en **UI**.
+- Si estás integrando un endpoint o cambiaron contratos, probablemente empieces en **Infrastructure**.
+  :::
 
-- Acciones del usuario / casos de uso
-- Lógica orientada a comportamiento
-- Representan qué puede hacer el usuario
+La regla que no cambia es que, sin importar el orden en que empieces a construir, **se deben respetar las reglas de dependencias/imports entre capas**.
 
-Ejemplos:
+### Ejemplo de folder stucture
 
-- Login
-- Agregar al carrito
-- Actualizar perfil
+Para mayor contexto esta aplicación es una plataforma social tipo feed (estilo micro-blogging) donde los usuarios pueden:
 
-### entities
+- Ver un feed de publicaciones (shouts) con usuarios e imágenes relacionadas
 
-- Modelos del dominio
-- UI, estado y lógica asociada a una entidad
-- Representan qué es el sistema
+- Visitar perfiles de usuario por handle
 
-Ejemplos:
+- Crear publicaciones y responder a otras publicaciones
 
-- User
-- Product
-- Order
+- Subir imágenes asociadas a publicaciones o respuestas
 
-### shared
-
-- Código reutilizable y agnóstico al dominio
-- No depende de otras capas
-
-Incluye:
-
-- UI base
-- Utilidades
-- Configuración
-- Tipos
-- Helpers
-
----
-
-## Slices
-
-Dentro de cada layer, el código se organiza por slices,
-que representan un tema u objeto específico del dominio o del producto.
-
-Ejemplos:
-
-- features/auth/login
-- entities/user
-- widgets/header
-
-Principio clave:
-Una slice debería ser idealmente removible sin romper otras slices,
-salvo aquellas que dependen explícitamente de su API pública.
-
----
-
-## Segments
-
-Dentro de una slice, el código se separa por tipo de responsabilidad,
-usando segmentos bien definidos.
-
-Segmentos estándar:
-
-- ui  
-  Componentes de renderizado (React components)
-
-- model  
-  Estado, lógica de negocio, hooks, schemas
-
-- api  
-  Contratos, tipos y llamadas a APIs
-
-- lib  
-  Helpers internos de la slice
-
-- index.ts  
-  API pública de la slice (único punto de exportación)
-
----
-
-## Ejemplo de Slice con Segments
-
-```txt
-features/
-  auth/
-    login/
+```text
+src/
+  app/
+    layout.tsx
+    globals.css
+    error.tsx
+    not-found.tsx
+    (routes)/
+      feed/
+        page.tsx                    # → delega a features/view-feed
+      users/
+        [handle]/
+          page.tsx                  # → delega a features/view-user-profile
+      posts/
+        create/
+          page.tsx                  # → delega a features/create-post
+        [postId]/
+          reply/
+            page.tsx                # → delega a features/reply-to-post
+  features/
+    view-feed/                        # FEATURE: Ver feed de publicaciones
       ui/
-        LoginForm.tsx
-      model/
-        schema.ts
-        useLoginForm.ts
-      api/
-        login.ts
-        types.ts
-      lib/
-        mapError.ts
-      index.ts
+        pages/
+          FeedPage.tsx
+        widgets/
+          FeedWidget.tsx
+        components/
+          FeedHeader.tsx
+          FeedFilters.tsx
+      application/
+        queries/
+          useFeed.query.ts
+      domain/
+        feed.model.ts
+        feed.logic.ts
+      infrastructure/
+        feed.dto.ts
+        feed.transform.ts
+        feed.service.ts
+    view-user-profile/                # FEATURE: Ver perfil de usuario
+      ui/
+        pages/
+          UserProfilePage.tsx
+        widgets/
+          UserProfileWidget.tsx
+        components/
+          UserAvatar.tsx
+          UserStats.tsx
+      application/
+        queries/
+          useUserProfile.query.ts
+          useCurrentUser.query.ts
+      domain/
+        userProfile.model.ts
+        userProfile.logic.ts
+      infrastructure/
+        user.dto.ts
+        user.transform.ts
+        user.service.ts
+    create-post/                      # FEATURE: Crear publicación
+      ui/
+        pages/
+          CreatePostPage.tsx
+        widgets/
+          CreatePostFormWidget.tsx
+          UploadPreviewWidget.tsx
+        components/
+          PostEditor.tsx
+          SubmitPostButton.tsx
+      application/
+        mutations/
+          useCreatePost.mutation.ts
+        hooks/
+          useCreatePostForm.ts
+      domain/
+        postCreation.model.ts
+        postCreation.logic.ts
+      infrastructure/
+        post.dto.ts
+        post.transform.ts
+        post.service.ts
+    reply-to-post/                 # FEATURE: Responder a una publicación
+      ui/
+        pages/
+          ReplyToPostPage.tsx
+        widgets/
+          PostThreadWidget.tsx
+          ReplyComposerWidget.tsx
+        components/
+          PostCard.tsx
+          ReplyDialog.tsx
+      application/
+        use-cases/
+          replyToPost.usecase.ts
+          replyToPost.errors.ts
+        hooks/
+          useReplyToPost.ts
+        mutations/
+          useCreateReply.mutation.ts
+      domain/
+        reply.model.ts
+        reply.logic.ts
+      infrastructure/
+        reply.dto.ts
+        reply.transform.ts
+        reply.api.ts
+  shared/
+    features/
+      upload-media/
+          # FEATURE: Subida de imágenes (se utiliza en varios lugares)
+      application/
+        mutations/
+          useUploadImage.mutation.ts
+      domain/
+        media.model.ts
+        media.logic.ts
+      infrastructure/
+        media.dto.ts
+        media.transform.ts
+        media.api.ts
+        media.repository.ts
+    domain/ # DOMAMAIN GENERAL - Las tablas de la base de datos plain
+      user.ts
+      post.ts
+      media.ts
+      pagination.ts
+    ui/
+      # UI reutilizable
+    infra/
+      http/
+        apiClient.ts
+        http.errors.ts
+    lib/
+      format.ts
+      assert.ts
 ```
