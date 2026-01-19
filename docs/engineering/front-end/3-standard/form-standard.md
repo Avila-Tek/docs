@@ -34,7 +34,9 @@ export function profileDefaultValues(data: TUser): TProfileForm {
 ### Declarar reglas de negocio
 
 ✅ Declarar la funcion que contiene las reglas de negocio de esta funcionalidad (llamada a otros servicios/apis o validaciones especificas para el proceso).
+
 ✅ se hace uso de inyeccion de dependencia para mejorar la testeabilidad.
+
 ✅ No se emplea logica de UI en esta capa.
 
 ```tsx
@@ -81,9 +83,13 @@ export function useUpdateProfile() {
 ## Declarar el contexto del formulario
 
 ✅ Se maneja un loading state con disabled y setDisabled.
+
 ✅ Se usa el Contexto de React Hook Form.
+
 ✅ No se declaran funciones de formateo para el default value.
+
 ✅ Solo se maneja logica de UI en este componente (loading state, disabled state, llamados a handlers, renderizado de componentes, etc).
+
 ✅ Form y FormContent son componentes separados.
 
 ```tsx
@@ -139,13 +145,18 @@ export default ProfileFormWidget;
 ## Declarar el contexto de un contenido
 
 ✅ En caso de existir un error, se maneja el caso.
+
 ✅ Se consume el Form Context de React.
 
 ```tsx
 // 📁 /apps/features/create-user/ui/components/UserFormContent.ts
 import { TProfileForm } from "@user-profile/infrastructure";
 
-function UserFormContent() {
+interface UserFormContentProps {
+  disabled: boolean;
+}
+
+function UserFormContent({ disabled }: UserFormContentProps) {
   const {
     register,
     formState: { errors },
@@ -160,6 +171,7 @@ function UserFormContent() {
         label="Username"
         error={errors.username}
         registration={register('username')}
+        disabled={disabled}
       />
       <Input
         type="fullName"
@@ -168,8 +180,9 @@ function UserFormContent() {
         label="fullName"
         error={errors.fullName}
         registration={register('fullName')}
+        disabled={disabled}
       />
-      <Button type="submit">
+      <Button type="submit" disabled={disabled}>
         Guardar
       </Button>
     </div>
@@ -177,3 +190,6 @@ function UserFormContent() {
 }
 export default UserFormContent;
 ```
+
+### Validacion de formularios complejos.
+
