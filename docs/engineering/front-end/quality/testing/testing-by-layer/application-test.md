@@ -16,47 +16,64 @@ slug: /frontend/quality/testing/testing-by-layer/application-test/
 **Testing de Use Cases**:
 ```typescript
 // features/posts/application/__tests__/createPost.usecase.test.ts
-describe('CreatePostUseCase', () => {
-  let useCase: CreatePostUseCase;
-  let mockPostService: jest.Mocked<PostService>;
-  let mockMediaService: jest.Mocked<MediaService>;
-  
-  beforeEach(() => {
-    mockPostService = { createPost: jest.fn() };
-    mockMediaService = { uploadImage: jest.fn() };
-    
-    useCase = new CreatePostUseCase(mockPostService, mockMediaService);
-  });
-  
-  test('creates post without image', async () => {
+describe('replyToPostUseCase', () => {
+  test('returns error when user is not authenticated', async () => {
     // Arrange
-    const input = { content: 'Hello world', image: null };
+    const deps: Dependencies = {
+      me: undefined, // ← Usuario no autenticado
+      recipient: mockRecipient,
+      saveImage: jest.fn(),
+      createPost: jest.fn(),
+      createReply: jest.fn(),
+    };
     
     // Act
-    await useCase.execute(input);
+    const result = await replyToPostUseCase(
+      { postId: '1', recipientHandle: 'user2', message: 'Hello' },
+      deps
+    );
     
     // Assert
-    expect(mockPostService.createPost).toHaveBeenCalledWith({
-      content: 'Hello world',
-      imageId: undefined
-    });
+    expect(result.ok).toBe(false);
+    expect(result.error).toBe('You must be logged in.');
   });
   
-  test('uploads image before creating post', async () => {
+  test('creates reply with image successfully', async () => {
     // Arrange
-    const imageFile = new File([''], 'photo.jpg');
-    mockMediaService.uploadImage.mockResolvedValue({ id: 'img_123' });
+    const mockUser = { id: 'user1', /* ... */ };
+    const mockRecipient = { id: 'user2', blockedUserIds: [] };
+    const mockImage = { id: 'img_123' };
+    const mockPost = { id: 'post_456' };
     
-    const input = { content: 'With image', image: imageFile };
+    const deps: Dependencies = {
+      me: mockUser,
+      recipient: mockRecipient,
+      saveImage: jest.fn().mockResolvedValue(mockImage),
+      createPost: jest.fn().mockResolvedValue(mockPost),
+      createReply: jest.fn().mockResolvedValue(undefined),
+    };
     
     // Act
-    await useCase.execute(input);
+    const result = await replyToPostUseCase(
+      {
+        postId: 'post_123',
+        recipientHandle: 'user2',
+        message: 'Reply with image',
+        files: [new File([], 'photo.jpg')],
+      },
+      deps
+    );
     
     // Assert - Verifica orden correcto
-    expect(mockMediaService.uploadImage).toHaveBeenCalledWith(imageFile);
-    expect(mockPostService.createPost).toHaveBeenCalledWith({
-      content: 'With image',
+    expect(result.ok).toBe(true);
+    expect(deps.saveImage).toHaveBeenCalled();
+    expect(deps.createPost).toHaveBeenCalledWith({
+      message: 'Reply with image',
       imageId: 'img_123'
+    });
+    expect(deps.createReply).toHaveBeenCalledWith({
+      postId: 'post_123',
+      replyId: 'post_456'
     });
   });
 });
@@ -65,28 +82,50 @@ describe('CreatePostUseCase', () => {
 **Testing de Hooks (React Query)**:
 ```typescript
 // features/posts/application/__tests__/usePosts.test.tsx
-describe('usePosts hook', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-  
-  test('fetches posts from page 2', async () => {
+describe('useReplyToPost hook', () => {
+  test('injects React Query mutations as dependencies', async () => {
     // Arrange
-    const mockPosts = [{ id: '1', title: 'Post 1' }];
-    jest.spyOn(postService, 'getPosts').mockResolvedValue(mockPosts);
+    const mockMe = { data: { id: 'user1' } };
+    const mockRecipient = { data: { id: 'user2' } };
+    
+    // Mock hooks de React Query
+    jest.spyOn(require('../queries/useGetMe.query'), 'useGetMe')
+      .mockReturnValue(mockMe);
+    jest.spyOn(require('../queries/useGetUserByHandle.query'), 'useGetUserByHandle')
+      .mockReturnValue(mockRecipient);
+    
+    // Spy on the use case to verify dependencies.
+    let capturedDeps;
+    jest.spyOn(require('./replyToPost.usecase'), 'replyToPostUseCase')
+      .mockImplementation(async (input, deps) => {
+        capturedDeps = deps;
+        return { ok: true };
+      });
     
     // Act
-    const { result } = renderHook(() => usePosts({ page: 2, perPage: 10 }));
+    const { result } = renderHook(
+      () => useReplyToPost({ recipientHandle: 'user2' }),
+      {
+        wrapper: ({ children }) => (
+          <QueryClientProvider client={new QueryClient()}>
+            {children}
+          </QueryClientProvider>
+        )
+      }
+    );
+    
+    await result.current.mutateAsync({
+      postId: '1',
+      recipientHandle: 'user2',
+      message: 'Test'
+    });
     
     // Assert
-    await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
-    });
-    
-    expect(postService.getPosts).toHaveBeenCalledWith({
-      page: 2,
-      perPage: 10
-    });
+    expect(capturedDeps.me).toEqual(mockMe.data);
+    expect(capturedDeps.recipient).toEqual(mockRecipient.data);
+    expect(typeof capturedDeps.saveImage).toBe('function');
+    expect(typeof capturedDeps.createPost).toBe('function');
+    expect(typeof capturedDeps.createReply).toBe('function');
   });
 });
 ```

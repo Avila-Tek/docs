@@ -75,16 +75,22 @@ test('payment service transforms request correctly', async () => {
 });
 
 // 3. APPLICATION (Después): Caso de uso
-test('checkout use case orchestrates payment and email', async () => {
-  const mockPayment = { process: jest.fn() };
-  const mockEmail = { sendReceipt: jest.fn() };
-  const useCase = new CheckoutUseCase(mockPayment, mockEmail);
+test('checkout use case orchestrates payment and email with injected dependencies', async () => {
+  const deps = {
+    processPayment: jest.fn().mockResolvedValue({ success: true }),
+    sendReceipt: jest.fn().mockResolvedValue(undefined),
+    validateOrder: jest.fn().mockReturnValue({ valid: true }),
+    checkInventory: jest.fn().mockResolvedValue(true),
+  };
   
-  await useCase.execute(order);
+  const order = { items: [], total: 100 };
+  const result = await checkoutUseCase(order, deps);
   
-  expect(mockPayment.process).toHaveBeenCalled();
-  expect(mockEmail.sendReceipt).toHaveBeenCalled();
-});
+  expect(deps.validateOrder).toHaveBeenCalledWith(order);
+  expect(deps.checkInventory).toHaveBeenCalled();
+  expect(deps.processPayment).toHaveBeenCalled();
+  expect(deps.sendReceipt).toHaveBeenCalled();
+  });
 
 // 4. UI (Finalmente): Componente
 test('CheckoutForm shows success message', async () => {

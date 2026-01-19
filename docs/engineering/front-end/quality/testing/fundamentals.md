@@ -92,14 +92,3 @@ const useCase = new UserProfileUseCase(mockRepo); // Test fácil
 | **Infrastructure** | Implementa interfaces | Mockeable, testeable |
 | **Application** | Consume interfaces | Tests aislados |
 | **UI** | Recibe props/hooks | Tests de integración |
-
-**Ejemplo práctico**:
-```typescript
-// En producción:
-const realRepo = new ApiUserRepository(apiClient);
-const useCase = new GetUserUseCase(realRepo); // Usa API real
-
-// En tests:
-const testRepo = { findUser: jest.fn() };
-const useCase = new GetUserUseCase(testRepo); // Usa mock
-```
