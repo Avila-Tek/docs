@@ -147,7 +147,6 @@ export function getAPIClient(token?: string): API {
   return api;
 }
 ```
-<p align="right"><small>- Configuramos nuestra API una sola vez y ya, que genial! 🤓</small></p>
 
 Ahora solo queda construir nuestros objetos Queries en cada una de nuestra app para que configuremos React.Query con nuestra api
 
@@ -155,7 +154,7 @@ Ahora solo queda construir nuestros objetos Queries en cada una de nuestra app p
 // 📁 /apps/clients/src/services/user/queries.ts
 import { TCreateUserInput, TPaginationInput, TUser } from '@repo/schemas';
 import { Safe } from '@repo/utils';
-import { mutationOptions, queryOptions } from '@tanstack/react-query';
+import { queryOptions } from '@tanstack/react-query';
 import { getAPIClient } from '@/src/lib/api';
 
 export const usersQueries = {
@@ -237,7 +236,6 @@ export function getQueryClient() {
   }
 }
 ```
-<p align="right"><small>- ¿Entonces este Sí es el paso 2? 🤠</small></p>
 
 ## Queries
 
@@ -303,7 +301,7 @@ export function UsersQuery({
   return <code>{JSON.stringify(query.data, null, 2)}</code>;
 }
 ```
-<p align="right"><small>- El prefetching funcionará siempre y cuando sus queryKeys sean iguales, en este ejemplo lo declaramos en el bojeto userQueries 😜</small></p>
+<p align="right"><small>- El prefetching funcionará siempre y cuando sus queryKeys sean iguales, en este ejemplo lo declaramos en el objeto userQueries 😜</small></p>
 
 * Obtener desde el client.
 
@@ -311,9 +309,37 @@ Haremos uso de useQuery. Es importante mencionar que, si hiciéramos un prefetch
 
 ```tsx
 // 📁 apps\client\src\app\users\users-query.tsx
-    const query = useQuery(usersQueries.pagination({ page, perPage }));
+const query = useQuery(usersQueries.pagination({ page, perPage }));
 ```
 
 * Manejar el loading state
 
 Con useQuery, el estado de carga (loading state) se manejaría de forma manual; en cambio, con useSuspenseQuery, se haría a través de React.Suspense.
+
+## Mutations
+
+Declaramos el servicio para mutaciones, el cual se encarga de parsear y comunicarse con la API.
+
+```tsx
+// 📁 /apps/clients/src/services/user/mutations.ts
+import { TCreateUserInput } from '@repo/schemas';
+import { Safe } from '@repo/utils';
+import { mutationOptions } from '@tanstack/react-query';
+import { getAPIClient } from '@/src/lib/api';
+
+export const userMutations = {
+  create() {
+    return mutationOptions<Safe<TUser>, Error, TCreateUserInput>({
+      mutationKey: ['create'],
+      async mutationFn(variables) {
+        const api = getAPIClient();
+        const safeResult = await api.v1.users.create(variables);
+        return safeResult;
+      },
+      onError(error) {
+        console.error(error);
+      },
+    });
+  },
+};
+```
