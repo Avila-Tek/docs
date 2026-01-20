@@ -26,7 +26,7 @@ export interface TProfileForm = {
 // 📁 /apps/features/user-profile/infrastructure/profile.dto.ts
 import { z } from "zod";
 import { TUser } from "@/shared/domain/user/model";
-import { TProfileForm } from "@user-profile/infrastructure";
+import { TProfileForm } from "@user-profile/domain";
 
 // form's validations
 export const profileFormDefinition = z.object({
@@ -54,7 +54,7 @@ export function profileDefaultValues(data: TUser): TProfileForm {
 ```tsx
 // 📁 /apps/features/user-profile/application/use-cases/updateProfile.usecases.ts
 import { TUser } from "@/shared/domain/user/model";
-import { TProfileForm } from "@user-profile/infrastructure";
+import { TProfileForm } from "@user-profile/domain";
 
 type UserProfileResult = {
   success: boolean;
@@ -112,7 +112,7 @@ import { userMutations } from "@services/user";
 import { 
   profileFormDefinition,
   TProfileForm
-} from "@user-profile/infrastructure";
+} from "@user-profile/domain";
 
 interface ProfileFormWidgetProps {
   defaultValue: TProfileForm;
@@ -162,7 +162,7 @@ export default ProfileFormWidget;
 
 ```tsx
 // 📁 /apps/features/create-user/ui/components/UserFormContent.ts
-import { TProfileForm } from "@user-profile/infrastructure";
+import { TProfileForm } from "@user-profile/domain";
 
 interface UserFormContentProps {
   disabled: boolean;
