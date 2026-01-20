@@ -134,12 +134,9 @@ function ProfileFormWidget({defaultValue}: ProfileFormWidgetProps) {
       return;
     }
     setDisabled(true);
-
-   await updateProfile.mutateAsync({
+    await updateProfile.mutateAsync({
       profile: data,
     });
-
-    await userMutations.updateProfile(data);
     setDisabled(false);
   }
 
