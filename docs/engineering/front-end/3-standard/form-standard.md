@@ -11,7 +11,10 @@ sidebar_position: 8
 // 📁 /apps/features/user-profile/domain/profile.model.ts
 
 // form type
-export type TProfileForm = z.infer<typeof profileFormDefinition>;
+export interface TProfileForm = {
+  username: string;
+  fullName: string;
+};
 ```
 
 
