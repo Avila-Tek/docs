@@ -189,7 +189,7 @@ Un ejemplo de esto podría ser el componente Table. Table tiene filas, paginaci�
 
 A continuación, un ejemplo de la estructura del componente Table y su implementación en un proyecto:
 ```
-/* packages/ui/components */
+/* packages/ui/src/components */
 
 table/
   index.ts
