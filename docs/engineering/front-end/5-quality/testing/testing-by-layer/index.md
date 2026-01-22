@@ -1,7 +1,7 @@
 ---
 title: Testing por capas
-sidebar_position: 2
-slug: /frontend/quality/testing/testing-by-layer/
+sidebar_position: 3
+slug: /frontend/quality/testing/testing-by-layer
 ---
 
 # Testing por capas

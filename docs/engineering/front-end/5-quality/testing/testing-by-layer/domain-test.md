@@ -1,7 +1,7 @@
 ---
 title: Domain layer
 sidebar_position: 1
-slug: /frontend/quality/testing/testing-by-layer/domain-test/
+slug: /frontend/quality/testing/testing-by-layer/domain-test
 ---
 
 ### 🧠 Domain Layer - Lógica de Negocio Pura
