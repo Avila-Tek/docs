@@ -1,7 +1,7 @@
 ---
 title: UI layer
 sidebar_position: 4
-slug: /frontend/quality/testing/testing-by-layer/ui-test/
+slug: /frontend/quality/testing/testing-by-layer/ui-test
 ---
 
 ### 🖥️ UI Layer - Componentes

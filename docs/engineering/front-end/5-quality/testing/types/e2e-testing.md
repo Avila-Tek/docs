@@ -1,7 +1,7 @@
 ---
 title: Pruebas E2E
 sidebar_position: 3
-slug: /frontend/quality/testing/e2e-testing
+slug: /frontend/quality/testing/types/e2e-testing
 ---
 
 # Pruebas E2E

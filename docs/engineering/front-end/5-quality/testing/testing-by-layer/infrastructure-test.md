@@ -1,7 +1,7 @@
 ---
 title: Infrastructure layer
 sidebar_position: 2
-slug: /frontend/quality/testing/testing-by-layer/infrastructure-test/
+slug: /frontend/quality/testing/testing-by-layer/infrastructure-test
 ---
 
 ### 🔌 Infrastructure Layer - Servicios y APIs
