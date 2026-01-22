@@ -22,7 +22,7 @@ Tambien es necesario reforzar conceptos de los principios S.O.L.I.D.
 
 Ahora bien, nuestra arquitectura se organiza en **cuatro capas**, ordenadas de afuera hacia adentro:
 
-![clean-architecture](/img/frontend/architecture/clean-architecture-frontend.png)
+<!-- ![clean-architecture](/img/frontend/architecture/clean-architecture-frontend.png) -->
 
 <!-- (Sí, se volteo la piramide, es que siento que la capa mas superfical que es la UI es la ve el usuario jeje)
 
