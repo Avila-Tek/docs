@@ -24,14 +24,35 @@ Nuestros proyectos de frontend se realizan con Next.js, un popular framework de 
 ### Estructura del proyecto
 
 En el siguiente documento se explica detalladamente cómo se estructuran nuestros proyectos: Estructura del proyecto para que conozcas a qué se refiere cada folder y file.
-Variables de entorno
+
+
+```
+apps/
+ ├── admin/
+ ├── api/
+ ├── client/
+packages/
+ ├── feature-flags/
+ ├── schemas/
+ ├── services/
+ ├── ui/
+ ├── utils/
+ ```
+ 
+- **apps**: Contiene los proyectos de frontend y backend.
+- **packages**: Contiene los paquetes compartidos entre proyectos.
+ 
+### Variables de entorno
+ 
 Las variables de entorno se ubicarán en los siguientes directorios:
 
-- Para un proyecto con los directorios **admin**, **api** y **client**:
-  - Admin: `./apps/admin/.env`
-  - Api: `./apps/api/.env`
-  - Client: `./apps/client/.env`
-- **Nota**: toma en cuenta que esto puede cambiar según el proyecto
+- `./apps/api/.env`
+- `./apps/admin/.env`
+- `./apps/client/.env`
+
+:::warning
+Toma en cuenta que la estructura de carpetas puede cambiar según el proyecto.
+:::
 
 ### Configuraciones
 
