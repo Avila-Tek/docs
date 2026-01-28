@@ -1,6 +1,6 @@
 ---
 slug: /frontend/architecture/intro
-title: Folder Architecture
+title: Folder structure
 sidebar_position: 1
 ---
 
@@ -76,9 +76,62 @@ Lo único que cambia es que ya no existe ese flujo/ruta.
 Cada feature es una unidad vertical completa, con cada una de las capas si así lo requiere.
 
 Esto permite entender, modificar y escalar una funcionalidad sin tener que navegar todo el proyecto. -->
+## Primeros pasos
+
+Si no tienes experiencia previa con **Clean Architecture** o **Feature Driven Development**, te recomiendo empezar por la documentación de la arquitectura [aquí](/docs/frontend/architecture).
+
+### Ejemplo básico con app
+
+Para mayor contexto esta aplicación es una plataforma social tipo feed (estilo micro-blogging) donde los usuarios pueden:
+
+- Ver un feed de publicaciones (shouts) con usuarios e imágenes relacionadas
+- Visitar perfiles de usuario por handle
+- Crear publicaciones y responder a otras publicaciones
+- Subir imágenes asociadas a publicaciones o respuestas
+
+```text
+
+src/
+├── app/                          # Next.js App Router pages and layouts
+├── features/                     # Módulos de funcionalidades
+│   ├── auth/                     # 🔒 Módulo de autenticación
+│   │   ├── ui/                   # ── Componentes de la UI
+│   │   ├── application/          # ── Lógica de negocio
+│   │   ├── domain/               # ── Modelos y lógica de negocio
+│   │   └── infrastructure/       # ── Implementación de la lógica de negocio
+│   └── posts/                    # 📣 Módulo de publicaciones
+│       ├── ui/                   # ── Componentes de la UI
+│       ├── application/          # ── Lógica de negocio
+│       ├── domain/               # ── Modelos y lógica de negocio
+│       └── infrastructure/       # ── Implementación de la lógica de negocio
+├── shared/           
+│   ├── domain/                   # ── Modelos y lógica de negocio compartido
+│   ├── features/                 # ── Módulos de funcionalidades compartidas
+│   │   └── upload-media/         # 📸 Módulo de subida de medios
+│   │       ├── ui/               # ── Componentes de la UI
+│   │       ├── application/      # ── Lógica de negocio
+│   │       ├── domain/           # ── Modelos y lógica de negocio
+│   │       └── infrastructure/   # ── Implementación de la lógica de negocio
+│   ├── infra/                    # ── Infraestructura compartida
+│   └── ui/                       # ── Componentes de la UI compartidos
+├── lib/                          # 💡 Utilidades (formatter, random, etc)
+```
+
+### ¿Qué es cada carpeta?
+
+#### 📂 app/
+Contiene las páginas y layouts de la aplicación
+
+#### 📂 features/
+Contiene los módulos de funcionalidades
+
+#### 📂 shared/
+Contiene los módulos de funcionalidades compartidas
+
+#### 📂 lib/
+Contiene las utilidades
 
 ## How to read this documentation
-
 
 Aunque casi ninguna documentación lo dice explícitamente, hay **dos formas comunes** de construir frontend:
 
@@ -106,7 +159,7 @@ Puedes leer (y construir) las capas en el orden que tenga más sentido para tu t
 
 La regla que no cambia es que, sin importar el orden en que empieces a construir, **se deben respetar las reglas de dependencias/imports entre capas**.
 
-### Ejemplo de folder stucture
+### Ejemplo de folder structure
 
 Para mayor contexto esta aplicación es una plataforma social tipo feed (estilo micro-blogging) donde los usuarios pueden:
 
