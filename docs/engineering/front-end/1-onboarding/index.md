@@ -8,6 +8,9 @@ sidebar_position: 1
 
 Usamos un stack **moderno, opinionado y probado en producción**:
 
+- **Turborepo**  
+  Monorepo para gestionar múltiples aplicaciones y paquetes.
+
 - **Next.js**  
   Framework base para routing, rendering y optimizaciones (SSR / RSC cuando aplique).
 
@@ -26,9 +29,9 @@ Usamos un stack **moderno, opinionado y probado en producción**:
 - **shadcn/ui**  
   Librería de componentes base, accesibles y extensibles, integrada con Tailwind.
 
-## Arquitectura: Clean Architecture adaptada a React
+## Clean Architecture adaptada a React
 
-Seguimos una **Clean Architecture adaptada al frontend**, donde cada capa tiene una responsabilidad clara.
+Cada capa tiene una responsabilidad clara.
 
 La idea central es simple:
 
@@ -40,9 +43,9 @@ Esto nos permite:
 - testear lógica sin montar React
 - evitar componentes gigantes y frágiles
 
-Más adelante la arquitectura se explica en detalle, pero desde ya es importante entender **la intención**.
+Más adelante la arquitectura se explica en detalle **[aquí](/docs/frontend/architecture)**, pero desde ya es importante entender **la intención**.
 
-### 2. Testabilidad
+### Testabilidad
 
 El código importante debe poder **testearse sin React, sin DOM y sin mocks complejos**.
 
@@ -58,7 +61,7 @@ Por eso:
 
 ---
 
-### 3. Resiliencia a cambios del backend
+### Resiliencia a cambios del backend
 
 Asumimos que:
 

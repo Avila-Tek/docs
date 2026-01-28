@@ -1,10 +1,10 @@
 ---
 slug: /frontend/architecture/intro
-title: Clean Architecture
+title: Folder Architecture
 sidebar_position: 1
 ---
 
-# 1. Architecture
+<!-- # 1. Architecture
 
 En esta sección explicamos **el modelo mental único** que usamos para estructurar todo el frontend.
 
@@ -20,9 +20,9 @@ Para entender un poco de Clean Architecture se suguieren las siguientes fuentes:
 
 Tambien es necesario reforzar conceptos de los principios S.O.L.I.D.
 
-Ahora bien, nuestra arquitectura se organiza en **cuatro capas**, ordenadas de afuera hacia adentro:
+Ahora bien, nuestra arquitectura se organiza en **cuatro capas**, ordenadas de afuera hacia adentro: -->
 
-<!-- ![clean-architecture](/img/frontend/architecture/clean-architecture-frontend.png) -->
+
 
 <!-- (Sí, se volteo la piramide, es que siento que la capa mas superfical que es la UI es la ve el usuario jeje)
 
@@ -32,7 +32,7 @@ Piensa en esto como un **flujo de dependencia**:
 - Las capas de arriba **no saben que existen** las de abajo
 - Excepto el Domain que es la Base dd -->
 
-## Feature Driven
+<!-- ## Feature Driven
 
 Se propone una arquitectura feature-driven organiza el código alrededor de funcionalidades del producto, no alrededor de tipos técnicos globales.
 
@@ -75,9 +75,10 @@ Lo único que cambia es que ya no existe ese flujo/ruta.
 
 Cada feature es una unidad vertical completa, con cada una de las capas si así lo requiere.
 
-Esto permite entender, modificar y escalar una funcionalidad sin tener que navegar todo el proyecto.
+Esto permite entender, modificar y escalar una funcionalidad sin tener que navegar todo el proyecto. -->
 
 ## How to read this documentation
+
 
 Aunque casi ninguna documentación lo dice explícitamente, hay **dos formas comunes** de construir frontend:
 
