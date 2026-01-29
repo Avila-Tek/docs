@@ -1,5 +1,5 @@
 ---
-slug: /frontend/standards/fetch/packages
+slug: /frontend/fetch/packages
 title: Packages Service
 sidebar_position: 1
 ---

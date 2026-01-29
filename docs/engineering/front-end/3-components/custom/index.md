@@ -1,6 +1,6 @@
 ---
 title: Custom
-sidebar_position: 2
+sidebar_position: 5
 slug: /frontend/components/custom
 ---
 
@@ -11,15 +11,16 @@ slug: /frontend/components/custom
 A medida que vayamos desarrollando nuevos softwares, se hará más evidente para nosotros que hay ciertas piezas que siempre formarán parte de ellos. De aquí viene la importancia de identificar cuáles son dichas piezas y cómo podemos darles forma para que éstas puedan adaptarse a cualquier parte de nuestra aplicación. Estas piezas son a las que estaremos llamando componentes reutilizables.
 
 > Un componente reutilizable es un componente lo suficientemente genérico que puede utilizarse en muchos casos y situaciones diferentes.
-> 
-> *Ada ITW*
+>
+> _Ada ITW_
 
 Trabajar con estos componentes nos permite:
+
 - **Ahorrar tiempo y esfuerzo:** solo se genera el componente una vez, en lugar de escribir casi el mismo código cada vez que se necesite.
 - **Mejorar la consistencia y facilidad de mantenimiento de las aplicaciones:** si se requiere hacer algún arreglo, refactor o actualización, se hace solo una vez, sabiendo que lo que sea que se haga cambiará en todos los lugares que haya sido implementado el componente.
 
-
 ## Antes de empezar
+
 Es recomendable hacernos estas preguntas antes de construir nuestros componentes, para saber cuál será nuestro approach a la hora de darles forma:
 
 **1. ¿Dónde voy a volver a necesitarlo?**
@@ -34,14 +35,16 @@ Hay partes del componente que siempre serán iguales y otras que variarán segú
 
 Con esto sabremos cuándo enviar props y cuándo enviar children.
 
-
 ## Tips
+
 Algunas cosas que pueden darnos algo de guidance cuando queramos construir un componente de este estilo son:
 
 ### Reemplazar cosas específicas por props
+
 Enviar como props cosas como los classNames, iconos, acciones, etc., nos permite costumizar los componentes sin perder su estructura base.
 
 #### 🚫 Sin props
+
 ```typescript
 import React from 'react';
 import { HomeIcon } from '@avila-tek/ui';
@@ -59,6 +62,7 @@ export default function SidebarItem() {
 Aquí el icono siempre será HomeIcon y el texto será "Item", cosa que no nos sirve porque cada item debería llevar info diferente. Además, el color de fondo y de texto del elemento también son fijos, haciendo que debamos modificarlos directamente en el componente si queremos usarlo en otra parte de la aplicación o en una completamente diferente.
 
 #### ✅ Con props
+
 ```typescript
 import React from 'react';
 
@@ -81,13 +85,14 @@ Ojo! Tampoco deberíamos abusar del uso de props. Si usamos muchos props, termin
 Es importante detenernos a pensar qué props necesita el componente y qué props no deberían ser props sino variables u otras cosas contenidas en el componente.
 
 Si hay que mandar varios classNames, por ejemplo, podemos mandarlos como un objeto en lugar de mandar varios classNames separados:
+
 ```typescript
 type ClassNames = {
   accordionClassName?: string;
   buttonClassName?: string;
   panelClassName?: string;
   iconClassName?: string;
-}
+};
 
 interface AccordionProps {
   list: TListItem[];
@@ -98,8 +103,10 @@ interface AccordionProps {
 ```
 
 ### Usar enums para permitir variaciones limitadas
+
 Ya para este punto sabemos que estamos buscando que nuestros componentes sean muy flexibles y costumizables. Sin embargo, hay casos en los que no debería admitirse tanta variación, según sea el caso. Para lograr que nuestros componentes admitan variaciones limitadas podemos utilizar enums cuando hagamos el tipado de nuestros props.
 Un ejemplo:
+
 ```typescript
 import React from 'react';
 
@@ -113,6 +120,7 @@ export default function Toast({ type = 'info', props }: { type: ToastTypesEnum; 
 Por ejemplo, un componente Toast tiene 4 types: success, warning, error e info. No se le debería permitir al usuario enviar como prop un string cualquiera, por lo que es preferible limitarlo usando algo como `type TypesEnum = | 'success' | 'warning' | 'error' | 'info';`.
 
 ### Evitar estilos de layout
+
 Los **estilos de layout** son aquellos que determinan cómo se va a comportar nuestro componente respecto al lugar donde se vaya a utilizar. Algunos ejemplos podrían ser márgenes, ancho, alto, etc.
 
 Como es bastante probable que estas propiedades varíen para cada caso en el que se utilice el componente, lo ideal es que no pertenezcan a él, sino a su contenedor.
@@ -120,6 +128,7 @@ Como es bastante probable que estas propiedades varíen para cada caso en el que
 A continuación un ejemplo:
 
 #### 🚫 Con estilos de layout
+
 ```typescript
 import React from 'react';
 
@@ -135,6 +144,7 @@ export default function Card({ children }) {
 Este componente siempre va a tener margen en x, una altura fija y la mitad del ancho de su contenedor. En algunos casos nos puede servir pero en otros necesitaremos que el ancho sea completo, por ejemplo, o que el margen no sea tan grande.
 
 #### ✅ Sin estilos de layout
+
 ```typescript
 import React from 'react';
 
@@ -181,6 +191,7 @@ export default function Component() {
 Aquí, el componente ProfileHeader hace que Card, en la sección A.2, ocupe la mitad de la vista (horizontalmente), y que su altura se ajuste a su contenido. A su vez, se vuelve a usar el mismo componente en la sección B, pero con una altura fija y un ancho de 2/3 de la vista.
 
 ### Incorporar composición
+
 A veces, tenemos componentes muy complejos o que internamente varias de sus partes pueden presentarse u ordenarse de forma distinta según el uso que se le de al componente en la aplicación.
 
 Aquí surge entonces el concepto de componentes compuestos. Los componentes compuestos son aquellos que están formados por múltiples componentes que comparten y manejan los mismos estados y lógica.
@@ -188,6 +199,7 @@ Aquí surge entonces el concepto de componentes compuestos. Los componentes comp
 Un ejemplo de esto podría ser el componente Table. Table tiene filas, paginación, header, etc., y cada uno de estos elementos tiene cierta complejidad y requiere cierto nivel customización que hace que tener todas estas partes de la tabla en un solo componente sea engorroso y poco práctico. De igual forma, tendremos casos en los que la tabla no lleve paginación o no tenga un search, por ejemplo, por lo que deberíamos poder decidir qué partes de todas las posibles va a llevar la tabla en la que estamos trabajando, sin tener que modificar directamente el componente original.
 
 A continuación, un ejemplo de la estructura del componente Table y su implementación en un proyecto:
+
 ```
 /* packages/ui/src/components */
 
@@ -327,6 +339,7 @@ export default function ClientTable() {
 ```
 
 Otro ejemplo sería el componente Tabs, proporcionado por **shadcn/ui**. Tabs es un componente compuesto porque:
+
 - Tiene múltiples subcomponentes (TabsList, TabsTrigger, TabsContent)
 - Comparten estado internamente (tab activa)
 - Puedes reordenar, omitir o extender partes sin tocar el componente base
@@ -352,6 +365,7 @@ Ejemplo de implementación:
 ```
 
 ## Referencias
-- Ada Itw. (n.d.). *Componentes Reutilizables.* Ada Frontend. https://frontend.adaitw.org/docs/react/react24 
-- Chinonso, I. (2021, August 27). *Compound components in react.* Smashing Magazine. https://www.smashingmagazine.com/2021/08/compound-components-react/ 
-- Imagina Formación. (n.d.). *Creación de Componentes Reutilizables en react JS.* https://imaginaformacion.com/tutoriales/como-crear-componentes-reutilizables-en-react-js 
+
+- Ada Itw. (n.d.). _Componentes Reutilizables._ Ada Frontend. https://frontend.adaitw.org/docs/react/react24
+- Chinonso, I. (2021, August 27). _Compound components in react._ Smashing Magazine. https://www.smashingmagazine.com/2021/08/compound-components-react/
+- Imagina Formación. (n.d.). _Creación de Componentes Reutilizables en react JS._ https://imaginaformacion.com/tutoriales/como-crear-componentes-reutilizables-en-react-js

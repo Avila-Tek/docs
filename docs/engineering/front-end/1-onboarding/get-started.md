@@ -1,6 +1,6 @@
 ---
-slug: /frontend/onboarding
-title: 🥳 Welcome aboard
+slug: /frontend/onboarding/get-started
+title: Get started!
 sidebar_position: 1
 ---
 
@@ -40,7 +40,7 @@ Usamos un stack **moderno y probado en producción**:
 
 ---
 
-## 1️⃣ Fundamentos de como hacer fetch: cómo llegan los datos a la aplicación
+## 1️⃣ Como hacer fetch: cómo llegan los datos a la aplicación
 
 Antes de escribir componentes, necesitamos entender **cómo nos integramos con APIs** y cómo aislamos la UI de los cambios del backend.
 
@@ -51,7 +51,7 @@ Aquí aprenderás:
 - Cómo usamos queries, mutations y transformaciones
 - Por qué la UI nunca consume respuestas crudas
 
-<!-- 👉 **Ir a:** [Cómo integramos una API](/frontend/onboarding/api-integration) -->
+👉 **Ir a:** [Cómo integramos una API](/docs/frontend/fetch)
 
 ---
 
@@ -65,7 +65,7 @@ Aquí aprenderás:
 - Qué responsabilidades tiene (y cuáles no)
 - Cómo mantener componentes simples y reutilizables
 
-<!-- 👉 **Ir a:** [Cómo escribimos componentes](/frontend/onboarding/components) -->
+👉 **Ir a:** [Cómo escribimos componentes](/docs/frontend/components)
 
 ---
 
@@ -80,8 +80,8 @@ Aquí aprenderás:
 - Prácticas de calidad, testing y manejo de errores
 - Cómo mantenemos coherencia y escalabilidad en el tiempo
 
-<!-- 👉 **Ir a:** [Arquitectura](/frontend/onboarding/architecture)   -->
-<!-- 👉 **Ir a:** [Nuestros estándares](/frontend/onboarding/standards)   -->
-<!-- 👉 **Ir a:** [Calidad](/frontend/onboarding/quality) -->
+👉 **Ir a:** [Arquitectura](/docs/frontend/architecture)  
+👉 **Ir a:** [Nuestros estándares](/docs/frontend/standards)  
+👉 **Ir a:** [Calidad](/docs/frontend/quality)
 
 ---

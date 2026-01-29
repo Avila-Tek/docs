@@ -1,5 +1,5 @@
 ---
-slug: /frontend/standards/component-structure
+slug: /frontend/components/component-structure
 title: Estructura de un componente
 sidebar_position: 3
 ---

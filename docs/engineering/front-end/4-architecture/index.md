@@ -1,5 +1,5 @@
 ---
 slug: /frontend/architecture
 title: Arquitectura
-sidebar_position: 1
+sidebar_position: 10
 ---

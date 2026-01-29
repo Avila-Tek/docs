@@ -1,6 +1,6 @@
 ---
 title: Átomos y bases (Shadcn)
-sidebar_position: 1
+sidebar_position: 4
 slug: /frontend/components/base
 ---
 
@@ -29,9 +29,11 @@ En el proyecto, shadcn/ui se utiliza como base para construir y estandarizar com
 ## 🎥 Tutorial
 
 ### 1. Buscar el componente en shadcn
+
 Ingresar a https://ui.shadcn.com/docs/components y elegir el componente a instalar.
 
 ### 2. Agregar el componente al repo
+
 Para esto, debes ejecutar `npx shadcn@canary add <component-id> --cwd packages/ui`, donde `component-id` es el slug del componente en shadcn.
 
 :::note
@@ -39,6 +41,7 @@ Este comando debe apuntar a **packages/ui** para que el componente y sus depende
 :::
 
 ### 3. Exportar el componente del paquete
+
 Como instalamos el componente en packages/ui, debemos exportarlo para que esté disponible para las aplicaciones y los demás paquetes. Se hace de la siguiente forma:
 
 ```json
@@ -78,20 +81,21 @@ Como instalamos el componente en packages/ui, debemos exportarlo para que esté 
     "./hooks/*": "./src/hooks/*.ts"
   }
 }
-
 ```
 
 ### 4. Costumizar componente
+
 Con el componente creado, ¡puedes comenzar a modificar sus estilos y usarlo en el resto del proyecto! 🥳
 
 ### Video demostrativo
+
 <video width="90%" height="600" controls>
   <source src="https://cdn.avilatek.com/docs/frontend/shadcn_components.mov"/>
 </video>
 
-*Tooltip en Mercantil Seguros. Valeria Trotta.*
+_Tooltip en Mercantil Seguros. Valeria Trotta._
 
-----
+---
 
 :::info
 Para más información, referirse a la documentación oficial de **shadcn/ui**: https://ui.shadcn.com/

@@ -1,5 +1,5 @@
 ---
-slug: /frontend/standards/fetch/mutations
+slug: /frontend/fetch/mutations
 title: Mutations
 sidebar_position: 4
 ---

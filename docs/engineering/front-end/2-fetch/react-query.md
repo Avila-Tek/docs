@@ -1,5 +1,5 @@
 ---
-slug: /frontend/standards/fetch/react-query
+slug: /frontend/fetch/react-query
 title: React Query
 sidebar_position: 2
 ---
@@ -8,7 +8,8 @@ sidebar_position: 2
 
 Configurar React Query consiste de 2 pasos, (1) crear el client y (2) instanciar el Contexto.
 
-* Instanciar el contexto
+- Instanciar el contexto
+
 ```tsx
 'use client';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -19,14 +20,13 @@ export function QueryClient({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }
 ```
 
-* Crear el client
+- Crear el client
+
 ```tsx
 import {
   defaultShouldDehydrateQuery,
