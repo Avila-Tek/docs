@@ -21,22 +21,22 @@ Para optimizar la gestión y configuración del monorepo, utilizamos una herrami
 
 Nuestros proyectos de frontend se realizan con Next.js, un popular framework de desarrollo web de código abierto basado en React.js, diseñado para ayudar a los equipos de desarrollo frontend a construir aplicaciones web modernas de manera eficiente y escalable. Acá una introducción a Nextjs 13, al Avila Way Next.js 13
 
-### Estructura del proyecto
+### Estructura básica del proyecto
 
-En el siguiente documento se explica detalladamente cómo se estructuran nuestros proyectos: Estructura del proyecto para que conozcas a qué se refiere cada folder y file.
+En el siguiente documento se explica detalladamente cómo se estructuran nuestros proyectos: Estructura del proyecto para que conozcas a qué se refiere cada folder.
 
 
-```
+```text
 apps/
- ├── admin/
- ├── api/
- ├── client/
+ ├── admin/                          
+ ├── api/                          
+ └── client/   
 packages/
- ├── feature-flags/
- ├── schemas/
- ├── services/
- ├── ui/
- ├── utils/
+ ├── feature-flags/                  
+ ├── schemas/                
+ ├── services/                     
+ ├── ui/                           
+ └── utils/                        
  ```
  
 - **apps**: Contiene los proyectos de frontend y backend.
@@ -44,7 +44,7 @@ packages/
  
 ### Variables de entorno
  
-Las variables de entorno se ubicarán en los siguientes directorios:
+Por lo general las variables de entorno se ubicarán en los directorios dentro de **apps/**, por ejemplo:
 
 - `./apps/api/.env`
 - `./apps/admin/.env`

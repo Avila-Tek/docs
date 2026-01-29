@@ -16,35 +16,34 @@ Feature Driven Development (FDD) es una metodología ágil de desarrollo de soft
 
 - Antes se organizaba el código por **tipos de archivos**:
 
-```
+```text
 # Arquitectura Anterior
 
 src/
-├── components/
-├── hooks/
-├── services/
-├── utils/
-├── pages/
-└── styles/
+├── app/                          # Next.js App Router pages and layouts
+├── components/                   # Componentes reutilizables
+├── hooks/                        # Hooks personalizados
+├── services/                     # Servicios de datos
+├── utils/                        # Utilidades
+└── styles/                       # Estilos globales
 ```
 
 - Ahora en lugar de organizar el código por **tipos de archivos**, tratamos de organizarlos por su **funcionalidad**:
 
-```
+```text
 # Con Feature Driven
 
 src/
- ├── app/                   <-- Páginas
- ├── features/              <-- Funcionalidades
-  ── auth/
-    ├── ui/                 <-- Componentes UI
-    ├── application/        <-- Logica de negocio
-    ├── domain/             <-- Modelos y logica de negocio
-    ├── infrastructure/     <-- Implementacion de la logica de negocio
-  ── onboarding/
-  ── createPost/
-  ── postDetails/
-  ── ...            
+├── app/                          # Next.js App Router pages and layouts
+└── features/                     # Features
+    ├── auth/                     # 🔒 Feature de autenticación
+    │   ├── ui/                   # ── Componentes de la UI
+    │   ├── application/          # ── Lógica de negocio
+    │   ├── domain/               # ── Modelos y lógica de negocio
+    │   └── infrastructure/       # ── Implementación de la lógica de negocio
+    ├── onboarding/               
+    ├── createPost/               
+    └── postsDetails/                   
  ```
 
 :::info

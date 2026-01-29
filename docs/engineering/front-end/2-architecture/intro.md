@@ -4,78 +4,6 @@ title: Folder structure
 sidebar_position: 1
 ---
 
-<!-- # 1. Architecture
-
-En esta sección explicamos **el modelo mental único** que usamos para estructurar todo el frontend.
-
-El objetivo no es memorizar carpetas, sino **entender responsabilidades**.
-
-## Capas
-
-Nuestra arquitectura se basa en el paradigma de Clean Architecture, sin emabrgo como React fue conceptualizado para la programación funcional y de otra manera de abstraen ciertos conceptos.
-
-![clean-architecture](/img/frontend/architecture/clean-architecture.jpeg)
-
-Para entender un poco de Clean Architecture se suguieren las siguientes fuentes:
-
-Tambien es necesario reforzar conceptos de los principios S.O.L.I.D.
-
-Ahora bien, nuestra arquitectura se organiza en **cuatro capas**, ordenadas de afuera hacia adentro: -->
-
-
-
-<!-- (Sí, se volteo la piramide, es que siento que la capa mas superfical que es la UI es la ve el usuario jeje)
-
-Piensa en esto como un **flujo de dependencia**:
-
-- Las capas de abajo **pueden usar** las de arriba
-- Las capas de arriba **no saben que existen** las de abajo
-- Excepto el Domain que es la Base dd -->
-
-<!-- ## Feature Driven
-
-Se propone una arquitectura feature-driven organiza el código alrededor de funcionalidades del producto, no alrededor de tipos técnicos globales.
-
-En lugar de tener carpetas globales como:
-
-```tsx
-components/
-services/
-hooks/
-api/
-```
-
-se agrupa todo lo necesario para una funcionalidad concreta dentro de una misma carpeta.
-
-En nuestro contexto, un **feature** no es una entidad del dominio (User, Product, Order).
-
-Un **feature** es una **funcionalidad completa** que el usuario entiende, por ejemplo:
-
-- **Auth**: login / logout
-- **Onboarding**: completar perfil
-- **Feed**: ver el timeline
-- **Create Post**: crear una publicación
-- **Post Details**: ver una publicación + comentarios
-- **Search**: buscar
-- **Settings**: editar preferencias
-- **Users Management**: listar usuarios + editar rol
-
-```tsx
-features/
-    auth/
-    onboarding/
-    createPost/
-    postDetails/
-```
-
-:::info
-Si borras features/create-post, el resto de la app sigue compilando.
-Lo único que cambia es que ya no existe ese flujo/ruta.
-:::
-
-Cada feature es una unidad vertical completa, con cada una de las capas si así lo requiere.
-
-Esto permite entender, modificar y escalar una funcionalidad sin tener que navegar todo el proyecto. -->
 ## Primeros pasos
 
 Si no tienes experiencia previa con **Clean Architecture** o **Feature Driven Development**, te recomiendo empezar por la documentación de la arquitectura [aquí](/docs/frontend/architecture).
@@ -90,9 +18,19 @@ Para mayor contexto esta aplicación es una plataforma social tipo feed (estilo 
 - Subir imágenes asociadas a publicaciones o respuestas
 
 ```text
-
 src/
 ├── app/                          # Next.js App Router pages and layouts
+│   ├── layout.tsx                # ── Layout global
+│   ├── globals.css               # ── Estilos globales
+│   ├── error.tsx                 # ── Componente de error
+│   ├── not-found.tsx             # ── Componente de no encontrado
+│   └── (auth)/                   # ── Rutas de autenticación
+│         ├── layout.tsx          # ── Layout de autenticación
+│         ├── login/
+│         │    └── page.tsx       # ── Página de login
+│         └── register/
+│              └── page.tsx       # ── Página de registro
+│
 ├── features/                     # Módulos de funcionalidades
 │   ├── auth/                     # 🔒 Módulo de autenticación
 │   │   ├── ui/                   # ── Componentes de la UI
@@ -104,17 +42,34 @@ src/
 │       ├── application/          # ── Lógica de negocio
 │       ├── domain/               # ── Modelos y lógica de negocio
 │       └── infrastructure/       # ── Implementación de la lógica de negocio
+│
 ├── shared/           
-│   ├── domain/                   # ── Modelos y lógica de negocio compartido
+│   ├── hooks/                    # ── Hooks compartidos
 │   ├── features/                 # ── Módulos de funcionalidades compartidas
 │   │   └── upload-media/         # 📸 Módulo de subida de medios
 │   │       ├── ui/               # ── Componentes de la UI
 │   │       ├── application/      # ── Lógica de negocio
 │   │       ├── domain/           # ── Modelos y lógica de negocio
 │   │       └── infrastructure/   # ── Implementación de la lógica de negocio
-│   ├── infra/                    # ── Infraestructura compartida
-│   └── ui/                       # ── Componentes de la UI compartidos
-├── lib/                          # 💡 Utilidades (formatter, random, etc)
+│   ├── domain/                   
+│   │   ├── user.ts               # ── Modelo y lógica de usuario compartida
+│   │   ├── media.ts              # ── Modelo y lógica de media compartida
+│   │   └── pagination.ts         # ── Modelo y lógica de paginación compartida
+│   ├── infrastructure/           
+│   │   └── http/                 
+│   │       ├── api.ts            # ── Implementación del cliente http
+│   │       └── http.errors.ts    # ── Implementación de errores http
+│   │                      
+│   └── ui/                       # 💄 Componentes de la UI compartidos
+│       ├── components/
+│       ├── widgets/
+│       ├── pages/
+│       └── layouts/
+│
+└── lib/                          # 💡 Configuración de librerias
+      ├── dayjsConfig/
+      ├── sentry/
+      └── reactQuery/
 ```
 
 ### ¿Qué es cada carpeta?
@@ -123,41 +78,20 @@ src/
 Contiene las páginas y layouts de la aplicación
 
 #### 📂 features/
-Contiene los módulos de funcionalidades
+Contiene los módulos de funcionalidades, esta carpeta támbien puedes encontrarla dentro de [shared/](/docs/frontend/architecture/shared).  
+
+- Aquí es donde esta la magia, podemos dividir la app en funcionalidades completas donde cada una tiene su propia capa de lógica de negocio, componentes, modelos y como estructuramos la data para pasarla a la UI.
+
 
 #### 📂 shared/
 Contiene los módulos de funcionalidades compartidas
 
+- Podemos colocar componentes, modelos, lógica de negocio, etc que se usen en varias funcionalidades dentro de la app.
+
 #### 📂 lib/
-Contiene las utilidades
+Contiene las configuraciones de librerias utilizadas por esa app.
 
-## How to read this documentation
-
-Aunque casi ninguna documentación lo dice explícitamente, hay **dos formas comunes** de construir frontend:
-
-1. **De UI → Data**  
-   Empiezas por pantallas/componentes y vas bajando: UI → Application → Domain → Infrastructure.
-
-2. **De Data → UI**  
-   Empiezas por el acceso a datos y contratos y vas subiendo: Infrastructure → Domain → Application → UI.
-
-En esta guía, la documentación está organizada principalmente **de Data → UI** (de abajo hacia arriba), porque:
-
-- primero definimos contratos y límites (infra/schemas)
-- luego cómo se modela y valida (domain)
-- después cómo se orquesta (application)
-- y finalmente cómo se presenta (ui)
-
-:::note Importante
-Esto **no significa** que tú debas programar siempre en ese orden.
-
-Puedes leer (y construir) las capas en el orden que tenga más sentido para tu tarea:
-
-- Si estás trabajando desde un diseño o una pantalla, probablemente empieces en **UI**.
-- Si estás integrando un endpoint o cambiaron contratos, probablemente empieces en **Infrastructure**.
-  :::
-
-La regla que no cambia es que, sin importar el orden en que empieces a construir, **se deben respetar las reglas de dependencias/imports entre capas**.
+<!-- 
 
 ### Ejemplo de folder structure
 
@@ -306,4 +240,4 @@ src/
     lib/
       format.ts
       assert.ts
-```
+``` -->
