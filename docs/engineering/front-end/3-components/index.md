@@ -1,5 +1,5 @@
 ---
-title: 🧩 Componentes
+title: 🧩 Como escribimos componentes
 slug: /frontend/components
 ---
 
