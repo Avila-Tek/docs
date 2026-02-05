@@ -11,6 +11,7 @@ La centralización de la lógica de comunicación mediante un Shared API Client 
 Define la interfaz y los tipos base para el HttpClient. Su propósito principal es desacoplar la lógica de negocio de las implementaciones específicas de red, garantizando que el consumo de APIs sea seguro y consistente en todo el proyecto.
 
 ```ts
+// 📁 packages/services/src/http/port/httpClient.port.ts
 import { getEnumObjectFromArray, type Safe } from '@repo/utils';
 
 export const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const;
@@ -113,6 +114,7 @@ El Adaptador es la implementación concreta del contrato HttpClient. Mientras qu
 Para el ejemplo a continuacion, se muestra un adaptador utilizando "safeFetch", pero se podria hacer un adaptador para axios, fetch y cualquier otra herramienta que prefieras.
 
 ```ts
+// 📁 packages/services/src/http/adapters/safeFetch.port.ts
 import type { Safe } from '@repo/utils';
 import { safeFetch } from '@repo/utils';
 import { prettifyError } from 'zod/v4';
