@@ -37,8 +37,8 @@ Packages (services + schemas)
 ### 1. api requests y dtos
 
 API client + DTOs se encuentran en Packages compartidos, para ello leer:
-
-# INCLUIR DOC DE COMO HACER FETCH
+  
+  👉 [/frontend/standards/fetch/packages](/docs/frontend/fetch/packages)
 
 Por lo tanto:
 
