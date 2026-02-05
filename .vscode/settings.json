@@ -1,4 +1,7 @@
 {
-  "conventionalCommits.scopes": ["backend"],
+  "conventionalCommits.scopes": [
+    "backend",
+    "frontend"
+  ],
   "cSpell.words": ["prometheus"]
 }

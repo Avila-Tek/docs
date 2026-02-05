@@ -4,19 +4,96 @@ title: Query
 sidebar_position: 3
 ---
 
+## Feature's API
+Esta es la api de nuestro feature, debemos declarar cuales son las consultas a las cuales tendremos acceso.
+
+```tsx
+// 📁 .../src/feature/userManagement/infrastructure/userManagement.interfaces.ts
+import type {
+  TCreateUserInput,
+  TPagination,
+  TPaginationInput,
+  TUser,
+} from '@repo/schemas';
+import type { Safe } from '@repo/utils';
+
+// aca hay queries y mutaciones
+export interface UserApi {
+  pagination(input: TPaginationInput): Promise<Safe<TPagination<TUser>>>;
+}
+```
+
+## Service
+En el servicio hacemos tendremos la responsabilidad de hacer los parseos del dominio de nuestro feature, hacia el de la api o viceversa.
+
+```ts
+// 📁 .../src/feature/userManagement/infrastructure/userManagement.service.ts
+import type { TCreateUserInput, TPaginationInput } from '@repo/schemas';
+import type { PaginatedUsers, User } from '../domain/user.model';
+import type { UserApi } from './userManagement.interfaces';
+import { toPaginatedUsers, toUserDomain } from './userManagement.transform';
+
+export class UserManagementService {
+  constructor(private api: UserApi) {}
+
+  async allUsersPagination(input: TPaginationInput): Promise<PaginatedUsers> {
+    const result = await this.api.pagination(input);
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    return toPaginatedUsers(result.data);
+  }
+}
+```
+
+## Instancia del servicio
+
+```ts
+// 📁 .../src/feature/userManagement/infrastructure/index.ts
+import { getAPIClient } from '@/src/lib/api';
+import { UserManagementService } from './userManagement.service';
+
+const api = getAPIClient();
+export const userManagementService = new UserManagementService(api.v1.users);
+```
+
+## Exportar query options
+
+```ts
+// 📁 .../src/feature/userManagement/application/userManagement.query.ts
+import type { TPaginationInput } from '@repo/schemas';
+import { queryOptions } from '@tanstack/react-query';
+import { userManagementService } from '../../infrastructure';
+
+export const usersQueryKeys = {
+  pagination: (params: TPaginationInput) =>
+    ['pagination', params] as const,
+};
+
+export function usersPaginationQueryOptions({
+  page,
+  perPage,
+}: TPaginationInput) {
+  return queryOptions({
+    queryKey: usersQueryKeys.pagination({ page, perPage }),
+    queryFn: () => userManagementService.allUsersPagination({ page, perPage }),
+  });
+}
+```
+
 ## Queries
 
-- Obtener data del servidor.
+### Server side
 
 Primero realizaremos un prefetching de los datos que deseamos desde el servidor; esto cargará nuestro caché con la respuesta de la consulta deseada.
 
 ```tsx
-// 📁 /app/client/src/app/users/page.tsx
+// 📁 ../app/users/page.tsx
 import { paginationInputSchema } from '@repo/schemas';
 import React from 'react';
 import z from 'zod';
 import { getQueryClient } from '@/src/lib/get-query-client';
-import { usersQueries } from '@/src/services/user/queries';
+import { usersPaginationQueryOptions } from '@/src/features/userManagement/application/queries/userManagement.query';
 import { UsersQuery } from './users-query';
 
 type Props = {
@@ -35,7 +112,7 @@ export default async function Page({ searchParams }: Props) {
     );
   }
   void queryClient.prefetchQuery(
-    usersQueries.pagination({
+    usersPaginationQueryOptions({
       page: parsed.data.page,
       perPage: parsed.data.perPage,
     }),
@@ -53,7 +130,8 @@ Y ahora procedemos a leer la data del cache sin problema alguno, para ello hacem
 'use client';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import React from 'react';
-import { usersQueries } from '@/src/services/user/queries';
+import { usersPaginationQueryOptions } from '@/src/features/userManagement/application/queries/userManagement.query';
+
 
 export function UsersQuery({
   page,
@@ -62,7 +140,7 @@ export function UsersQuery({
   page: number;
   perPage: number;
 }) {
-  const query = useSuspenseQuery(usersQueries.pagination({ page, perPage }));
+  const query = useSuspenseQuery(usersPaginationQueryOptions({ page, perPage }));
   if (query.error) {
     <p className="error">{query.error.message}</p>;
   }
@@ -72,15 +150,14 @@ export function UsersQuery({
 
 <p align="right"><small>- El prefetching funcionará siempre y cuando sus queryKeys sean iguales, en este ejemplo lo declaramos en el objeto userQueries 😜</small></p>
 
-- Obtener desde el client.
+### Client side
 
 Haremos uso de useQuery. Es importante mencionar que, si hiciéramos un prefetching desde el servidor de ciertos datos y se consultan en el cliente con useQuery, recibiríamos los datos de la caché, tal como en el caso de useSuspenseQuery. La diferencia entre ambas es cómo se gestiona el estado de carga (loading state).
 
 ```tsx
 // 📁 apps\client\src\app\users\users-query.tsx
-const query = useQuery(usersQueries.pagination({ page, perPage }));
+import { useQuery } from '@tanstack/react-query';
+import { usersPaginationQueryOptions } from '@/src/features/userManagement/application/queries/userManagement.query';
+
+const query = useQuery(usersPaginationQueryOptions({ page, perPage }));
 ```
-
-- Manejar el loading state
-
-Con useQuery, el estado de carga (loading state) se manejaría de forma manual; en cambio, con useSuspenseQuery, se haría a través de React.Suspense.
