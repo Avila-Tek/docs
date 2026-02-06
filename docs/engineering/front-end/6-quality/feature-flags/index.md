@@ -32,6 +32,7 @@ Para utilizarlas en nuestros proyectos, hacemos lo siguiente:
 
 NEXT_PUBLIC_POSTHOG_KEY=<ph_project_api_key>
 NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+NEXT_PUBLIC_APP_ENV=<ambiente_de_la_app> # dev, qa, stg, prod
 ```
 
 ### 2. Agregar el context provider al root layout
@@ -64,6 +65,7 @@ export default function RootLayout({
     provider: 'posthog',
     token: process.env.NEXT_PUBLIC_POSTHOG_KEY!,
     api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
+    env: process.env.NEXT_PUBLIC_APP_ENV || 'qa',
   };
 
   return (
