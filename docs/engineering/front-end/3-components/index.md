@@ -1,9 +1,9 @@
 ---
-title: 🧩 Como escribimos componentes
+title: 🧩 Cómo escribimos componentes
 slug: /frontend/components
 ---
 
-# 🧩 Componentes
+# 🧩 Cómo escribimos componentes
 
 Esta sección define los **componentes de interfaz** que utilizaremos en el frontend y la forma en que serán implementados y mantenidos. El objetivo es contar con un conjunto de componentes **reutilizables, consistentes y fáciles de mantener**, que sirvan como base para la construcción de la interfaz de usuario.
 

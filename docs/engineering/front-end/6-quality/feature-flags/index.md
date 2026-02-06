@@ -6,6 +6,10 @@ slug: /frontend/quality/feature-flags
 
 # Feature flags
 
+:::tip Taller del 06/02/26
+🎥: https://avilatek.sg.larksuite.com/minutes/obsgp59169haa3fl8orvwvbn
+:::
+
 ## 🔎 Overview
 
 Las feature flags, también conocidas como feature toggles o flags, son una técnica de desarrollo de software que permite activar o desactivar funcionalidades específicas de una aplicación sin necesidad de volver a desplegar el código. Se implementan mediante condicionales en el código que verifican el estado de una flag antes de ejecutar una determinada funcionalidad.

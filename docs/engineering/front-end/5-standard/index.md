@@ -1,6 +1,6 @@
 ---
 slug: /frontend/standards
-title: Code Standards
+title: 🤝 Code Standards
 sidebar_position: 3
 ---
 

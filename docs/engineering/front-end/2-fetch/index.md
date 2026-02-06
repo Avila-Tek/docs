@@ -1,12 +1,12 @@
 ---
 sidebar_position: 2
-title: Cómo integramos una API
+title: 🔌 Cómo integramos una API
 slug: /frontend/fetch
 keywords: ['fetch']
 tags: ['avila-tek', 'fetch']
 ---
 
-# Como integramos una API
+# 🔌 Cómo integramos una API
 
 En esta sección definimos cómo nuestra aplicación **se comunica con el backend** de forma consistente, segura y escalable.
 
