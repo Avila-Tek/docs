@@ -21,15 +21,15 @@ UI → Application → Domain → Infrastructure
 
 > ⚠️ **Nunca** importes en la dirección opuesta (excepto desde domain).
 
-## Organización feature-driven
+<!-- ## Organización feature-driven
 
 Agrupamos el código por funcionalidad de producto (un "feature"), no por tipo técnico.
 
 Un feature es una capacidad completa para el usuario final, por ejemplo: autenticación, carrito de compras, perfil de usuario.
 
-**Promesa:** Si eliminas `features/<feature>`, el resto de la app debe seguir compilando (esa capacidad simplemente desaparece).
+**Promesa:** Si eliminas `features/<feature>`, el resto de la app debe seguir compilando (esa capacidad simplemente desaparece). -->
 
-### Estructura sugerida
+<!-- ### Estructura sugerida
 
 ```
 src/
@@ -37,7 +37,7 @@ src/
   features/           # Features de producto (slices verticales)
   shared/             # UI y utilidades compartidas
   lib/                # Helpers a nivel app (query client, env, config)
-```
+``` -->
 
 
 ## Cómo construir el front
@@ -68,17 +68,17 @@ Puedes leer (y construir) las capas en el orden que tenga más sentido para tu t
 
 - Si estás trabajando desde un diseño o una pantalla, probablemente empieces en **UI**.
 - Si estás integrando un endpoint o cambiaron contratos, probablemente empieces en **Infrastructure**.
-  :::
+:::
 
 La regla que no cambia es que, sin importar el orden en que empieces a construir, **se deben respetar las reglas de dependencias/imports entre capas**.
 
 ## Ejemplo
 
-Utilizemos el primero (UI -> Data) con un ejemplo sencillo de login.
+Vamos a ver el flujo de **UI → Data** con el ejemplo de login, que es una de las rutas principales de la aplicación, ya que seguramente sea una de las primeras que veas al empezar a trabajar en el proyecto.
 
-### UI
+### 1. UI
 
-En esta capa encontramos los archivos que definen la UI de la pantalla.
+Queremos que se pueda observar la separacion de componentes por features.
 
 ```tsx
 // apps/client/src/app/(auth)/login/page.tsx
@@ -150,7 +150,7 @@ export function LoginForm() {
 ```
 ---
 
-### Application
+### 2. Application
 
 En esta capa encontramos los archivos que orquestan los casos de usos, hooks, queries y mutaciones.
 
@@ -207,7 +207,7 @@ export class AuthServiceClass {
 
 ---
 
-### Domain
+### 3. Domain
 
 En esta capa encontramos los archivos que definen el lenguaje de negocio.
 
@@ -222,7 +222,7 @@ export function getRandomTagline(page: keyof typeof authTaglines): string {
 ```
 ---
 
-### Infrastructure
+### 4. Infrastructure
 
 En esta capa encontramos los archivos que definen la infraestructura como servicios, transformación de DTOs, validaciones y contratos.
 
@@ -247,4 +247,138 @@ export function loginDefaultValues(): TLoginForm {
 }
 ```
 
+---
+
+<!-- <video width="100%" controls>
+  <source src="/video/frontend/shared-api-client.mp4" type="video/mp4"><source/>
+  Your browser does not support the video tag.
+</video> -->
+![](https://youtu.be/yKNxeF4KMsY)
+
+## Turborepo como nos ayuda
+
+Anteriormente ya vimos como estructurar de manera correcta las carpetas de cada feature, ahora veremos como turborepo nos ayuda a gestionar las dependencias entre ellas.
+
+### packages/schemas
+
+Veamos primer que tenemos en un schema como el de usuario.
+
+```text
+user/
+  user.doc.ts
+  user.dto.ts
+  user.schema.ts
+  index.ts
+```
+
+#### 1. user.schema.ts
+
+Definicion basica de la interfaz del usuario.
+
+```ts
+export const userSchema = z.object({
+  id: z.uuid(),
+  email: z.email().min(5),
+  firstName: z.string().nullable(),
+  lastName: z.string().nullable(),
+  timezone: z.string(),
+  status: userStatusSchema,
+  createdAt: zDateToIsoNullableOpt,
+  updatedAt: zDateToIsoNullableOpt,
+});
+
+export type TUser = z.output<typeof userSchema>;
+```
+
+#### user.dto.ts
+
+Creacion de inputs y outputs, esto nos ayuda tanto en el backend como en las `<feature>/application/` o `<feature>/infrastructure/` del frontend. 
+
+```ts
+export const createUserInput = z.object({
+  email: z.email(),
+  password: z.string(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+});
+
+export type TCreateUserInput = z.infer<typeof createUserInput>;
+```
+
+#### user.doc.ts
+
+Creacion de documentacion para la API con swagger, es bueno saber como la api genera su documentacion.
+
+```ts
+  createOne: {
+    summary: 'Create user',
+    description: 'Create user',
+    tags: ['users'],
+    body: createUserInput,
+    response: {
+      200: userSchema,
+    },
+  },
+```
+
+:::note 
+Seguramente no sea tan comun que el frontend haga cambios en `packages/schemas`, pero es bueno saber como compartimos **schemas** y **dto's** entre aplicaciones con **turborepo**.
+:::
+
+---
+
+### packages/services
+
+El servicio de usuario quedaria de la siguiente manera:
+
+```text
+components/
+  user.service.ts
+api.ts
+```
+
+#### services/user.service.ts
+
+Declaramos los metodos que se extenderan en nuestra `infraestructure/api.ts` utilizando `packages/services/api.ts`.
+
+```ts
+export const UserService = {
+  // ...
+  async create(
+    input: TCreateUserInput,
+    config?: TRequestConfig
+  ): Promise<Safe<TUser>> {
+    const response = await safeFetch(
+      new URL(`${this.baseUrl}/v1/users/create`),
+      { body: JSON.stringify(input) }
+    );
+    // parse logic ...
+    return response;
+  }
+};
+```
+
+#### services/api.ts
+
+En este archivo declaramos la interface de los servicios que se utilizaran en la aplicacion.
+
+```ts
+export type APIService = {
+  users: UserService;
+  // others services ...
+};
+
+export class API {
+  public v1: APIService;
+
+  constructor(private config: APIConfig) {
+    this.v1 = Object.freeze({
+      users: new UserService(this.config.baseURL, this.config.token),
+      // others services ...
+    });
+  }
+}
+```
+
+<!-- ## Que nos queda ? -->
 

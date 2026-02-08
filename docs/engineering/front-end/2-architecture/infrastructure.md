@@ -13,9 +13,11 @@ Es el punto de entrada/salida de los datos de la aplicación
 ```text
 UI
  ↓
-Application   ← aquí
+Application   
  ↓
-Infrastructure
+Domain   
+ ↓
+Infrastructure   ← aquí
  ↓
 Packages (services + schemas)
 ```
