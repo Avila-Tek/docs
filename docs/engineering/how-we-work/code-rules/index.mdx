@@ -3,11 +3,11 @@ sidebar_position: 2
 title: Reglas del código
 ---
 
+import Note from '@site/src/components/Note/index.mdx';
 
 ## 1. Convenciones de nombres
 
-
-### 1.1. Nombres de carpetas
+###  Carpetas
 
 - Los nombres de carpetas deben estar en formato camelCase.
 - Los nombres de carpetas deben estar en formato snake_case **(only for mobile)**.
@@ -24,7 +24,7 @@ lib/
   └── .../
 ```
 
-### 1.2. Nombres de archivos
+###  Archivos
 
 - Los nombres de archivos deben estar en formato PascalCase.
 - Los nombres de archivos deben estar en formato snake_case **(only for mobile)**.
@@ -41,9 +41,7 @@ lib/
         └── sentryConfig.ts
 ```
 
-
-
-### 1.3. Nombres de variables
+###  Variables
 
 Los nombres de variables deben estar bien definidos y ser descriptivos.
 
@@ -57,5 +55,45 @@ const age = 25;
 const firstName = "John";
 ```
 
+###  Funciones
 
+Los nombres de funciones deben estar bien definidos y ser descriptivos.
 
+```typescript
+// ❌ Mal
+function a() {
+    return 25;
+} 
+
+// ✅ Bien
+function getAge() {
+    return 25;
+}
+```
+
+### Rutas absolutas (obligatorio)
+
+**Regla**
+
+- ✅ Importa usando alias `@/` (rutas absolutas).
+- ❌ Evita `../../..` fuera de la carpeta local.
+
+**Por qué**
+
+- Mejora refactors, reduce errores, acelera lectura en PR.
+
+**Ejemplos**
+
+```ts
+// ✅ bien
+import { Button } from '@/shared/ui/button';
+import { ProductCard } from '@/entities/product';
+import { AddToCartButton } from '@/features/cart/add-to-cart';
+
+// ❌ mal
+import { Button } from '../../../shared/ui/button';
+```
+
+<Note title="Nota" type="warning">
+Esto puede variar si es para `web` o para `mobile`.
+</Note>

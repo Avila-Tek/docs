@@ -1,0 +1,45 @@
+import Note from '@site/src/components/Note/index.mdx';
+
+## Estructura del proyecto
+
+Nuestros proyectos web están alojados en un monorepo.
+
+> Un monorepo es un repositorio único que contiene múltiples proyectos y componentes. En lugar de dividir el código en varios repositorios independientes, todas las partes del software se almacenan en una ubicación centralizada.
+>
+> - Bambu Editorial (2023)
+
+De esta forma, tendremos los proyectos tanto de frontend web como de backend en un mismo repositotio.
+Para optimizar la gestión y configuración del monorepo, utilizamos una herramienta llamada [Turborepo](https://turbo.build/docs).
+
+### Carpetas principales 
+
+En el siguiente documento se explica detalladamente cómo se estructuran nuestros proyectos: Estructura del proyecto para que conozcas a qué se refiere cada folder.
+
+
+```text
+apps/
+ ├── admin/                          
+ ├── api/                          
+ └── client/   
+packages/
+ ├── featureFlags/                  
+ ├── schemas/                
+ ├── services/                     
+ ├── ui/                           
+ └── utils/                        
+ ```
+ 
+- **apps**: Contiene los proyectos de frontend y backend.
+- **packages**: Contiene los paquetes compartidos entre proyectos.
+ 
+### Variables de entorno
+ 
+Por lo general las variables de entorno se ubicarán en los directorios dentro de **apps/**, por ejemplo:
+
+- `./apps/api/.env`
+- `./apps/admin/.env`
+- `./apps/client/.env`
+
+<Note title="Nota" type="warning">
+Toma en cuenta que la estructura de carpetas puede cambiar según el proyecto.
+</Note>
