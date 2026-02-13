@@ -1,7 +1,8 @@
 {
   "conventionalCommits.scopes": [
     "backend",
-    "frontend"
+    "frontend",
+    "landscape"
   ],
   "cSpell.words": ["prometheus"]
 }
