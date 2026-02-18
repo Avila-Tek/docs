@@ -1,7 +1,7 @@
 ---
 title: Crear un proyecto
 sidebar_position: 1
-slug: /create-project
+slug: /lovable-setup/create-project
 ---
 
 # Crear un proyecto en Lovable
