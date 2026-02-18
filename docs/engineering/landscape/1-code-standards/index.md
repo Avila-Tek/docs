@@ -19,5 +19,5 @@ Aquí documentamos estándares agnósticos a la herramienta: aplican igual si el
 En los siguientes documentos entraremos en los estándares específicos por área (uno por tema), incluyendo guías y checklists para asegurar consistencia:
 
 - **Base de Datos**
-- **Backend**
-- **Frontend**
+- **Edge Functions**
+- **React**
