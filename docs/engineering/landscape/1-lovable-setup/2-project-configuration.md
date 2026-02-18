@@ -1,12 +1,12 @@
 ---
-title: Configuración de Agent Docs
+title: Configuración Inicial
 sidebar_position: 2
-slug: /lovable-knowledge
+slug: /lovable-setup/project-configuration
 ---
 
-# Configuración de Agent Docs (Knowledge de Lovable)
+# Configuración Inicial para trabajar con Lovable
 
-Esta guía explica cómo configurar el **Knowledge** de Lovable para que:
+Esta guía explica cómo configurar el **repositorio del proyecto** para que Lovable:
 
 - Siga nuestros estándares sin depender del prompt
 - Use *progressive disclosure* (lee solo lo necesario),
@@ -33,7 +33,28 @@ Reglas:
 - No renombres rutas internas sin actualizar referencias.
 - Mantén `agent_docs/` como fuente de verdad de guías.
 
-## 2) Verificar que Lovable lea los Agent Docs desde el repo
+## 2) Copiar la carpeta `supabase/functions/` desde `lovable-template` (incluye `_shared` y `_tests`)
+
+Si el proyecto va a usar Supabase (Edge Functions), también debemos copiar la base de funciones del template para arrancar con:
+
+- Estructura estándar de `supabase/functions/`
+- Carpeta `supabase/functions/_shared/` (helpers reutilizables)
+- Carpeta `supabase/functions/_tests/` (testing mínimo)
+
+Pasos:
+
+1. En el repo **lovable-template**, copia la carpeta `supabase/functions/` completa.
+2. Pégala en el repo del proyecto respetando la ruta: `supabase/functions/`.
+3. Haz commit y push a la rama principal (`main`).
+
+> Link del repo: **(https://github.com/landscape-at/lovable-template)**
+
+Reglas:
+
+- Copia la carpeta completa (incluyendo `_shared/` y `_tests/`).
+- No dupliques código entre funciones nuevas: todo lo común debe vivir en `_shared/`.
+
+## 3) Verificar que Lovable lea los Agent Docs desde el repo
 
 Luego del push:
 
@@ -41,7 +62,7 @@ Luego del push:
 - Confirma que el sync con GitHub esté activo.
 - Si vas a pedirle trabajo a Lovable de inmediato, en el prompt puedes referenciar que ya existen los docs (ej: “Lee agent_docs/…”), pero la idea es que el **Knowledge** lo guíe incluso sin mencionarlo.
 
-## 3) Configurar Custom Knowledge en Lovable
+## 4) Configurar Custom Knowledge en Lovable
 
 El Knowledge debe ser **muy conciso** para no inflar tokens en cada prompt.
 
