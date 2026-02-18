@@ -1,5 +1,5 @@
 ---
-title: Estándares de React
+title: React
 sidebar_position: 3
 slug: /code-standards/react
 ---

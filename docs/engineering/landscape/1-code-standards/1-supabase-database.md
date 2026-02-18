@@ -1,5 +1,5 @@
 ---
-title: Estándares de Bases de Datos
+title: Bases de Datos
 sidebar_position: 1
 slug: /code-standards/supabase/database
 ---

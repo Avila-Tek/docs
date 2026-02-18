@@ -1,5 +1,5 @@
 ---
-title: Estándares de Edge Functions
+title: Edge Functions
 sidebar_position: 2
 slug: /code-standards/supabase/edge-functions
 ---
