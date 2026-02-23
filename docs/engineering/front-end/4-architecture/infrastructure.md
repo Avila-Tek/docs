@@ -271,4 +271,5 @@ transform.ts   → adapta datos (DTO → Domain)
 service.ts     → orquesta todo lo anterior
 ```
 
-# REDIRECT A COMO TEXTEAR ESTA CAPA!!!
+## Testing
+👉 **Ir a:** [test de infraestructura](/docs/frontend/quality/testing/testing-by-layer/infrastructure-test)
