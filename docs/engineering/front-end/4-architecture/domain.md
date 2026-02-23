@@ -41,7 +41,8 @@ Si cambian las reglas → cambias el Domain, no la UI ni la API
 ```text
 domain/
 ├── model/
-└── logic/
+├── logic/
+└── form/       # opcional — solo si el feature tiene formularios
 ```
 
 ## Tipos de archivos en Domain
@@ -86,6 +87,52 @@ Funciones puras que operan sobre entidades.
 ```tsx
 export function canUserSubmit(user: User) {
   return user.status === 'ACTIVE';
+}
+```
+
+### 3. form.ts (Form Schemas & Types)
+
+**Qué es**
+
+Archivo que centraliza los **esquemas de validación** (Zod), **tipos** y **valores por defecto** de los formularios de un feature.
+
+**Responsabilidad**
+
+- Definir esquemas Zod para validación de formularios
+- Exportar tipos inferidos desde los esquemas (`z.infer`)
+- Proveer factory functions para valores por defecto (`createXDefaultValues`)
+
+**Estructura de cada form**
+
+Cada formulario dentro del archivo sigue este patrón:
+
+1. **Schema Zod** — la definición de validación
+2. **Type** — inferido del schema con `z.infer`
+3. **Default values factory** — función que retorna valores iniciales
+
+**Ejemplo — `auth.form.ts`**
+
+```ts
+// domain/auth.form.ts
+import { z } from 'zod';
+
+// 1. Schema Zod
+export const loginFormDefinition = z.object({
+  email: z.string().min(1, 'El correo es obligatorio').email('Correo inválido'),
+  password: z.string().min(1, 'La contraseña es obligatoria'),
+});
+
+// 2. Type inferido
+export type TLoginForm = z.infer<typeof loginFormDefinition>;
+
+// 3. Default values factory
+export function createLoginDefaultValues(
+  partial?: Partial<TLoginForm>
+): TLoginForm {
+  return {
+    email: partial?.email ?? '',
+    password: partial?.password ?? '',
+  };
 }
 ```
 

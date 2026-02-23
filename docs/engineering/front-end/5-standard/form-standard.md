@@ -6,55 +6,75 @@ sidebar_position: 8
 
 ## Trabajando con formularios
 
-### Modelo
-```ts
-// 📁 /apps/features/user-profile/domain/profile.model.ts
+Para manejar formularios utilizamos [React Hook Form](https://react-hook-form.com/) con [Zod](https://zod.dev/) como validador a través de `@hookform/resolvers/zod`.
 
-// form type
-export interface TProfileForm = {
-  username: string;
-  fullName: string;
-};
+### Estructura de un formulario
+
+Cada formulario se compone de **tres piezas** distribuidas en las capas de la arquitectura:
+
+| Archivo | Capa | Responsabilidad |
+|---|---|---|
+| `<feature>.form.ts` | Domain | Schema Zod, tipo inferido y factory de default values |
+| `<Name>Form.tsx` | UI / widgets | Inicializa `useForm`, conecta el mutation y envuelve con `FormProvider` |
+| `<Name>FormContent.tsx` | UI / widgets | Renderiza los inputs y consume el form context |
+
+```text
+features/user-profile/
+  domain/
+    profile.form.ts           ← schema + tipo + defaults
+  ui/
+    widgets/
+      ProfileForm.tsx          ← useForm + mutation + FormProvider
+      ProfileFormContent.tsx   ← inputs + errores
 ```
 
+**¿Por qué separar Form y FormContent?**
 
-### DTO del form
+- El **Form** maneja la lógica de configuración del formulario (schema, defaults, submit, mutation). No renderiza inputs.
+- El **FormContent** solo se encarga de renderizar campos y mostrar errores. Consume el contexto de React Hook Form con `useFormContext`.
+- Esto permite reutilizar el FormContent en distintos contextos (modales, páginas, steppers) sin duplicar la lógica del form.
 
-✅ Declarar las validaciones del form y el default value en la infraestructura del feature.
+---
+
+### Definición del formulario
+
+Declarar el schema Zod, el tipo inferido y la factory de valores por defecto en un archivo `.form.ts` dentro del **domain** del feature. Para más detalles sobre esto, consulta la [documentación del Domain layer](/docs/frontend/architecture/domain#3-formts-form-schemas--types).
 
 ```ts
-// 📁 /apps/features/user-profile/infrastructure/profile.dto.ts
+// 📁 /apps/features/user-profile/domain/profile.form.ts
 import { z } from "zod";
 import { TUser } from "@/shared/domain/user/model";
-import { TProfileForm } from "@user-profile/domain";
 
-// form's validations
+// Schema Zod
 export const profileFormDefinition = z.object({
-  username: z.string(),
-  fullName: z.string(),
+  username: z.string().min(1, 'El username es obligatorio'),
+  fullName: z.string().min(1, 'El nombre es obligatorio'),
 });
 
-// parse from data source to my form type
-export function profileDefaultValues(data: TUser): TProfileForm {
+// Type inferido del schema
+export type TProfileForm = z.infer<typeof profileFormDefinition>;
+
+// Default values factory
+export function createProfileDefaultValues(data: TUser): TProfileForm {
   return {
-    username: data.username,
-    fullName: `${data.firstName} ${data.lastName}`,
+    username: data.username ?? '',
+    fullName: `${data.firstName} ${data.lastName}` ?? '',
   };
 }
 ```
 
-### Funcion con reglas de negocio
+<!-- ### Función con reglas de negocio
 
-✅ Declarar la funcion que contiene las reglas de negocio de esta funcionalidad (llamada a otros servicios/apis o validaciones especificas para el proceso).
+✅ Declarar la función que contiene las reglas de negocio de esta funcionalidad (llamada a otros servicios/apis o validaciones específicas para el proceso).
 
-✅ se hace uso de inyeccion de dependencia para mejorar la testeabilidad.
+✅ Se hace uso de inyección de dependencia para mejorar la testeabilidad.
 
-✅ No se emplea logica de UI en esta capa.
+✅ No se emplea lógica de UI en esta capa.
 
 ```tsx
 // 📁 /apps/features/user-profile/application/use-cases/updateProfile.usecases.ts
 import { TUser } from "@/shared/domain/user/model";
-import { TProfileForm } from "@user-profile/domain";
+import { type TProfileForm } from "../../domain/profile.form";
 
 type UserProfileResult = {
   success: boolean;
@@ -90,82 +110,77 @@ export function useUpdateProfile() {
     isLoading: updateProfile.isLoading,
   };
 }
-```
+``` -->
 
 ### Contexto del formulario
 
-✅ Se maneja un loading state con disabled y setDisabled.
+✅ Se usa `isPending` del mutation como estado de loading (no se maneja un `useState` manual para disabled).
 
-✅ Se usa el Contexto de React Hook Form.
+✅ Se usa el Contexto de React Hook Form (`FormProvider`).
 
-✅ No se declaran funciones de formateo para el default value.
+✅ Los default values se crean con la factory del `.form.ts`.
 
-✅ Solo se maneja logica de UI en este componente (loading state, disabled state, llamados a handlers, renderizado de componentes, etc).
+✅ Solo se maneja lógica de UI en este componente (loading state, disabled state, llamados a handlers, renderizado de componentes, etc).
 
 ✅ Form y FormContent son componentes separados.
 
 ```tsx
-// 📁 /apps/features/user-profile/ui/widget/ProfileFormWidget.ts
-import { useForm } from "react-hook-form";
+// 📁 /apps/features/userProfile/ui/widgets/ProfileForm.tsx
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userMutations } from "@services/user";
-import { 
+import {
   profileFormDefinition,
-  TProfileForm
-} from "@user-profile/domain";
+  createProfileDefaultValues,
+  type TProfileForm,
+} from "../../domain/profile.form";
 
-interface ProfileFormWidgetProps {
-  defaultValue: TProfileForm;
+interface ProfileFormProps {
+  defaultValues: TUser;
 }
 
-function ProfileFormWidget({defaultValue}: ProfileFormWidgetProps) {
-  const [disabled, setDisabled] = React.useState(false);
-  // function with business logic
-  const updateProfile = useUpdateProfile({ recipientHandle });
-  // Initialize useForm, and set default config
+function ProfileForm({ defaultValues }: ProfileFormProps) {
+  const updateProfile = useUpdateProfile();
+
   const methods = useForm<TProfileForm>({
-    defaultValues,  // initial value
-    resolver: zodResolver(profileFormDefinition),  // zod validations
+    defaultValues: createProfileDefaultValues(defaultValues),
+    resolver: zodResolver(profileFormDefinition),
   });
 
-  // submit handler, this is where magic happens
   async function onSubmit(data: TProfileForm) {
-    if(disabled) {
-      return;
-    }
-    setDisabled(true);
-    await updateProfile.mutateAsync({
-      profile: data,
-    });
-    setDisabled(false);
+    if (updateProfile.isPending) return;
+    await updateProfile.mutateAsync(data);
   }
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <ProfileFormContent disabled={disabled} />
+        <ProfileFormContent
+          disabled={updateProfile.isPending}
+          error={updateProfile.error}
+        />
       </form>
     </FormProvider>
   );
 }
-export default ProfileFormWidget;
+export default ProfileForm;
 ```
 
 ### Contenido del formulario
 
 ✅ En caso de existir un error, se maneja el caso.
 
-✅ Se consume el Form Context de React.
+✅ Se consume el Form Context de React Hook Form.
 
 ```tsx
-// 📁 /apps/features/create-user/ui/components/UserFormContent.ts
-import { TProfileForm } from "@user-profile/domain";
+// 📁 /apps/features/user-profile/ui/widgets/ProfileFormContent.tsx
+import { useFormContext } from "react-hook-form";
+import { type TProfileForm } from "../../domain/profile.form";
 
-interface UserFormContentProps {
+interface ProfileFormContentProps {
   disabled: boolean;
 }
 
-function UserFormContent({ disabled }: UserFormContentProps) {
+export function ProfileFormContent({ disabled }: ProfileFormContentProps) {
   const {
     register,
     formState: { errors },
@@ -183,10 +198,10 @@ function UserFormContent({ disabled }: UserFormContentProps) {
         disabled={disabled}
       />
       <Input
-        type="fullName"
+        type="text"
         name="fullName"
         id="fullName"
-        label="fullName"
+        label="Nombre completo"
         error={errors.fullName}
         registration={register('fullName')}
         disabled={disabled}
@@ -197,16 +212,15 @@ function UserFormContent({ disabled }: UserFormContentProps) {
     </div>
   );
 }
-export default UserFormContent;
 ```
 
-## Ejemplo 1 de Validacion dinamica.
+## Ejemplo 1 de validación dinámica
 
-Existen casos donde se necesitan hacer validaciones dinamicas, las cuales sean capaces de adaptar su comportamiento en base a uno o mas atributos. En pocas palabras, se necesita incluir reglas de negocio especificas en dichas validaciones.
+Existen casos donde se necesitan hacer validaciones dinámicas, las cuales sean capaces de adaptar su comportamiento en base a uno o más atributos. En pocas palabras, se necesita incluir reglas de negocio específicas en dichas validaciones.
 
-Para ello se hace uso de Zod y su herramienta "superRefine" como se plantea a continuacion.
+Para ello se hace uso de Zod y su herramienta `superRefine` como se plantea a continuación.
 
-Para explicar este caso, planteemos un caso hipotetico, donde quisieramos validar si el Aba o Swift fue indicado en una transaccion (solo para el caso de que las necesite).
+Para explicar este caso, planteemos un caso hipotético, donde quisiéramos validar si el ABA o SWIFT fue indicado en una transacción (solo para el caso de que las necesite).
 
 ### Declarar el type del form
 
@@ -260,15 +274,15 @@ function getRoutingNumberRegexValidation(routingNumber: RoutingNumberType) {
 }
 ```
 
-### Validacion del form
+### Validación del form
 
 ```ts
-// 📁 /apps/features/pay-order/infrastructure/payOrder.dto.ts
+// 📁 /apps/features/pay-order/domain/payOrder.form.ts
 import { z } from "zod";
 import {
   isRoutingNumberRequired,
   getRoutingNumberRegexValidation
-} from "@user-profile/infrastructure";
+} from "./transaction.logic";
 
 // routing number definition
 const routingNumberDefinition = z.object({
@@ -348,12 +362,12 @@ export const payOrderFormValidation = z.object({
 });
 ```
 
-## Ejemplo 2 de Validacion dinamica.
+## Ejemplo 2 de validación dinámica
 
-Para el caso donde el esquema recibe una configuracion inicial, podriamos hacer lo siguiente
+Para el caso donde el esquema recibe una configuración inicial, podríamos hacer lo siguiente:
 
 ```ts
-// 📁 /apps/features/pay-order/infrastructure/payOrder.dto.ts
+// 📁 /apps/features/pay-order/domain/payOrder.form.ts
 const refineJustOutgoingTransactions = ({
   value,
   ctx,
