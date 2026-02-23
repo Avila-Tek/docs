@@ -1,10 +1,10 @@
 ---
-title: Cómo empezar un proyecto
+title: Estructura del monorepo
 sidebar_position: 1
-slug: /frontend/onboarding/starting-a-project
+slug: /frontend/onboarding/monorepo-structure
 ---
 
-# Cómo empezar un proyecto
+# Estructura del monorepo
 
 ### Estructura del proyecto
 
