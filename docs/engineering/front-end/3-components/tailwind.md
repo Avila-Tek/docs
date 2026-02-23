@@ -6,8 +6,8 @@ slug: /frontend/components/tailwind
 
 Es indispensable para una aplicacion tener estilos estandarizados, puesto que afecta directamente la velocidad de desarrollo y la satisfacción del usuario, ademas, nos permite estar preparados para posibles cambios y asegura consistencia en los estilos. 
 
-## Configuracion de colores
-Se declaran los colores que seran implementados en nuestra configuracion para el sistema
+## Configuración de colores
+Se declaran los colores que seran implementados en nuestra Configuración para el sistema
 ```tsx
 // 📁 /apps/clients/src/css/color-variables.css
 
@@ -29,7 +29,7 @@ Se declaran los colores que seran implementados en nuestra configuracion para el
 }
 ```
 
-## Configuracion light/dark mode para texto
+## Configuración light/dark mode para texto
 ```tsx
 // 📁 /apps/clients/src/css/text-variables.css
 
@@ -40,7 +40,7 @@ Se declaran los colores que seran implementados en nuestra configuracion para el
 }
 ```
 
-## Configuracion light/dark mode para bordes
+## Configuración light/dark mode para bordes
 ```tsx
 // 📁 /apps/clients/src/css/border-variables.css
 
@@ -51,7 +51,7 @@ Se declaran los colores que seran implementados en nuestra configuracion para el
 }
 ```
 
-## Configuracion light/dark mode para background
+## Configuración light/dark mode para background
 ```tsx
 // 📁 /apps/clients/src/css/bg-variables.css
 
@@ -62,7 +62,7 @@ Se declaran los colores que seran implementados en nuestra configuracion para el
 }
 ```
 
-## Configuracion light/dark mode para fg
+## Configuración light/dark mode para fg
 ```tsx
 // 📁 /apps/clients/src/css/fg-variables.css
 
@@ -75,8 +75,8 @@ Se declaran los colores que seran implementados en nuestra configuracion para el
 }
 ```
 
-## Configuracion globales
-Por ultimo hacemos creamos un archivo que contenga toda la configuracion previamente establecida para nuestro proyecto y este archivo deber aser importado en el layout de la aplicacion, para asi aplicar los estilos en todo el sistema.
+## Configuración globales
+Por ultimo hacemos creamos un archivo que contenga toda la Configuración previamente establecida para nuestro proyecto y este archivo deber aser importado en el layout de la aplicacion, para asi aplicar los estilos en todo el sistema.
 
 ```tsx
 // 📁 /apps/clients/src/apps/globals.css
