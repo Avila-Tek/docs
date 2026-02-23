@@ -56,12 +56,13 @@ Por lo tanto:
 
 ```tsx
 // @repo/packages/services/UserService
+
 export class UserService {
-async create(input: TCreateUserInput): Promise<Safe<TUser>> {
-...
-const parseResponse = safe(() => userSchema.parse(response.data));
-return parseResponse;
-}
+  async create(input: TCreateUserInput): Promise<Safe<TUser>> {
+    ...
+    const parseResponse = safe(() => userSchema.parse(response.data));
+    return parseResponse;
+  }
 }
 ```
 
@@ -75,7 +76,7 @@ export type TCreateUserInput = z.infer<typeof createUserInput>;
 export type TUser = z.infer<typeof userSchema>;
 ```
 
-# PARA MAS LEER COMO HACER FETCH
+👉 Para mas leer **[como hacer fetch](/docs/frontend/fetch)**
 
 ### 2. transform.ts
 
