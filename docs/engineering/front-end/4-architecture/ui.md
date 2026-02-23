@@ -213,3 +213,9 @@ export function StatusBadge({ status }: { status: 'ACTIVE' | 'BLOCKED' }) {
 - La UI no sabe cómo es la respuesta del API
 
 - Solo renderiza según el estado
+
+## 🧪 Testing de esta capa
+
+Para ver lineamientos, alcance y ejemplos de pruebas del **UI layer**, consulta:
+
+👉 [/docs/frontend/quality/testing/testing-by-layer/ui-test](/docs/frontend/quality/testing/testing-by-layer/ui-test)

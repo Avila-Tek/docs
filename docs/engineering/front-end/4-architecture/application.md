@@ -361,3 +361,9 @@ export function ReplyDialog({
   );
 }
 ```
+
+## 🧪 Testing de esta capa
+
+Para ver lineamientos, alcance y ejemplos de pruebas del **Application layer**, consulta:
+
+👉 [/docs/frontend/quality/testing/testing-by-layer/application-test](/docs/frontend/quality/testing/testing-by-layer/application-test)
