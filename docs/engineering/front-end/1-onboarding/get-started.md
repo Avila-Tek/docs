@@ -14,7 +14,7 @@ primero entendemos **cómo llegan los datos**, luego **cómo construimos piezas 
 
 Usamos un stack **moderno y probado en producción**:
 
-- **[Next.js][nextjs_doc]** <br/>
+- **[Next.js][nextjs_doc]**  
   Framework base para routing, rendering y optimizaciones (SSR / RSC cuando aplique).
 
 - **[React][react_doc]**  
@@ -29,7 +29,7 @@ Usamos un stack **moderno y probado en producción**:
 - **[React Query (@tanstack/react-query)][tasntack_query_doc]**  
   Capa de acceso a datos remotos (queries, mutations, cache, retries).
 
-- **[shadcn/ui][shadcn_doc]** 
+- **[shadcn/ui][shadcn_doc]**  
   Librería de componentes base, accesibles y extensibles, integrada con Tailwind.
 
 - **[Algolia][algolia_doc]**  
