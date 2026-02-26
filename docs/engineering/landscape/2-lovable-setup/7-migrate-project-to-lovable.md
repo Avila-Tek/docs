@@ -1,6 +1,6 @@
 ---
 title: Migrar Proyectos a Lovable
-sidebar_position: 5
+sidebar_position: 7
 slug: /lovable-setup/migrate-project-to-lovable
 ---
 
