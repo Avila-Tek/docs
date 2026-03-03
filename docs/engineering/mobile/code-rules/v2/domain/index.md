@@ -12,7 +12,7 @@ El principio rector de la capa es la **independencia de cualquier detalle técni
 
 | Componente | Responsabilidad |
 |---|---|
-| [**Entidades**](./entities) | Estructuras de datos inmutables que representan los conceptos del negocio. Extienden `Equatable` y pueden incluir métodos de transformación semánticos. |
+| [**Entidades**](./entities.md) | Estructuras de datos inmutables que representan los conceptos del negocio. Extienden `Equatable` y pueden incluir métodos de transformación semánticos. |
 | [**Enumeradores**](./enums) | Conjuntos cerrados de valores tipados del dominio. Incluyen un caso `unknown` como fallback y getters booleanos para facilitar condicionales. |
 | [**Parámetros**](./params) | Objetos de entrada para casos de uso y repositorios. La capa de datos extiende estas clases para agregar serialización. |
 | **Repositorios** | Interfaces que abstraen el acceso a datos. La capa de datos proporciona las implementaciones concretas. |

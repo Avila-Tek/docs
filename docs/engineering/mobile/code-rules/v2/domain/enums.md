@@ -47,7 +47,7 @@ enum PaymentMethod {
 ```
 
 :::note
-El valor `unknown` protege la aplicación de casos no contemplados. En la capa de datos, el enum modelo usa `unknown` como resultado de su factory `fromValue` cuando el API retorna un valor no reconocido. Ver [Enums de modelos](../../data/enums).
+El valor `unknown` protege la aplicación de casos no contemplados. En la capa de datos, el enum modelo usa `unknown` como resultado de su factory `fromValue` cuando el API retorna un valor no reconocido. Ver [Enums de modelos](../data/enums.md).
 :::
 
 ## Métodos auxiliares

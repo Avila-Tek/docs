@@ -140,7 +140,7 @@ class CreateProductRequestModel extends CreateProductParams {
 ```
 
 :::note
-Ver [Modelos → Request models](../../data/models) para las reglas completas sobre `RequestModel`.
+Ver [Modelos → Request models](../data/models.md) para las reglas completas sobre `RequestModel`.
 :::
 
 ## Estructura de archivos
