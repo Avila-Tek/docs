@@ -96,6 +96,92 @@ AnnouncementTextDescriptionType toEntity() {
 String serializeEnum<E>(BaseEnum<E, String> modelEnum) => modelEnum.value;
 ```
 
+## `UseCaseWithParams`
+
+`UseCaseWithParams<Type, Params>` es la interfaz base para los casos de uso que requieren un objeto de entrada para ejecutarse.
+
+```dart title="lib/core/interfaces/use_cases.dart"
+abstract class UseCaseWithParams<Type, Params> {
+  Future<Type> execute(Params parameters);
+}
+```
+
+### Parámetros genéricos
+
+| Parámetro | Rol | Tipo habitual |
+|-----------|-----|---------------|
+| `Type` | Tipo de retorno del caso de uso | `Result<T, AppError>` |
+| `Params` | Tipo del objeto de entrada | Clase `Params` del dominio (e.g. `GetProductsParams`) |
+
+### Por qué existe
+
+Sin esta interfaz, cada caso de uso definiría su método principal con un nombre arbitrario y una firma diferente. `UseCaseWithParams` fuerza un contrato uniforme — el método siempre se llama `execute` y siempre recibe un único objeto `Params` — lo que hace que todos los casos de uso sean predecibles e intercambiables.
+
+### Implementación
+
+Los casos de uso **deben** declarar `extends UseCaseWithParams<Type, Params>` e implementar el método `execute`.
+
+```dart
+class GetProductsUseCase
+    extends UseCaseWithParams<
+      Result<List<Product>, AppError>,
+      GetProductsParams
+    > {
+  GetProductsUseCase({required IProductRepository productRepository})
+      : _productRepository = productRepository;
+
+  final IProductRepository _productRepository;
+
+  @override
+  Future<Result<List<Product>, AppError>> execute(
+    GetProductsParams parameters,
+  ) => _productRepository.getProducts(parameters);
+}
+```
+
+---
+
+## `UseCaseWithoutParams`
+
+`UseCaseWithoutParams<Type>` es la interfaz base para los casos de uso que no requieren ningún dato de entrada.
+
+```dart title="lib/core/interfaces/use_cases.dart"
+abstract class UseCaseWithoutParams<Type> {
+  Future<Type> execute();
+}
+```
+
+### Parámetros genéricos
+
+| Parámetro | Rol | Tipo habitual |
+|-----------|-----|---------------|
+| `Type` | Tipo de retorno del caso de uso | `Result<T, AppError>` |
+
+### Cuándo usar `UseCaseWithParams` vs `UseCaseWithoutParams`
+
+| Situación | Interfaz |
+|-----------|----------|
+| La operación necesita datos de entrada (filtros, IDs, campos de formulario) | `UseCaseWithParams` |
+| La operación no necesita ningún dato (obtener el usuario actual, refrescar sesión) | `UseCaseWithoutParams` |
+
+### Implementación
+
+```dart
+class GetCurrentUserUseCase
+    extends UseCaseWithoutParams<Result<User?, AppError>> {
+  GetCurrentUserUseCase({required IUserRepository userRepository})
+      : _userRepository = userRepository;
+
+  final IUserRepository _userRepository;
+
+  @override
+  Future<Result<User?, AppError>> execute() =>
+      _userRepository.getCurrentUser();
+}
+```
+
+---
+
 ## Estructura de archivos
 
 Las interfaces se ubican en `lib/core/interfaces/`. Cada interfaz **debe** tener su propio archivo en `snake_case`. La carpeta **debe** tener un barrel file `interfaces.dart`.
@@ -105,12 +191,13 @@ lib/
 └── core/
     └── interfaces/
         ├── base_enum.dart
+        ├── use_cases.dart
         └── interfaces.dart
 ```
 
 ```dart title="core/interfaces/interfaces.dart"
 export 'base_enum.dart';
-// ... demás interfaces del core
+export 'use_cases.dart';
 ```
 
 ### Importación
@@ -122,5 +209,5 @@ Las interfaces **deben** importarse desde el barrel file.
 import 'package:app/core/interfaces/interfaces.dart';
 
 // ❌ Incorrecto
-import 'package:app/core/interfaces/base_enum.dart';
+import 'package:app/core/interfaces/use_cases.dart';
 ```
