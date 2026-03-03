@@ -15,8 +15,8 @@ El principio rector de la capa es la **independencia de cualquier detalle técni
 | [**Entidades**](./entities.md) | Estructuras de datos inmutables que representan los conceptos del negocio. Extienden `Equatable` y pueden incluir métodos de transformación semánticos. |
 | [**Enumeradores**](./enums) | Conjuntos cerrados de valores tipados del dominio. Incluyen un caso `unknown` como fallback y getters booleanos para facilitar condicionales. |
 | [**Parámetros**](./params) | Objetos de entrada para casos de uso y repositorios. La capa de datos extiende estas clases para agregar serialización. |
-| **Repositorios** | Interfaces que abstraen el acceso a datos. La capa de datos proporciona las implementaciones concretas. |
-| **Casos de uso** | Orquestadores de la lógica de negocio. Coordinan entidades, repositorios y reglas del dominio. |
+| [**Repositorios**](./repositories.md) | Interfaces que abstraen el acceso a datos. La capa de datos proporciona las implementaciones concretas. |
+| [**Casos de uso**](./use-cases.md) | Orquestadores de la lógica de negocio. Coordinan entidades, repositorios y reglas del dominio. |
 | **Validadores** | Reglas de validación de campos consideradas parte de la lógica de negocio (e.g., formato de email, longitud de contraseña). |
 
 ## Estructura de carpetas
