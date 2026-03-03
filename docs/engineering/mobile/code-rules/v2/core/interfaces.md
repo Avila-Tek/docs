@@ -182,6 +182,121 @@ class GetCurrentUserUseCase
 
 ---
 
+## `IAsyncState`
+
+`IAsyncState<T, E>` es la clase base abstracta de todos los estados async del proyecto. Contiene el valor, el status y el error opcional de cualquier operación asíncrona.
+
+```dart title="lib/core/interfaces/async_states.dart"
+abstract class IAsyncState<T, E extends BaseError> {
+  const IAsyncState({
+    required this.value,
+    this.status = FetchAsyncStatus.initial,
+    this.error,
+  });
+
+  /// The current data value (may be a placeholder/skeleton in loading states).
+  final T value;
+
+  /// The current status of the async operation.
+  final AsyncStatus status;
+
+  /// The error that occurred, if any.
+  final E? error;
+}
+```
+
+### Parámetros genéricos
+
+| Parámetro | Rol | Tipo habitual |
+|-----------|-----|---------------|
+| `T` | Tipo del dato que almacena el estado | `double`, `List<Product>`, entidad de dominio |
+| `E` | Tipo del error | `AppError` |
+
+## `IFetchAsyncState`
+
+Extiende `IAsyncState` con métodos de transición para operaciones de **lectura** y getters booleanos de conveniencia:
+
+```dart title="lib/core/interfaces/async_states.dart"
+abstract class IFetchAsyncState<T, E extends BaseError>
+    extends IAsyncState<T, E> {
+  const IFetchAsyncState({required super.value, super.error, super.status});
+
+  /// Transitions to the loaded state with [data] as the new value.
+  IAsyncState<T, E> loaded(T data);
+
+  /// Transitions to the waiting state. Optionally replaces the placeholder value.
+  IAsyncState<T, E> waiting([T? newPlaceholder]);
+
+  /// Transitions to the failure state with the given [error].
+  IAsyncState<T, E> failed(E error);
+
+  bool get isInitial => status == FetchAsyncStatus.initial;
+  bool get isWaiting => status == FetchAsyncStatus.waiting;
+  bool get isLoaded  => status == FetchAsyncStatus.loaded;
+  bool get isFailure => status == FetchAsyncStatus.failure;
+}
+```
+
+La implementación concreta que se usa en los BLoCs es `FetchAsyncState<T, E>`. Ver [Types](./types.md).
+
+## `ISendAsyncState`
+
+Extiende `IAsyncState` con métodos de transición para operaciones de **escritura**:
+
+```dart title="lib/core/interfaces/async_states.dart"
+abstract class ISendAsyncState<T, E extends BaseError>
+    extends IAsyncState<T, E> {
+  const ISendAsyncState({required super.value, super.error, super.status});
+
+  /// Transitions to the sent state. Optionally updates the value.
+  IAsyncState<T, E> sent([T? data]);
+
+  /// Transitions to the waiting state.
+  IAsyncState<T, E> waiting();
+
+  /// Transitions to the failure state with the given [error].
+  IAsyncState<T, E> failed(E error);
+
+  bool get isWaiting => status == SendAsyncStatus.waiting;
+  bool get isSent    => status == SendAsyncStatus.sent;
+  bool get isFailure => status == SendAsyncStatus.failure;
+}
+```
+
+La implementación concreta es `SendAsyncState<T, E>`. Ver [Types](./types.md).
+
+## `IReloadAsyncState`
+
+Extiende `IFetchAsyncState` con soporte para recarga y actualización parcial. Se usa cuando la pantalla debe mostrar los datos existentes mientras se refresca en background:
+
+```dart title="lib/core/interfaces/async_states.dart"
+abstract class IReloadAsyncState<T, E extends BaseError>
+    extends IFetchAsyncState<T, E> {
+  const IReloadAsyncState({required super.value, super.status, super.error});
+
+  /// Transitions to the reloading state (pull-to-refresh, background refresh).
+  IReloadAsyncState<T, E> reloading([T? newPlaceholder]);
+
+  /// Transitions to the updating state (partial data update).
+  IReloadAsyncState<T, E> updating([T? newPlaceholder]);
+
+  bool get isReloading => status == FetchAsyncStatus.reloading;
+  bool get isUpdating  => status == FetchAsyncStatus.updating;
+}
+```
+
+La implementación concreta es `ReloadAsyncState<T, E>`. Ver [Types](./types.md).
+
+### Cuándo usar cada interfaz
+
+| Interfaz | Caso de uso |
+|---|---|
+| `IFetchAsyncState` | Cargar datos una vez: listados, detalles, perfiles |
+| `ISendAsyncState` | Enviar datos: crear, actualizar, eliminar, login, submit |
+| `IReloadAsyncState` | Cargar + refrescar: listas con pull-to-refresh, datos que se actualizan en background |
+
+---
+
 ## Estructura de archivos
 
 Las interfaces se ubican en `lib/core/interfaces/`. Cada interfaz **debe** tener su propio archivo en `snake_case`. La carpeta **debe** tener un barrel file `interfaces.dart`.
@@ -192,12 +307,14 @@ lib/
     └── interfaces/
         ├── base_enum.dart
         ├── use_cases.dart
+        ├── async_states.dart
         └── interfaces.dart
 ```
 
 ```dart title="core/interfaces/interfaces.dart"
 export 'base_enum.dart';
 export 'use_cases.dart';
+export 'async_states.dart';
 ```
 
 ### Importación
