@@ -270,4 +270,8 @@ transform.ts   → adapta datos (DTO → Domain)
 service.ts     → orquesta todo lo anterior
 ```
 
-# REDIRECT A COMO TEXTEAR ESTA CAPA!!!
+## 🧪 Testing de esta capa
+
+Para ver lineamientos, alcance y ejemplos de pruebas del **Infrastructure layer**, consulta:
+
+👉 [/docs/frontend/quality/testing/testing-by-layer/infrastructure-test](/docs/frontend/quality/testing/testing-by-layer/infrastructure-test)

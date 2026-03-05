@@ -1,10 +1,10 @@
 ---
-title: Testing por capas
-sidebar_position: 3
+title: Pruebas unitarias por capas
+sidebar_position: 2
 slug: /frontend/quality/testing/testing-by-layer
 ---
 
-# Testing por capas
+# Pruebas unitarias por capas
 
 ## 🔍 Overview
 
