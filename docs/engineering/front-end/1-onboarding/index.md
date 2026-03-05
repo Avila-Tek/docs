@@ -14,29 +14,35 @@ primero entendemos **cómo llegan los datos**, luego **cómo construimos piezas 
 
 Usamos un stack **moderno y probado en producción**:
 
-- **Next.js**  
+- **[Next.js][nextjs_doc]**  
   Framework base para routing, rendering y optimizaciones (SSR / RSC cuando aplique).
 
-- **React**  
+- **[React][react_doc]**  
   UI basada en componentes, composición y estado explícito.
 
-- **TypeScript**  
+- **[TypeScript][typescript_doc]**  
   Tipado estricto como primera línea de defensa contra errores.
 
-- **React Hook Form**  
+- **[React Hook Form][react_hook_form_doc]**  
   Manejo de formularios de forma performante y declarativa.
 
-- **React Query (@tanstack/react-query)**  
+- **[React Query (@tanstack/react-query)][tasntack_query_doc]**  
   Capa de acceso a datos remotos (queries, mutations, cache, retries).
 
-- **shadcn/ui**  
+- **[shadcn/ui][shadcn_doc]**  
   Librería de componentes base, accesibles y extensibles, integrada con Tailwind.
 
-- **Algolia**  
+- **[Algolia][algolia_doc]**  
   Librería para implementar buscadores rápidos, escalables y optimizados para grandes volúmenes de datos.
 
-- **Better auth**  
+- **[Better auth][better_auth_doc]**  
   Librería para manejar autenticación y autorización de forma segura y centralizada.
+
+- **[Vitest][vitest_doc]**  
+  Framework para realizar pruebas unitarias.
+
+- **[Cypress][cypress_doc]**  
+  Framework para realizar puebas end to end a los features del sistema.
 
 ---
 
@@ -116,3 +122,13 @@ Aquí aprenderás:
 <!-- 👉 **Ir a:** [Calidad](/frontend/onboarding/quality) -->
 
 ---
+[nextjs_doc]: https://nextjs.org
+[react_doc]: https://es.react.dev
+[typescript_doc]: https://www.typescriptlang.org
+[react_hook_form_doc]: https://react-hook-form.com
+[tasntack_query_doc]: https://tanstack.com/query/latest
+[shadcn_doc]: https://ui.shadcn.com
+[algolia_doc]: https://www.algolia.com/doc
+[better_auth_doc]: https://www.better-auth.com/docs/introduction
+[vitest_doc]: https://vitest.dev
+[cypress_doc]: https://docs.cypress.io/app/get-started/why-cypress
