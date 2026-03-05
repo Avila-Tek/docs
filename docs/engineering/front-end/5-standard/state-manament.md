@@ -2,7 +2,10 @@
 slug: /frontend/standards/state
 title: Manejo de estado
 sidebar_position: 6
+unlisted: true
 ---
+
+<!-- 
 
 ## ¿Qué manejador de estado usar, cuándo y donde?
 
@@ -170,4 +173,4 @@ export { UserProvider } from './model/UserContext';
 export { UseUser } from './model/UseUser';
 export type { User } from './model/UserStore';
 export type { UserContextValue } from './model/UserContext';
-```
+``` -->

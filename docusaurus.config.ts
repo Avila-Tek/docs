@@ -9,6 +9,11 @@ const config: Config = {
   tagline: 'This is the official documentation of Avila Tek',
   favicon: 'img/favicon.ico',
 
+  themes: ['@docusaurus/theme-mermaid'],
+  markdown: {
+    mermaid: true,
+  },
+
   // Set the production url of your site here
   url: 'https://docs.avilatek.com',
   // Set the /<baseUrl>/ pathname under which your site is served

@@ -194,6 +194,7 @@ src/
       domain/
         postCreation.model.ts
         postCreation.logic.ts
+        postCreation.form.ts    
       infrastructure/
         post.dto.ts
         post.transform.ts

@@ -307,5 +307,10 @@ service.ts     → orquesta todo lo anterior
 
 - **[Prefetching](https://tanstack.com/query/v4/docs/framework/react/guides/prefetching)**: El prefetching nos permite triggerear una consulta en segundo plano y almacenar en cache el resultado de la respuesta, para su posterior uso. Para mas informacion [leer](/docs/frontend/fetch/queries#queries).
 
-## Testing
-👉 **Ir a:** [test de infraestructura](/docs/frontend/quality/testing/testing-by-layer/infrastructure-test)
+
+## 🧪 Testing de esta capa
+
+Para ver lineamientos, alcance y ejemplos de pruebas del **Infrastructure layer**, consulta:
+
+👉 [/docs/frontend/quality/testing/testing-by-layer/infrastructure-test](/docs/frontend/quality/testing/testing-by-layer/infrastructure-test)
+
