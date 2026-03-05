@@ -91,6 +91,38 @@ Aquí aprenderás:
 👉 **Ir a:** [Calidad](/docs/frontend/quality)
 
 ---
+
+## 4️⃣ Fundamentos de Diseño: POO y SOLID
+ Las aplicaciones deben ser mantenibles, escalables y fáciles de testear. Aplicando conceptos de Programación Orientada a Objetos y principios SOLID para estructurar la lógica de negocio fuera de los componentes es posible.
+
+### Principios Solid
+
+- **S: Single Responsibility**
+  Un componente o clase debe tener una sola razón para cambiar.
+
+- **O: Open/Closed**
+  El software debe estar abierto a la extensión, pero cerrado a la modificación.
+
+- **L: Liskov Substitution**
+  Las subclases o implementaciones deben poder sustituir a sus clases base sin romper la aplicación.
+
+- **I: Interface Segregation**
+  Nadie debería ser forzado a depender de métodos que no usa.
+
+- **D: Dependency Inversion**
+  Depende de abstracciones, no de implementaciones concretas.
+
+👉 **Ir a:** [Refactoring Guru](https://refactoring.guru) para aprender mas de software escalable.
+
+👉 **Ir a:** [SOLID](https://www.freecodecamp.org/espanol/news/los-principios-solid-explicados-en-espanol/) para aprender mas de los principios SOLID.
+
+### POO
+  Es un paradigma de programación que organiza el software alrededor de "objetos" en lugar de acciones.
+
+👉 **Ir a:** [POO](https://ed.team/blog/que-es-la-programacion-orientada-a-objetos-poo) para aprender mas de este paradigma.
+
+---
+
 [nextjs_doc]: https://nextjs.org
 [react_doc]: https://es.react.dev
 [typescript_doc]: https://www.typescriptlang.org
@@ -101,3 +133,4 @@ Aquí aprenderás:
 [better_auth_doc]: https://www.better-auth.com/docs/introduction
 [vitest_doc]: https://vitest.dev
 [cypress_doc]: https://docs.cypress.io/app/get-started/why-cypress
+
