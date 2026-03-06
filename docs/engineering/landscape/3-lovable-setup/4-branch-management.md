@@ -100,7 +100,7 @@ Esto incluye:
 4) Publicar con **Publish → Update**
 5) Cuando ya se hayan publicado los cambios, en Lovable, cambiar a la rama **`development`**
 
-> Importante: al publicar, Lovable despliega **la versión que tienes abierta en ese momento** (“solo la versión actual se despliega”). 
+> Importante: al publicar, Lovable despliega **la versión que tienes abierta en ese momento** (“solo la versión actual se despliega”).
 > Por eso es clave publicar estando en `main`.
 
 ---

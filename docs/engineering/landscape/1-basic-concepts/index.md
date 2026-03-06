@@ -19,12 +19,12 @@ Aquí documentamos conceptos simples y prácticos, aterrizados al contexto real 
 
 En los siguientes documentos iremos viendo estos conceptos uno por uno:
 
-- **Cómo se compone una aplicación web**
-- **Frontend**
-- **Backend**
-- **Bases de datos**
-- **APIs**
-- **Edge Functions**
-- **Versiones, ramas y entornos**
-- **Variables de entorno**
-- **Cambios sensibles y no reversibles**
+- **[Cómo se compone una aplicación web](/docs/basic-concepts/how-web-apps-work)**
+- **[Frontend](/docs/basic-concepts/frontend)**
+- **[Backend](/docs/basic-concepts/backend)**
+- **[Bases de datos](/docs/basic-concepts/databases)**
+- **[APIs](/docs/basic-concepts/apis)**
+- **[Edge Functions](/docs/basic-concepts/edge-functions)**
+- **[Versiones, ramas y entornos](/docs/basic-concepts/versions-branches-and-environments)**
+- **[Variables de entorno](/docs/basic-concepts/environment-variables)**
+- **[Cambios sensibles y no reversibles](/docs/basic-concepts/sensitive-and-non-reversible-changes)**
