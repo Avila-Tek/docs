@@ -16,18 +16,17 @@ La idea no es aprender administración de bases de datos, sino entender qué tip
 
 Una base de datos es el lugar donde una aplicación **guarda, organiza y consulta información**.
 
-Dicho simple:  
-si una aplicación necesita recordar algo, normalmente lo guarda en una base de datos.
+En palabras sencillas, si una aplicación necesita recordar algo, normalmente lo guarda en una base de datos.
 
 Por ejemplo:
 
-- usuarios,
-- pedidos,
-- tareas,
-- pagos,
-- configuraciones,
-- formularios enviados,
-- historial de cambios.
+- Usuarios
+- Pedidos
+- Tareas
+- Pagos
+- Configuraciones
+- Formularios enviados
+- Historial de cambios
 
 Sin base de datos, muchas aplicaciones no podrían conservar información entre una sesión y otra.
 
@@ -37,10 +36,10 @@ Sin base de datos, muchas aplicaciones no podrían conservar información entre 
 
 Entender qué es una base de datos ayuda a:
 
-- saber dónde vive realmente la información del sistema,
-- distinguir entre un cambio visual y un cambio de datos,
-- entender mejor qué impacto tiene agregar, editar o eliminar información,
-- y detectar cuándo un cambio puede ser sensible o no reversible.
+- Saber dónde vive realmente la información del sistema
+- Distinguir entre un cambio visual y un cambio de datos
+- Entender mejor qué impacto tiene agregar, editar o eliminar información
+- Detectar cuándo un cambio puede ser sensible o no reversible
 
 En Landscapes esto importa mucho porque no solo se cambia la UI. Muchas veces también se agregan campos, tablas, relaciones o reglas que afectan directamente cómo se guarda la información.
 
@@ -54,35 +53,20 @@ Algunos ejemplos comunes:
 
 ### Datos del negocio
 
-- clientes,
-- productos,
-- membresías,
-- reservas,
-- facturas,
-- pedidos.
+- Clientes
+- Productos
+- Membresías
+- Reservas
+- Facturas
+- Pedidos
 
 ### Datos operativos
 
-- estados,
-- configuraciones,
-- relaciones entre registros,
-- asignaciones,
-- historiales.
-
-### Datos de usuarios
-
-- nombre,
-- email,
-- teléfono,
-- rol,
-- permisos asociados.
-
-### Datos generados por flujos
-
-- respuestas de formularios,
-- registros creados desde la app,
-- resultados de procesos,
-- eventos o trazas internas.
+- Estados
+- Configuraciones
+- Relaciones entre registros
+- Asignaciones
+- Historiales
 
 ---
 
@@ -94,9 +78,9 @@ Una tabla es un conjunto de datos organizados por tema.
 
 Ejemplos:
 
-- tabla de usuarios,
-- tabla de tareas,
-- tabla de pedidos.
+- Tabla de usuarios
+- Tabla de tareas
+- Tabla de pedidos
 
 Cada tabla agrupa información parecida.
 
@@ -108,7 +92,7 @@ Un registro es una fila dentro de una tabla.
 
 Ejemplo:
 
-si existe una tabla de usuarios, cada usuario guardado sería un registro.
+Si existe una tabla de usuarios, cada usuario guardado sería un registro.
 
 ---
 
@@ -118,12 +102,12 @@ Una columna es un tipo de dato dentro de una tabla.
 
 Ejemplo:
 
-en una tabla de usuarios podrían existir columnas como:
+En una tabla de usuarios podrían existir columnas como:
 
-- nombre,
-- email,
-- teléfono,
-- fecha de creación.
+- Nombre
+- Email
+- Teléfono
+- Fecha de creación
 
 ---
 
@@ -133,9 +117,9 @@ Una relación conecta información entre tablas.
 
 Por ejemplo:
 
-- un pedido pertenece a un usuario,
-- una tarea pertenece a un workspace,
-- una membresía puede estar asociada a un cliente.
+- Un pedido pertenece a un usuario
+- Una tarea pertenece a un workspace
+- Una membresía puede estar asociada a un cliente
 
 Esto permite que la información no viva toda mezclada en un solo lugar.
 
@@ -147,16 +131,16 @@ El schema es la **estructura** de la base de datos.
 
 Incluye cosas como:
 
-- qué tablas existen,
-- qué columnas tiene cada una,
-- qué relaciones hay entre ellas,
-- qué reglas se aplican.
+- Qué tablas existen
+- Qué columnas tiene cada una
+- Qué relaciones hay entre ellas
+- Qué reglas se aplican
 
 Cuando se cambia el schema, no se está cambiando solo un dato: se está cambiando la forma en que la información se organiza.
 
 ---
 
-## Cambiar datos no es lo mismo que cambiar estructura
+## Cambiar datos no es lo mismo que cambiar la estructura de los datos
 
 Esta diferencia es muy importante.
 
@@ -166,13 +150,12 @@ Es modificar información que ya existe.
 
 Por ejemplo:
 
-- editar el nombre de un usuario,
-- cambiar el estado de una tarea,
-- actualizar un precio,
-- borrar un registro.
+- Editar el nombre de un usuario
+- Cambiar el estado de una tarea
+- Actualizar un precio
+- Borrar un registro
 
-Aquí la estructura no cambia.  
-Solo cambia el contenido.
+Aquí la estructura no sufre cambios, solo cambia el contenido de la tabla.
 
 ---
 
@@ -182,11 +165,11 @@ Es modificar cómo está organizada la base de datos.
 
 Por ejemplo:
 
-- crear una nueva tabla,
-- agregar una columna,
-- eliminar una columna,
-- cambiar relaciones,
-- modificar tipos de datos.
+- Crear una nueva tabla
+- Agregar una columna
+- Eliminar una columna
+- Cambiar relaciones
+- Modificar tipos de datos
 
 Esto suele ser más delicado porque puede afectar muchas partes del sistema.
 
@@ -198,11 +181,11 @@ Supongamos que tenemos una app de tareas.
 
 Podría existir una tabla llamada `tasks` con columnas como:
 
-- title,
-- description,
-- status,
-- assigned_user_id,
-- created_at.
+- Title
+- Description
+- Status
+- Assigned_user_id
+- Created_at
 
 Si creamos una nueva tarea, estamos agregando un **registro**.  
 Si cambiamos el título de esa tarea, estamos modificando un **dato**.  
@@ -214,21 +197,21 @@ Si agregamos una nueva columna llamada `priority`, estamos cambiando la **estruc
 
 En Landscapes, cuando hablamos de base de datos normalmente hablamos de cosas como:
 
-- tablas en Supabase,
-- columnas nuevas,
-- relaciones entre datos,
-- campos que se agregan a formularios y luego deben guardarse,
-- información que se usa en vistas, listados y dashboards,
-- cambios de estructura para soportar nuevas funcionalidades.
+- Tablas en Supabase
+- Columnas nuevas
+- Relaciones entre datos
+- Campos que se agregan a formularios y luego deben guardarse
+- Información que se usa en vistas, listados y dashboards
+- Cambios de estructura para soportar nuevas funcionalidades
 
 Muchos prompts pueden implicar base de datos aunque no lo digan de forma explícita.
 
 Por ejemplo:
 
-- “agrega un campo de prioridad a las tareas”,
-- “guarda el motivo de cancelación”,
-- “relaciona este registro con el cliente”,
-- “muestra quién aprobó esta solicitud”.
+- “Agrega un campo de prioridad a las tareas”
+- “Guarda el motivo de cancelación”
+- “Relaciona este registro con el cliente”
+- “Muestra quién aprobó esta solicitud”
 
 Todos esos cambios probablemente tocan base de datos.
 
@@ -238,13 +221,13 @@ Todos esos cambios probablemente tocan base de datos.
 
 Estas son algunas señales comunes:
 
-- hay que guardar nueva información,
-- hay que agregar un nuevo campo,
-- hay que relacionar un dato con otro,
-- hay que consultar información que antes no existía,
-- hay que soportar una nueva funcionalidad con datos persistentes,
-- hay que cambiar cómo se organiza la información,
-- hay que migrar o transformar datos existentes.
+- Hay que guardar nueva información
+- Hay que agregar un nuevo campo
+- Hay que relacionar un dato con otro
+- Hay que consultar información que antes no existía
+- Hay que soportar una nueva funcionalidad con datos persistentes
+- Hay que cambiar cómo se organiza la información
+- Hay que migrar o transformar datos existentes
 
 ---
 
@@ -252,12 +235,12 @@ Estas son algunas señales comunes:
 
 Estas señales suelen indicar que también hay otras capas involucradas:
 
-- hay que mostrar el dato en pantalla,
-- hay que agregar campos a un formulario,
-- hay que aplicar validaciones de negocio,
-- hay que controlar permisos,
-- hay que procesar lógica antes de guardar,
-- hay que integrarse con servicios externos.
+- Hay que mostrar el dato en pantalla
+- Hay que agregar campos a un formulario
+- Hay que aplicar validaciones de negocio
+- Hay que controlar permisos
+- Hay que procesar lógica antes de guardar
+- Hay que integrarse con servicios externos
 
 En esos casos, probablemente el cambio toca frontend, backend, API o edge functions además de la base de datos.
 
@@ -267,49 +250,29 @@ En esos casos, probablemente el cambio toca frontend, backend, API o edge functi
 
 ### “La base de datos es lo mismo que el backend”
 
-No.
-
-La base de datos guarda información.  
-El backend procesa lógica y reglas.
+No, La base de datos guarda información, por otro lado, el backend procesa lógica y reglas.
 
 Trabajan juntos, pero no son lo mismo.
 
 ---
 
-### “Si agrego un campo en la pantalla, ya está listo”
-
-No siempre.
-
-Si ese campo debe guardarse de verdad, probablemente también hace falta:
-
-- agregarlo en la base de datos,
-- procesarlo en el flujo,
-- validarlo,
-- leerlo después para mostrarlo o usarlo.
-
----
-
 ### “Cambiar una tabla es un cambio pequeño”
 
-No necesariamente.
+No necesariamente, un cambio en base de datos puede impactar:
 
-Un cambio en base de datos puede impactar:
-
-- formularios,
-- tablas visuales,
-- filtros,
-- reportes,
-- edge functions,
-- integraciones,
-- lógica existente.
+- Formularios
+- Tablas visuales
+- Filtros
+- Reportes
+- Edge functions
+- Integraciones
+- Lógica existente
 
 ---
 
 ### “Borrar una columna no debería ser problema”
 
-Puede ser un problema serio.
-
-Si esa columna ya está siendo usada por otras partes del sistema, eliminarla puede romper flujos existentes y además ser un cambio no reversible.
+Puede ser un problema serio, si esa columna ya está siendo usada por otras partes del sistema, eliminarla puede romper flujos existentes y además ser un cambio no reversible.
 
 ---
 
@@ -319,19 +282,19 @@ En Landscapes, esta es una de las áreas donde más cuidado hay que tener.
 
 Especialmente cuando el cambio es:
 
-- destructivo,
-- difícil de revertir,
-- riesgoso para datos existentes,
-- o puede romper compatibilidad.
+- Destructivo
+- Difícil de revertir
+- Riesgoso para datos existentes
+- Puede romper compatibilidad
 
 Ejemplos de cambios más sensibles:
 
-- borrar tablas,
-- borrar columnas,
-- cambiar tipos de datos de forma incompatible,
-- sobrescribir información existente,
-- hacer migraciones destructivas,
-- romper relaciones existentes.
+- Borrar tablas (Este cambio es demasiado delicado, así que hay que evitarlo a toda costa)
+- Borrar columnas
+- Cambiar tipos de datos de forma incompatible
+- Sobrescribir información existente
+- Hacer migraciones destructivas
+- Romper relaciones existentes
 
 Por eso, aunque se puedan ejecutar cambios desde Lovable, es importante entender cuándo el cambio toca estructura y cuándo además puede ser no reversible.
 
@@ -355,14 +318,14 @@ Estas preguntas ayudan a detectar mejor el impacto real de un cambio.
 
 ## Ejemplos de cambios típicos de base de datos
 
-- agregar una columna nueva,
-- crear una nueva tabla,
-- relacionar dos entidades,
-- guardar un nuevo dato de negocio,
-- agregar timestamps o campos de auditoría,
-- cambiar cómo se estructura una entidad,
-- migrar datos de una estructura vieja a una nueva,
-- eliminar datos o estructura obsoleta.
+- Agregar una columna nueva
+- Crear una nueva tabla
+- Relacionar dos entidades
+- Guardar un nuevo dato de negocio
+- Agregar timestamps o campos de auditoría
+- Cambiar cómo se estructura una entidad
+- Migrar datos de una estructura vieja a una nueva
+- Eliminar datos o estructura obsoleta
 
 ---
 
@@ -375,8 +338,7 @@ Estos conceptos suelen trabajar juntos:
 - La **base de datos** guarda la información.
 - Las **APIs** y **Edge Functions** ayudan a conectar y ejecutar el flujo.
 
-Por eso, un cambio en base de datos rara vez vive totalmente aislado.  
-Muchas veces forma parte de un flujo más grande.
+Por eso, un cambio en base de datos rara vez vive totalmente aislado, muchas veces forma parte de un flujo más grande.
 
 ---
 
@@ -387,4 +349,3 @@ Muchas veces forma parte de un flujo más grande.
 - Cambiar datos no es lo mismo que cambiar estructura.
 - Agregar o modificar campos puede impactar varias partes del sistema.
 - Los cambios destructivos o no reversibles requieren más cuidado.
-- En Landscapes, entender base de datos ayuda a detectar mejor el alcance y el riesgo real de una tarea.

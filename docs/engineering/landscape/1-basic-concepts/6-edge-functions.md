@@ -16,30 +16,16 @@ La idea no es aprender a desarrollarlas desde cero, sino entender para qué sirv
 
 Una Edge Function es una función que corre **del lado del servidor** para ejecutar lógica específica.
 
-Dicho simple:  
-es una pieza de código que se usa cuando una acción no debería resolverse solo en frontend o cuando hace falta hacer algo de forma más segura y controlada.
+En pocas palabras, es una pieza de código que se usa cuando una acción no debería resolverse solo en frontend o cuando hace falta hacer algo de forma más segura y controlada.
 
 Una Edge Function puede, por ejemplo:
 
-- procesar una acción,
-- validar información,
-- conectarse con servicios externos,
-- transformar datos,
-- ejecutar lógica del negocio,
-- o responder a una petición del sistema.
-
----
-
-## Por qué importa
-
-Entender qué es una Edge Function ayuda a:
-
-- distinguir cuándo un cambio ya no es solo de frontend,
-- entender por qué algunas acciones necesitan lógica del lado servidor,
-- detectar mejor el impacto real de ciertos prompts,
-- y trabajar con más criterio cuando una funcionalidad toca integraciones, seguridad o procesamiento.
-
-En Landscapes esto importa mucho porque las Edge Functions suelen ser una de las herramientas principales para resolver lógica más compleja dentro de Lovable y Supabase.
+- Procesar una acción,
+- Validar información,
+- Conectarse con servicios externos,
+- Transformar datos,
+- Ejecutar lógica del negocio,
+- Responder a una petición del sistema.
 
 ---
 
@@ -47,11 +33,11 @@ En Landscapes esto importa mucho porque las Edge Functions suelen ser una de las
 
 Una forma fácil de verlo es esta:
 
-- el usuario hace una acción,
-- el frontend dispara un flujo,
-- una Edge Function recibe esa acción,
-- ejecuta la lógica necesaria,
-- y devuelve un resultado.
+- El usuario hace una acción
+- El frontend dispara un flujo
+- Una Edge Function recibe esa acción
+- Ejecuta la lógica necesaria
+- Devuelve un resultado
 
 Es decir, la Edge Function funciona como una pieza que toma una solicitud, hace trabajo del lado servidor y responde.
 
@@ -65,30 +51,30 @@ Por ejemplo:
 
 ### Validaciones importantes
 
-- validar permisos,
-- revisar condiciones antes de ejecutar una acción,
-- evitar operaciones inválidas,
-- proteger lógica sensible.
+- Validar permisos
+- Eevisar condiciones antes de ejecutar una acción
+- Evitar operaciones inválidas
+- Proteger lógica sensible
 
 ### Procesamiento de lógica
 
-- calcular valores,
-- encadenar varios pasos,
-- transformar datos antes de guardarlos,
-- ejecutar flujos con varias decisiones.
+- Calcular valores
+- Encadenar varios pasos
+- Transformar datos antes de guardarlos
+- Ejecutar flujos con varias decisiones
 
 ### Integraciones externas
 
-- llamar un servicio externo,
-- enviar datos a otra plataforma,
-- recibir una respuesta y procesarla,
-- sincronizar información.
+- Llamar un servicio externo
+- Enviar datos a otra plataforma
+- Recibir una respuesta y procesarla
+- Sincronizar información
 
 ### Operaciones sensibles
 
-- usar secrets,
-- ejecutar lógica que no debería exponerse al navegador,
-- controlar mejor qué se permite hacer y cómo.
+- Usar secrets
+- Ejecutar lógica que no debería exponerse al navegador
+- Controlar mejor qué se permite hacer y cómo
 
 ---
 
@@ -98,11 +84,11 @@ Hay casos donde el frontend puede mostrar la acción, pero no debería ser quien
 
 Por ejemplo:
 
-- validar permisos reales,
-- usar credenciales privadas,
-- enviar datos a servicios externos,
-- ejecutar lógica importante del negocio,
-- hacer procesos que no deberían depender del navegador del usuario.
+- Validar permisos reales
+- Usar credenciales privadas
+- Enviar datos a servicios externos
+- Ejecutar lógica importante del negocio
+- Hacer procesos que no deberían depender del navegador del usuario
 
 En esos casos, una Edge Function suele ser una mejor opción.
 
@@ -114,44 +100,20 @@ Supongamos que un usuario presiona un botón para aprobar una solicitud.
 
 En frontend puede existir:
 
-- el botón,
-- el modal de confirmación,
-- el mensaje de éxito o error.
+- El botón
+- El modal de confirmación
+- El mensaje de éxito o error
 
 Pero al hacer clic, una Edge Function podría encargarse de:
 
-- validar que el usuario tenga permiso,
-- confirmar que la solicitud sigue disponible,
-- actualizar el estado,
-- guardar quién aprobó,
-- registrar la fecha,
-- notificar un sistema externo si hace falta.
+- Validar que el usuario tenga permiso,
+- Confirmar que la solicitud sigue disponible,
+- Actualizar el estado,
+- Guardar quién aprobó,
+- Registrar la fecha,
+- Notificar un sistema externo si hace falta.
 
 La parte visible está en frontend, pero la lógica importante puede vivir en una Edge Function.
-
----
-
-## Cómo se ve esto en Landscapes
-
-En Landscapes, las Edge Functions suelen aparecer cuando hace falta:
-
-- ejecutar lógica del lado servidor,
-- hacer integraciones,
-- proteger procesos más sensibles,
-- procesar acciones que van más allá de mostrar una pantalla,
-- usar variables privadas o secrets,
-- conectar varios pasos dentro de un mismo flujo.
-
-Muchos prompts pueden implicar una Edge Function aunque no la nombren explícitamente.
-
-Por ejemplo:
-
-- “cuando se cree este registro, envía esta información a otro sistema”,
-- “al aprobar esto, actualiza varios datos y registra el evento”,
-- “valida esta condición antes de permitir la acción”,
-- “procesa este flujo antes de guardar”.
-
-Ese tipo de solicitud normalmente ya entra en terreno de Edge Functions o backend del lado servidor.
 
 ---
 
@@ -159,30 +121,27 @@ Ese tipo de solicitud normalmente ya entra en terreno de Edge Functions o backen
 
 Estas son algunas señales comunes:
 
-- hay lógica que no debería vivir en el navegador,
-- hay que usar un secret o credencial privada,
-- hay que integrar un servicio externo,
-- hay que ejecutar varios pasos en cadena,
-- hay que proteger una acción sensible,
-- hay que validar algo del lado servidor,
-- hay que transformar o procesar datos antes de devolverlos,
-- hay que controlar mejor cómo se ejecuta una operación.
+- Hay lógica que no debería vivir en el navegador
+- Hay que usar un secret o credencial privada
+- Hay que integrar un servicio externo
+- Hay que ejecutar varios pasos en cadena
+- Hay que proteger una acción sensible
+- Hay que validar algo del lado servidor
+- Hay que transformar o procesar datos antes de devolverlos
+- Hay que controlar mejor cómo se ejecuta una operación
 
 ---
 
 ## Qué señales indican que probablemente no hace falta una Edge Function
 
-No todos los cambios la necesitan.
+No todos los cambios la necesitan. Por ejemplo, probablemente no hace falta una Edge Function si el cambio es solo:
 
-Por ejemplo, probablemente no hace falta una Edge Function si el cambio es solo:
-
-- visual,
-- de textos,
-- de layout,
-- de navegación,
-- de orden de componentes,
-- de estados visuales simples,
-- o de formularios que aún no requieren lógica especial.
+- Visual
+- Textos
+- Layout
+- Navegación
+- Orden de componentes
+- Estados visuales simples
 
 En esos casos, podría ser un cambio de frontend o una consulta simple a datos existentes.
 
@@ -192,39 +151,17 @@ En esos casos, podría ser un cambio de frontend o una consulta simple a datos e
 
 ### “Edge Function es lo mismo que API”
 
-No exactamente.
+No exactamente, una Edge Function puede formar parte de un flujo tipo API porque recibe una petición y devuelve una respuesta, pero el concepto no es exactamente el mismo.
 
-Una Edge Function puede formar parte de un flujo tipo API porque recibe una petición y devuelve una respuesta, pero el concepto no es exactamente el mismo.
-
-La Edge Function es una pieza concreta de lógica del lado servidor.  
-La API es la forma de comunicación entre partes del sistema.
+La Edge Function es una pieza concreta de lógica del lado servidor, mientras que la API es la forma de comunicación entre partes del sistema.
 
 Muchas veces se relacionan, pero no son sinónimos.
 
 ---
 
-### “Si el botón existe, ya el flujo está listo”
-
-No.
-
-El botón solo inicia la acción.  
-La lógica real puede depender de una Edge Function que procese y valide todo correctamente.
-
----
-
-### “Todo lo puedo resolver desde frontend”
-
-No siempre.
-
-Hay cosas que pueden funcionar visualmente en frontend, pero que por seguridad, control o complejidad deberían ejecutarse del lado servidor.
-
----
-
 ### “Las Edge Functions solo sirven para cosas muy complejas”
 
-No necesariamente.
-
-A veces se usan para integraciones o flujos complejos, pero también pueden ser útiles para resolver lógica específica que simplemente no conviene exponer en el cliente.
+No necesariamente, a veces se usan para integraciones o flujos complejos, pero también pueden ser útiles para resolver lógica específica que simplemente no conviene exponer en el cliente.
 
 ---
 
@@ -232,13 +169,13 @@ A veces se usan para integraciones o flujos complejos, pero también pueden ser 
 
 Cuando una Edge Function falla, los síntomas pueden verse como:
 
-- una acción que no termina,
-- datos que no se actualizan,
-- integraciones que no se ejecutan,
-- errores inesperados,
-- respuestas incompletas,
-- loaders que se quedan activos,
-- mensajes de fallo al guardar o procesar.
+- Una acción que no termina
+- Datos que no se actualizan
+- Integraciones que no se ejecutan
+- Errores inesperados
+- Respuestas incompletas
+- Loaders que se quedan activos
+- Mensajes de fallo al guardar o procesar
 
 Por eso, aunque no se vean directamente en pantalla, las Edge Functions suelen explicar muchos errores operativos.
 
@@ -262,16 +199,16 @@ Estas preguntas ayudan a detectar mejor cuándo una Edge Function es parte del a
 
 ## Ejemplos de cambios típicos relacionados con Edge Functions
 
-- enviar datos a un sistema externo,
-- procesar una aprobación,
-- ejecutar una lógica antes de guardar,
-- validar permisos del lado servidor,
-- transformar información,
-- correr un flujo de sincronización,
-- registrar eventos importantes,
-- centralizar una operación sensible,
-- usar secrets para integraciones,
-- conectar varios pasos en una sola acción.
+- Enviar datos a un sistema externo
+- Procesar una aprobación
+- Ejecutar una lógica antes de guardar
+- Validar permisos del lado servidor
+- Transformar información
+- Correr un flujo de sincronización
+- Registrar eventos importantes
+- Centralizar una operación sensible
+- Usar secrets para integraciones
+- Conectar varios pasos en una sola acción
 
 ---
 
@@ -285,8 +222,7 @@ Estos conceptos suelen trabajar juntos:
 - La **API** es el canal por el que se comunica una parte con otra.
 - La **base de datos** guarda la información.
 
-Por eso, una Edge Function rara vez vive aislada.  
-Normalmente forma parte de un flujo más grande.
+Por eso, una Edge Function rara vez vive aislada, normalmente forma parte de un flujo más grande.
 
 ---
 
@@ -297,4 +233,3 @@ Normalmente forma parte de un flujo más grande.
 - Suele usarse para validaciones, integraciones, procesamiento y operaciones sensibles.
 - Puede formar parte de un flujo tipo API, pero no es exactamente lo mismo que una API.
 - Muchas acciones importantes del sistema dependen de Edge Functions aunque el usuario no las vea.
-- En Landscapes, entender Edge Functions ayuda a detectar cuándo un cambio toca lógica sensible o integraciones y no es solo un cambio visual.

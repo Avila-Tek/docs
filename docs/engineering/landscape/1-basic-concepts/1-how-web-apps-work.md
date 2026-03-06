@@ -8,7 +8,7 @@ slug: /basic-concepts/how-web-apps-work
 
 Esta guía explica, de forma simple, **cómo se compone una aplicación web** y cómo se conectan sus partes.
 
-La idea no es aprender a programar, sino tener un **mapa mental básico** para entender mejor qué estamos cambiando cuando trabajamos con Lovable, dónde puede estar un problema y qué impacto puede tener una decisión.
+La idea no es aprender a programar, sino tener una **idea básica** para entender mejor qué estamos cambiando cuando trabajamos con Lovable, dónde puede estar un problema y qué impacto puede tener una decisión.
 
 ---
 
@@ -19,10 +19,11 @@ Una aplicación web normalmente tiene estas piezas:
 - **Frontend:** lo que ve y usa el usuario.
 - **Backend:** la lógica que procesa reglas y acciones.
 - **Base de datos:** donde se guarda la información.
-- **API:** la forma en que unas partes se comunican con otras.
+- **API:** la forma en que las partes se comunican con otras.
 
-Dicho simple:  
-el usuario interactúa con una pantalla, esa pantalla puede pedir o enviar información, el sistema la procesa y luego la guarda o la devuelve.
+En palabras simples:
+
+El usuario interactúa con una pantalla, esa pantalla puede pedir o enviar información, el sistema la procesa y luego la guarda o la devuelve.
 
 ---
 
@@ -42,20 +43,20 @@ el usuario interactúa con una pantalla, esa pantalla puede pedir o enviar infor
 
 ### Frontend
 
-Es la parte que el usuario ve y toca:
+Es la parte que el usuario ve y con la que interactua:
 
-- pantallas,
-- botones,
-- formularios,
-- tablas,
-- mensajes,
-- validaciones visuales.
+- Pantallas
+- Botones
+- Formularios
+- Tablas
+- Mensajes
+- Validaciones visuales
 
 Ejemplos:
 
-- una pantalla de login,
-- un formulario para crear un registro,
-- una tabla con una lista de pedidos.
+- Una pantalla de login
+- Un formulario para crear un registro
+- Una tabla con una lista de pedidos
 
 ---
 
@@ -65,13 +66,13 @@ Es la parte que resuelve lógica del sistema.
 
 Por ejemplo:
 
-- validar si un usuario tiene permiso,
-- calcular un monto,
-- decidir qué datos se pueden modificar,
-- procesar una acción más compleja,
-- conectarse con otros servicios.
+- Validar si un usuario tiene permiso
+- Calcular un monto
+- Decidir qué datos se pueden modificar
+- Procesar una acción más compleja
+- Conectarse con otros servicios
 
-El usuario normalmente **no ve** el backend, pero muchas acciones importantes dependen de él.
+El usuario normalmente **no ve NI interactúa directamente con** el backend, pero muchas acciones importantes dependen de él.
 
 ---
 
@@ -81,11 +82,11 @@ Es donde vive la información del sistema.
 
 Por ejemplo:
 
-- usuarios,
-- pedidos,
-- tareas,
-- pagos,
-- configuraciones.
+- Usuarios
+- Pedidos
+- Tareas
+- Pagos
+- Configuraciones
 
 La base de datos no es “la pantalla”; es el lugar donde se guardan los datos que luego aparecen en la pantalla.
 
@@ -97,12 +98,30 @@ Una API es el **puente de comunicación** entre partes del sistema.
 
 Por ejemplo:
 
-- el frontend le pide al backend la lista de pedidos,
-- una edge function guarda información en la base de datos,
-- el sistema consulta un servicio externo.
+- El frontend le pide al backend la lista de pedidos
+- Una edge function guarda información en la base de datos
+- El sistema consulta un servicio externo
 
 No hace falta pensarla como algo complicado.  
 En la práctica, una API es simplemente una forma ordenada de **pedir datos o ejecutar acciones**.
+
+#### Analogía simple
+
+Una forma fácil de entenderlo es pensar en un restaurante:
+
+- El **frontend** es lo que el cliente ve y usa, como el plato que recibe en la mesa
+- El **backend** es la cocina o el chef, donde realmente se prepara la orden
+- La **API** sería el mesero, que lleva la petición del cliente a la cocina y luego trae de vuelta el resultado
+
+El cliente no entra directamente a la cocina ni prepara la comida por su cuenta.  
+Hace una petición, esa petición viaja por el mesero, la cocina la procesa y luego llega la respuesta.
+
+Con una aplicación pasa algo parecido:
+
+- El usuario hace una acción en frontend
+- Esa acción viaja por una API
+- El backend procesa la solicitud
+- Finalmente se devuelve una respuesta para mostrarla en pantalla
 
 ---
 
@@ -137,9 +156,9 @@ Supongamos que un usuario crea una tarea en una app.
 
 Ve un formulario con campos como:
 
-- título,
-- descripción,
-- fecha.
+- Título
+- Descripción
+- Fecha
 
 Eso es **frontend**.
 
@@ -147,10 +166,9 @@ Eso es **frontend**.
 
 Cuando presiona “Guardar”, el sistema puede:
 
-- validar que el título no esté vacío,
-- revisar si el usuario tiene permiso,
-- asignar datos automáticos,
-- guardar la tarea.
+- Revisar si el usuario tiene permiso
+- Asignar datos automáticos
+- Guardar la tarea
 
 Eso ya involucra **backend** y **base de datos**.
 
@@ -168,15 +186,13 @@ En Landscapes, este mapa suele verse así:
 - El **frontend** es la parte visual del proyecto.
 - **Supabase** nos ayuda con base de datos y otros servicios.
 - Las **Edge Functions** se usan cuando hace falta lógica de servidor.
-- Los cambios se prueban en **Test** antes de pasar a **Prod**.
 
 Entonces, aunque alguien no programe de forma tradicional, igual puede terminar tocando partes distintas del sistema:
 
-- una pantalla,
-- una tabla de base de datos,
-- una edge function,
-- una integración,
-- o un flujo completo.
+- Una pantalla,
+- Una tabla de base de datos,
+- Una edge function,
+- Una integración,
 
 Por eso es importante entender este mapa general.
 
@@ -186,48 +202,19 @@ Por eso es importante entender este mapa general.
 
 ### “Si cambia la pantalla, solo cambió el frontend”
 
-No siempre.
+No siempre, a veces un cambio visual también requiere:
 
-A veces un cambio visual también requiere:
-
-- guardar nuevos datos,
-- cambiar reglas,
-- modificar permisos,
-- actualizar una edge function,
-- cambiar la base de datos.
+- Guardar nuevos datos
+- Cambiar reglas
+- Modificar permisos
+- Actualizar una edge function
+- Cambiar la base de datos
 
 ---
 
 ### “La base de datos es lo mismo que la app”
 
-No.
-
-La app es la experiencia que usa el usuario.  
-La base de datos es donde se guarda la información que esa app usa.
-
----
-
-### “La API es otra cosa aparte que no me afecta”
-
-Sí afecta.
-
-Aunque no la veas, muchas veces los errores de:
-
-- carga,
-- guardado,
-- sincronización,
-- permisos,
-- integraciones
-
-pasan por una API o por lógica de backend.
-
----
-
-### “Todo se resuelve solo con frontend”
-
-No.
-
-Hay cosas que sí son solo de interfaz, pero otras necesitan lógica del lado servidor o cambios en la base de datos.
+No, la app es la experiencia que usa el usuario mientras que la base de datos es donde se guarda la información que esa app usa.
 
 ---
 
@@ -254,4 +241,3 @@ Solo necesitas ubicar **en qué parte del flujo podría estar el problema**.
 - La base de datos guarda información.
 - La API conecta unas partes con otras.
 - Un mismo cambio puede tocar varias capas al mismo tiempo.
-- En Landscapes, entender este mapa ayuda a usar mejor Lovable y a reducir errores.

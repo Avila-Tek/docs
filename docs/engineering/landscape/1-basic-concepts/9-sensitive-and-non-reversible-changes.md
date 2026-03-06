@@ -18,22 +18,21 @@ En Landscapes trabajamos con mucha autonomía y velocidad.
 
 Eso significa que muchas personas pueden hacer cambios relevantes en:
 
-- frontend,
-- backend,
-- base de datos,
-- edge functions,
-- integraciones,
-- configuración del proyecto.
+- Frontend
+- Backend
+- Base de datos
+- Edge functions
+- Integraciones
+- Configuración del proyecto
 
 En este contexto, no todos los cambios tienen el mismo nivel de riesgo.
 
-Hay cambios que son fáciles de ajustar o deshacer.  
-Y hay otros que, una vez ejecutados, pueden:
+Hay cambios que son fáciles de ajustar o deshacer y hay otros que, una vez ejecutados, pueden:
 
-- romper flujos,
-- afectar datos existentes,
-- cambiar el comportamiento de producción,
-- o ser difíciles de revertir.
+- Romper flujos
+- Afectar datos existentes
+- Cambiar el comportamiento de producción
+- Ser difíciles de revertir
 
 Por eso es importante entender cuándo un cambio entra en una zona más delicada.
 
@@ -42,17 +41,6 @@ Por eso es importante entender cuándo un cambio entra en una zona más delicada
 ## Qué es un cambio sensible
 
 Un cambio sensible es un cambio que requiere **más cuidado del normal** porque su impacto potencial es alto.
-
-No significa necesariamente que esté prohibido.  
-Significa que no debería ejecutarse sin pensar bien:
-
-- qué toca,
-- qué puede romper,
-- qué dependencias tiene,
-- y qué pasa si sale mal.
-
-Dicho simple:  
-un cambio sensible es un cambio donde un error puede costar más.
 
 ---
 
@@ -64,21 +52,19 @@ En algunos casos sí se puede corregir después, pero no de forma limpia, inmedi
 
 Por ejemplo:
 
-- si se borra información,
-- si se elimina una columna,
-- si se cambia una estructura y otras partes empiezan a depender de eso,
-- si se publica una lógica nueva que altera datos reales,
-- si una integración envía información incorrecta a otro sistema.
+- Si se borra información
+- Si se elimina una columna
+- Si se cambia una estructura y otras partes empiezan a depender de eso
+- Si se publica una lógica nueva que altera datos reales
+- Si una integración envía información incorrecta a otro sistema
 
-Dicho simple:  
-un cambio no reversible es uno donde “deshacerlo” no es tan fácil como volver al estado anterior.
+En pocas palabras, un cambio no reversible es uno donde “deshacerlo” no es tan fácil como volver al estado anterior.
 
 ---
 
 ## Relación entre ambos conceptos
 
-No todo cambio sensible es no reversible.  
-Y no todo cambio no reversible se ve peligroso a primera vista.
+No todo cambio sensible es no reversible y no todo cambio no reversible se ve peligroso a primera vista.
 
 Pero en la práctica, en Landscapes, los cambios **no reversibles** suelen ser una de las formas más claras de identificar que estamos frente a un cambio **sensible**.
 
@@ -86,35 +72,35 @@ Por eso, cuando un cambio no tiene rollback simple, debería tratarse con más c
 
 ---
 
-## Ejemplos de cambios menos sensibles
+## Ejemplos de cambios sencillos
 
 Estos cambios suelen tener menos riesgo si están bien acotados:
 
-- cambiar un texto visible,
-- ajustar el orden de una pantalla,
-- mover un botón,
-- mejorar un empty state,
-- cambiar un color o estilo,
-- mejorar un mensaje de error visual,
-- reorganizar una tabla sin cambiar la lógica.
+- Cambiar un texto visible
+- Ajustar el orden de una pantalla
+- Mover un botón
+- Mejorar un empty state
+- Cambiar un color o estilo
+- Mejorar un mensaje de error visual
+- Meorganizar una tabla sin cambiar la lógica
 
 Eso no significa que nunca puedan generar problemas, pero en general su impacto suele ser más fácil de corregir.
 
 ---
 
-## Ejemplos de cambios más sensibles
+## Ejemplos de cambios sensibles
 
 Estos cambios suelen requerir más cuidado:
 
-- agregar o modificar lógica crítica,
-- cambiar permisos,
-- tocar flujos de autenticación,
-- modificar edge functions,
-- cambiar integraciones,
-- alterar cómo se guardan datos,
-- tocar configuración de entornos,
-- modificar comportamiento usado en producción,
-- cambiar estructura de base de datos.
+- Agregar o modificar lógica crítica
+- Cambiar permisos
+- Tocar flujos de autenticación
+- Modificar edge functions
+- Cambiar integraciones
+- Alterar cómo se guardan datos
+- Tocar configuración de entornos
+- Modificar comportamiento usado en producción
+- Cambiar estructura de base de datos
 
 ---
 
@@ -124,30 +110,30 @@ Algunos ejemplos comunes:
 
 ### Cambios destructivos en base de datos
 
-- borrar tablas,
-- borrar columnas,
-- sobrescribir información existente,
-- transformar datos sin una vuelta atrás clara,
-- cambiar tipos de datos de forma incompatible.
+- Borrar tablas
+- Borrar columnas
+- Sobrescribir información existente
+- Transformar datos sin una vuelta atrás clara
+- Cambiar tipos de datos de forma incompatible
 
 ### Cambios que afectan producción directamente
 
-- ejecutar cambios en Prod sin validarlos antes,
-- publicar lógica nueva sobre flujos críticos,
-- cambiar configuración sensible en el entorno real.
+- Ejecutar cambios en Producción sin validarlos antes
+- Publicar lógica nueva sobre flujos críticos
+- Cambiar configuración sensible en el entorno real
 
 ### Cambios en integraciones
 
-- enviar datos incorrectos a un sistema externo,
-- modificar una integración que dispara acciones reales,
-- sincronizar información de forma equivocada.
+- Enviar datos incorrectos a un sistema externo
+- Modificar una integración que dispara acciones reales
+- Sincronizar información de forma equivocada
 
 ### Cambios de lógica con impacto operativo
 
-- alterar reglas de negocio existentes,
-- cambiar validaciones importantes,
-- cambiar cómo se calculan montos, estados o decisiones,
-- modificar permisos de forma incorrecta.
+- Alterar reglas de negocio existentes
+- Cambiar validaciones importantes
+- Cambiar cómo se calculan montos, estados o decisiones
+- Modificar permisos de forma incorrecta
 
 ---
 
@@ -155,34 +141,15 @@ Algunos ejemplos comunes:
 
 Porque pueden afectar cosas como:
 
-- datos reales,
-- usuarios reales,
-- operación del proyecto,
-- integraciones externas,
-- seguridad,
-- consistencia del sistema,
-- capacidad de rollback.
+- Datos reales
+- Usuarios reales
+- Operación del proyecto
+- Integraciones externas
+- Seguridad
+- Consistencia del sistema
+- Capacidad de rollback
 
 En muchos casos, el problema no es solo que “algo falle”, sino que el sistema quede en un estado difícil de corregir.
-
----
-
-## Cómo se ve esto en Landscapes
-
-En Landscapes, este tema es especialmente importante porque:
-
-- se trabaja con Lovable,
-- los cambios pueden ejecutarse rápido,
-- muchas personas que hacen cambios no tienen contexto técnico profundo,
-- y un cambio pequeño en apariencia puede tocar partes muy sensibles.
-
-Además, en Landscapes no siempre hay una revisión previa formal de cada cambio.  
-Por eso, el control no depende solo de supervisión humana, sino también de:
-
-- trabajar primero en **Test**,
-- entender el impacto del cambio,
-- seguir las guidelines ya definidas,
-- y prestar atención cuando Lovable detecta un cambio delicado.
 
 ---
 
@@ -192,16 +159,15 @@ Cuando un cambio entra en una zona sensible, la idea no es detener todo automát
 
 Eso significa, por ejemplo:
 
-- entender mejor el alcance real,
-- no asumir que el cambio es pequeño solo porque la UI se ve simple,
-- revisar si toca datos, lógica o integraciones,
-- probar mejor en **Test**,
-- validar efectos secundarios,
-- seguir las guías de Lovable para ese tipo de cambio,
-- y apoyarse en las guidelines internas del proyecto.
+- Entender mejor el alcance real
+- No asumir que el cambio es pequeño solo porque la UI se ve simple
+- Revisar si toca datos, lógica o integraciones
+- Probar con más detalle en **Test**
+- Validar efectos secundarios
+- Seguir las guías de Lovable para ese tipo de cambio
+- Apoyarse en las guidelines internas del proyecto
 
-Dicho simple:  
-si el cambio es más riesgoso, el nivel de cuidado también debe subir.
+En pocas palabras, si el cambio es más riesgoso, el nivel de cuidado también debe subir.
 
 ---
 
@@ -209,17 +175,17 @@ si el cambio es más riesgoso, el nivel de cuidado también debe subir.
 
 Estas son algunas señales comunes:
 
-- toca base de datos,
-- toca estructura, no solo datos,
-- modifica una edge function,
-- cambia permisos,
-- cambia autenticación,
-- toca una integración externa,
-- afecta un flujo crítico,
-- impacta producción,
-- no tiene rollback claro,
-- puede borrar o sobrescribir información,
-- cambia cómo funciona algo que ya está en uso.
+- Toca base de datos
+- Toca estructura, no solo datos
+- Modifica una edge function
+- Cambia permisos
+- Cambia autenticación
+- Toca una integración externa
+- Afecta un flujo crítico
+- Impacta producción
+- No tiene rollback claro
+- Puede borrar o sobrescribir información
+- Cambia cómo funciona algo que ya está en uso
 
 ---
 
@@ -227,13 +193,13 @@ Estas son algunas señales comunes:
 
 Estas señales suelen ser especialmente importantes:
 
-- elimina algo existente,
-- reemplaza datos actuales,
-- modifica estructura usada por otras partes,
-- cambia tipos de datos incompatibles,
-- dispara acciones reales en sistemas externos,
-- altera información de producción sin copia o salida clara,
-- no existe una forma simple de volver al estado anterior.
+- Elimina algo existente
+- Reemplaza datos actuales
+- Modifica estructura usada por otros módulos
+- Cambia tipos de datos incompatibles
+- Dispara acciones reales en sistemas externos
+- Altera información de producción sin copia o salida clara
+- No existe una forma simple de volver al estado anterior
 
 ---
 
@@ -245,12 +211,12 @@ A primera vista, puede parecer un cambio pequeño.
 
 Pero antes de hacerlo habría que preguntarse:
 
-- ¿esa columna realmente no se usa en ningún flujo?
-- ¿alguna edge function la sigue leyendo?
-- ¿algún reporte depende de ella?
-- ¿alguna pantalla la muestra indirectamente?
-- ¿qué pasa con los datos que ya existen?
-- ¿si la eliminamos y algo falla, cómo volvemos atrás?
+- ¿Esa columna realmente no se usa en ningún flujo?
+- ¿Alguna edge function la sigue leyendo?
+- ¿Algún reporte depende de ella?
+- ¿Alguna pantalla la muestra indirectamente?
+- ¿Qué pasa con los datos que ya existen?
+- ¿Si la eliminamos y algo falla, cómo volvemos atrás?
 
 Ese es un buen ejemplo de un cambio que puede parecer pequeño, pero ser sensible y no reversible.
 
@@ -262,10 +228,10 @@ Supongamos que se modifica una edge function para que, al aprobar una solicitud,
 
 Ese cambio puede ser sensible porque:
 
-- altera lógica real,
-- toca integración,
-- puede afectar datos fuera del sistema,
-- y un error puede dejar inconsistencias o registros incorrectos.
+- Altera lógica real
+- Toca integración
+- Puede afectar datos fuera del sistema
+- Un error puede dejar inconsistencias o registros incorrectos
 
 Aunque visualmente no cambie casi nada en la UI, el impacto puede ser alto.
 
@@ -275,34 +241,25 @@ Aunque visualmente no cambie casi nada en la UI, el impacto puede ser alto.
 
 ### “Si el cambio es pequeño visualmente, no es sensible”
 
-No necesariamente.
-
-Hay cambios casi invisibles en pantalla que pueden tener impacto alto en backend, base de datos o integraciones.
+No necesariamente, hay cambios casi invisibles en pantalla que pueden tener impacto alto en backend, base de datos o integraciones.
 
 ---
 
 ### “Si Lovable lo puede hacer, entonces no hay riesgo”
 
-No.
-
-Lovable ayuda muchísimo, pero eso no elimina el riesgo del cambio.  
-Sigue siendo importante entender qué se está tocando.
+No, Lovable ayuda muchísimo, pero eso no elimina el riesgo del cambio. Sigue siendo importante entender qué se está tocando.
 
 ---
 
 ### “Si algo sale mal, después lo arreglamos”
 
-A veces sí, pero no siempre de forma simple.
-
-Hay cambios que, una vez ejecutados, ya alteraron datos, comportamiento o integraciones de una manera difícil de revertir.
+A veces sí, pero no siempre de forma simple. Hay cambios que, una vez ejecutados, ya alteraron datos, comportamiento o integraciones de una manera difícil de revertir.
 
 ---
 
 ### “Solo los cambios grandes son sensibles”
 
-No.
-
-Un cambio puede ser pequeño en tamaño, pero muy sensible por su impacto.
+No, un cambio puede ser pequeño en tamaño, pero muy sensible por su impacto.
 
 ---
 
@@ -325,16 +282,16 @@ Estas preguntas ayudan a detectar mejor el nivel de riesgo.
 
 ---
 
-## Relación con Test y Prod
+## Relación con Test y Producción
 
 Este tema está muy conectado con entornos.
 
 Una parte importante del control de riesgo en Landscapes es:
 
-1. trabajar primero en **Test**,
-2. validar el cambio ahí,
-3. entender si el cambio es sensible o no reversible,
-4. y solo después moverlo a **Prod** con más criterio.
+1. Trabajar primero en **Test**
+2. Validar el cambio ahí
+3. Entender si el cambio es sensible o no reversible
+4. Solo después de validar el correcto funcionamiento de la funcionalidad, desplegarlo a **Producción** con más criterio.
 
 Mientras más sensible sea el cambio, menos sentido tiene usar producción como lugar de prueba.
 
@@ -342,16 +299,15 @@ Mientras más sensible sea el cambio, menos sentido tiene usar producción como 
 
 ## Relación con las guidelines del proyecto
 
-En Landscapes ya existen guidelines para este tipo de casos.
+En Landscapes ya existen guidelines para que Lovable maneje este tipo de casos.
 
 Además, Lovable también suele detectar cambios delicados y dar orientación cuando una operación puede ser riesgosa.
 
-Por eso, cuando un cambio entra en esta categoría, no conviene improvisar.  
-Lo correcto es apoyarse en:
+Por eso, cuando un cambio entra en esta categoría, no conviene improvisar, lo correcto es apoyarse en:
 
-- las alertas y guías de Lovable,
-- las guidelines internas,
-- y una validación más cuidadosa del impacto real.
+- Las alertas y guías de Lovable
+- Las guidelines internas
+- Una validación más cuidadosa del impacto real
 
 ---
 
