@@ -1,6 +1,6 @@
 ---
 title: Setup de Lovable
-sidebar_position: 2
+sidebar_position: 3
 slug: /lovable-setup
 ---
 
