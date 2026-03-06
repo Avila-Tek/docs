@@ -1,6 +1,6 @@
 ---
 title: Estándares de código
-sidebar_position: 1
+sidebar_position: 2
 slug: /code-standards
 ---
 
