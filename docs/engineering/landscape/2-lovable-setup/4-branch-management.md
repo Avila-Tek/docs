@@ -64,6 +64,32 @@ En el selector de rama, selecciona **`development`**.
 - Validar cambios y flujos normalmente (sin tocar `main`).
 - Mantener `main` “limpia” para que sea fácil publicar cuando toque.
 
+## Nota importante: las ramas no separan la base de datos (ni el backend)
+
+Aunque Lovable te deje cambiar entre ramas, ese cambio aplica principalmente al **código**.
+
+En Lovable, el ambiente **Test es uno solo por proyecto**, así que hay cambios “de backend” que quedan en Test y **pueden terminar en producción** cuando hagas **Publish** desde `main`.
+
+Esto incluye:
+
+- **Cambios de base de datos** (por ejemplo, agregar columnas/tablas).
+- **Edge Functions** (funciones del backend): si las cambias mientras estás trabajando en Test, al hacer Publish luego podrían llegar a producción.
+
+### ¿Cómo evitamos problemas con esto?
+
+**Opción recomendada:** Hacer el cambio completo de una vez
+
+- Lo ideal es implementar la funcionalidad **de principio a fin** (UI + backend + cambios de datos) sin estar alternando entre “refactor grande” y “bug fixing”.
+- Si viene una refactorización grande que requiere cambios de base de datos o edge functions, lo mejor es **pausar el bug fixing** y terminar la refactorización completa primero, para luego publicar todo junto y evitar desincronizaciones.
+
+**Opción alternativa**: Trabajar con cambios compatibles
+
+- Se puede seguir haciendo bug fixing en paralelo **siempre que los cambios no rompan lo anterior**.
+- Ejemplo: **agregar** cosas nuevas (columnas/tablas, nuevas edge functions) es más seguro que cambiar/eliminar lo existente.
+- En ese caso, puedes avanzar con la **UI nueva** y **edge functions nuevas** sin afectar lo anterior, pero requiere cuidado y buena coordinación.
+
+> Regla práctica: si el cambio puede romper lo que ya existe en producción, trátalo como un “bloque” que se termina completo antes de volver a trabajar en bugs.
+
 ---
 
 ## Cómo liberamos cambios (release)
