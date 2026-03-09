@@ -26,7 +26,7 @@ Al usar `feature_brick_plus`, se **debe** indicar la variante según el tipo de 
 |---|---|---|
 | `default` | Vista estándar. La más común. | [Default](./variantes/default.md) |
 | `stepper` | Flujo multipaso con `PageView` programático. | [Stepper](./variantes/stepper.md) |
-| `tabbed` | Vista con pestañas mediante `TabBar`. | Próximamente |
+| `tabbed` | Vista con pestañas mediante `TabBar`. | [Tabbed](./variantes/tabbed.md) |
 
 :::info
 Las páginas de [Page](./page.md), [View](./view.md), [Body](./body.md) y [Bloc](./bloc.md) documentan los elementos comunes a todas las variantes. Consulta la página de cada variante para conocer sus diferencias estructurales.

@@ -11,18 +11,21 @@ Los elementos comunes a todas las variantes (`Page`, `View`, `Body`, `Bloc`) est
 
 ## Comparativa
 
-| Aspecto | [Default](./default.md) | [Stepper](./stepper.md) | Tabbed |
+| Aspecto | [Default](./default.md) | [Stepper](./stepper.md) | [Tabbed](./tabbed.md) |
 |---|---|---|---|
-| `FeatureView` | Privada (`_FeatureView`) | Pública (`FeatureView`) | — |
-| Body `const` | Sí | No | — |
+| `FeaturePage` base | `StatelessWidget` | `StatelessWidget` | `StatefulWidget` |
+| Mixin | — | — | `SingleTickerProviderStateMixin` |
+| `_FeatureView` | Privada | Pública | Privada (recibe `TabController`) |
+| Body `const` | Sí | No | Sí (usualmente) |
 | Archivo extra en `bloc/` | — | `feature_step.dart` | — |
-| Subestructura | — | `steps/` | — |
-| Archivos `part` | Solo el feature | Feature + todos los steps | — |
-| Navegación interna | Router | Eventos `NextStep`/`PreviousStep` | — |
-| Cuándo usarlo | Vista estándar | Flujo multipaso | Secciones con tabs |
+| Subestructura | — | `steps/` | `tabs/` |
+| Archivos `part` | Solo el feature | Feature + todos los steps | Feature + todos los tabs |
+| Widget de navegación | — | `PageView` | `TabBarView` |
+| Navegación interna | Router | Eventos Bloc (`NextStep`/`PreviousStep`) | Usuario (tap en `TabBar`) |
+| Cuándo usarlo | Vista estándar | Flujo multipaso | Secciones paralelas |
 
 ## Variantes disponibles
 
 - **[Default](./default.md)** — Vista estándar. La más común. Una sola pantalla sin pasos ni pestañas.
 - **[Stepper](./stepper.md)** — Flujo multipaso controlado mediante un `PageView` de navegación programática.
-- **Tabbed** — Vista con pestañas mediante `TabBar`. *(Próximamente)*
+- **[Tabbed](./tabbed.md)** — Vista con pestañas mediante `TabBar`. Navegación libre entre secciones paralelas.
