@@ -1,6 +1,5 @@
 ---
 title: Bienvenida al equipo (versión corta)
-slug: /mobile/welcome-tldr
 keywords: [onboarding, welcome]
 sidebar_class: 'hidden'
 sidebar_position: 1
