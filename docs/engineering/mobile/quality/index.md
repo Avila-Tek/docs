@@ -2,7 +2,6 @@
 sidebar_position: 3
 title: Estándares de calidad
 description: Los Estándares de Calidad para proyectos mobile son un conjunto de lineamientos y buenas prácticas que buscan asegurar la consistencia, mantenibilidad y confiabilidad del código en todos los desarrollos de Avila Tek.
-slug: /mobile/quality
 last_update:
   date: 10/14/2024
   author: Erick Ortega
