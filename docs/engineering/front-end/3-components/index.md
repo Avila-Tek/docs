@@ -1,6 +1,7 @@
 ---
 title: 🧩 Cómo escribimos componentes
 slug: /frontend/components
+sidebar_position: 3
 ---
 
 # 🧩 Cómo escribimos componentes

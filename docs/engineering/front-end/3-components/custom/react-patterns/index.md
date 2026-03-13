@@ -9,9 +9,6 @@ slug: /frontend/components/custom/patterns
 Con el paso del tiempo, se han desarrollado patrones de diseño de componentes de React. Estos patrones cuentan con determinada complejidad de integración e inversión de control. Según sea el caso, será mejor implementar uno u otro.
 
 
-🚧 WIP
-
-
 ## Referencias
 - Ada Itw. (n.d.). *Componentes Reutilizables.* Ada Frontend. https://frontend.adaitw.org/docs/react/react24 
 - Chinonso, I. (2021, August 27). *Compound components in react.* Smashing Magazine. https://www.smashingmagazine.com/2021/08/compound-components-react/ 

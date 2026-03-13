@@ -1,1 +1,53 @@
 # Estructura del proyecto
+
+Los proyectos Flutter en Avila Tek se crean con [`atmos_cli`](/docs/engineering/mobile/project-init), que genera una estructura base estandarizada con soporte multi-flavor y arquitectura en capas.
+
+## Árbol de directorios
+
+```
+my_app/
+├── .fvm/                          # Versión de Flutter gestionada por FVM
+├── lib/
+│   ├── app/
+│   │   ├── router/                # Configuración de Go Router
+│   │   └── theme/                 # Sistema de temas
+│   ├── core/                      # Utilidades y código compartido
+│   ├── features/
+│   │   └── <feature>/
+│   │       ├── data/              # Repositorios, fuentes de datos, modelos
+│   │       ├── domain/            # Entidades, contratos, casos de uso
+│   │       └── presentation/      # Widgets, blocs, estados
+│   ├── main_development.dart
+│   ├── main_staging.dart
+│   └── main_production.dart
+├── test/                          # Pruebas unitarias y de widget
+├── ios/
+├── android/
+├── codemagic.yaml                 # Pipelines de CI/CD (dev/staging/prod)
+├── README.md                      # Generado automáticamente por atmos_cli
+└── pubspec.yaml
+```
+
+## Puntos de entrada (flavors)
+
+El CLI genera tres `main` separados para aislar la configuración por ambiente:
+
+| Archivo | Ambiente | Firebase |
+|---------|----------|---------|
+| `main_development.dart` | Desarrollo local | Proyecto Firebase `dev` |
+| `main_staging.dart` | Pruebas / QA | Proyecto Firebase `staging` |
+| `main_production.dart` | Producción | Proyecto Firebase `prod` |
+
+## Capas de una feature
+
+Cada feature sigue la arquitectura en capas documentada en [Reglas de código v2](/docs/engineering/mobile/code-rules/v2):
+
+| Capa | Responsabilidad |
+|------|----------------|
+| `data/` | Repositorios, DTOs, clientes HTTP |
+| `domain/` | Entidades, interfaces, casos de uso |
+| `presentation/` | Widgets, Blocs, estados de UI |
+
+:::tip Crear nuevas features
+Usa los bricks de Mason incluidos en el proyecto para generar el scaffold de una feature con la estructura correcta automáticamente.
+:::
